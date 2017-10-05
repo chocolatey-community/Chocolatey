@@ -8,6 +8,9 @@ function Get-TargetResource
         [ValidateSet("Present","Absent")]
         [System.String]
         $Ensure
+
+        ,[string]
+        $InstallationDirectory
     )
     <#
         ,[string]
