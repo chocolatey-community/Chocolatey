@@ -1,29 +1,5 @@
 [
     {
-        "ChocolateyPrototypeBootstrap": [
-            {
-                "Name": "Ensure",
-                "Type": "String",
-                "Attribute": "Required",
-                "ValidateSet": ["Present","Absent"],
-                "Description": "Says whether the Chocolatey Prototype provider is installed on the machine."
-            },
-            {
-                "Name": "InstallScope",
-                "Type": "String",
-                "ValidateSet": ["CurrentUser","AllUsers"],
-                "Attribute": "required",
-                "Description": "Scope to install the provider. System wide or user scope"
-            },
-            {
-                "Name": "RunKey",
-                "Type": "String",
-                "Attribute": "Key",
-                "Description": "Key to uniquely identify the configuration item."
-            }
-        ]
-    },
-    {
         "ChocolateySoftware": [
             {
                 "Name": "Ensure",
@@ -33,16 +9,52 @@
                 "Description": "Specifies whether the Chocolatey Software should be installed on the machine or not."
             },
             {
-                "Name": "InstallDir",
-                "Type": "String",
-                "Attribute": "write",
-                "Description": "Folder path wherethe Chocolatey Software should be installed."
-            },
-            {
-                "Name": "ChocoInstallScriptUrl",
+                "Name": "ChocolateyPackageUrl",
                 "Type": "String",
                 "Attribute": "Write",
-                "Description": "Optional Install script URL to download and execute to install Chocolatey Software. Leave unset to use the embedded version."
+                "Description": "Optional package URL to download a specific Chocolatey Software package."
+            },
+            {
+                "Name": "PackageFeedUrl",
+                "Type": "String",
+                "Attribute": "Write",
+                "Description": "Url of a Nuget feed where the Chocolatey software package is available. i.e. https://chocolatey.org/api/v2"
+            },
+            {
+                "Name": "Version",
+                "Type": "String",
+                "Attribute": "Write",
+                "Description": "Specific version of package available on the nuget Package Feed Url provided."
+            },
+            {
+                "Name": "ChocoTempDir",
+                "Type": "String",
+                "Attribute": "Write",
+                "Description": "Chocolatey Temp directory to unzip downloaded package during bootstrap."
+            },
+            {
+                "Name": "ProxyLocation",
+                "Type": "String",
+                "Attribute": "Write",
+                "Description": "Url of the proxy to use to download the Chocolatey binaries."
+            },
+            {
+                "Name": "ProxyCredential",
+                "Type": "PSCredential",
+                "Attribute": "Write",
+                "Description": "Credential to be used to authenticate to the Proxy for downloading the Chocolatey Package."
+            },
+            {
+                "Name": "IgnoreProxy",
+                "Type": "Boolean",
+                "Attribute": "Write",
+                "Description": "Ignore proxy during download."
+            },
+            {
+                "Name": "InstallationDirectory",
+                "Type": "String",
+                "Attribute": "Write",
+                "Description": "Path where Chocolatey should be installed, default to `$Env:ChocolateyInstall or C:\\ProgramData\\Chocolatey"
             }
         ]
     },
