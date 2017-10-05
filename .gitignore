@@ -1,0 +1,10 @@
+BuildOutput/*
+DscBuildOutput/*
+modules/*
+.kitchen/*
+**.bak
+.kitchen.local.yml
+
+**/bin
+
+!**/README.md
