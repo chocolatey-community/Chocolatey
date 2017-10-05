@@ -72,20 +72,31 @@ function Install-ChocolateySoftware {
         Write-Warning 'Unable to set PowerShell to use TLS 1.2 and TLS 1.1 due to old .NET Framework installed. If you see underlying connection closed or trust errors, you may need to do one or more of the following: (1) upgrade to .NET Framework 4.5+ and PowerShell v3, (2) specify internal Chocolatey package location (set $env:chocolateyDownloadUrl prior to install or host the package internally), (3) use the Download + PowerShell method of install. See https://chocolatey.org/install for all install options.'
     }
 
-    if (![string]::IsNullOrEmpty($ChocolateyPackageUrl)){
-        Write-Verbose "Downloading Chocolatey from : $ChocolateyPackageUrl"
-        $url = $ChocolateyPackageUrl
-    }
-
-    if ($PackageFeedUrl -and ![string]::IsNullOrEmpty($Version)){
-        Write-Verbose "Downloading specific version of Chocolatey: $chocolateyVersion"
-        $url = "$PackageFeedUrl/package/chocolatey/$Version"
-    }
-    elseif($PSCmdlet.ParameterSetName -eq 'FromFeedUrl' -and (![string]::IsNullOrEmpty($PackageFeedUrl))) {
-        $url = $PackageFeedUrl
-    }
-    else {
-        $url = 'https://chocolatey.org/api/v2'
+    switch ($PSCmdlet.ParameterSetName) {
+        'FromFeedUrl' {
+            if ($PackageFeedUrl -and ![string]::IsNullOrEmpty($Version)){
+                Write-Verbose "Downloading specific version of Chocolatey: $Version"
+                $url = "$PackageFeedUrl/package/chocolatey/$Version"
+            }
+            else {
+                if(![string]::IsNullOrEmpty($PackageFeedUrl)) {
+                    $url = $PackageFeedUrl
+                }
+                else {
+                    $url = 'https://chocolatey.org/api/v2'
+                }
+                Write-Verbose "Getting latest version of the Chocolatey package for download."
+                $url = "$url/Packages()?`$filter=((Id%20eq%20%27chocolatey%27)%20and%20(not%20IsPrerelease))%20and%20IsLatestVersion"
+                Write-Debug "Retrieving Binary URL from Package Metadata: $url"
+                [xml]$result = Get-RemoteString $url
+                Write-Debug "New URL for nupkg: $url"
+                $url = $result.feed.entry.content.src
+            }
+        }
+        'FromPackageUrl' { #ignore version
+            Write-Verbose "Downloading Chocolatey from : $ChocolateyPackageUrl"
+            $url = $ChocolateyPackageUrl
+        }
     }
 
     if ($null -eq $env:TEMP) {
@@ -98,10 +109,7 @@ function Install-ChocolateySoftware {
     }
     $file = Join-Path $tempDir "chocolatey.zip"
 
-    Write-Verbose "Getting latest version of the Chocolatey package for download."
-    $url = "$url/Packages()?`$filter=((Id%20eq%20%27chocolatey%27)%20and%20(not%20IsPrerelease))%20and%20IsLatestVersion"
-    [xml]$result = Get-RemoteString $url
-    $url = $result.feed.entry.content.src
+   
 
     # Download the Chocolatey package
     Write-Verbose "Getting Chocolatey from $url."
@@ -129,7 +137,7 @@ function Install-ChocolateySoftware {
     Write-Verbose "Installing chocolatey on this machine"
     $chocInstallPS1 = [io.path]::combine($tempDir,'tools','chocolateyInstall.ps1')
 
-    & $chocInstallPS1
+    & $chocInstallPS1 | Write-Debug
 
     Write-Verbose 'Ensuring chocolatey commands are on the path'
     $chocoPath = [Environment]::GetEnvironmentVariable('ChocolateyInstall')
