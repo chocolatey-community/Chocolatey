@@ -69,11 +69,15 @@ function Set-TargetResource
     Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -verbose:$False
 
     $ChocoParams = @{}
-    if ($ChocoInstallScriptUrl) {$ChocoParams.Add('ChocoInstallScriptUrl',$ChocoInstallScriptUrl)}
-    if ($InstaInstallationDirectoryllDir) {$ChocoParams.Add('InstallationDirectory',$InstallationDirectory)}
 
     if ($ensure -eq 'Present') {
-        Install-Chocolatey @ChocoParams
+        $AllowedParamName = (Get-Command Install-ChocolateySoftware).Parameters.keys
+        foreach ($key in ($PSBoundParameters.keys|Where-Object {$_ -in $AllowedParamName})) {
+            if($PSBoundParameters[$Key]) {
+                $null = $ChocoParams.add($Key,$PSBoundParameters[$Key])
+            }
+        }
+        Install-ChocolateySoftware @ChocoParams
     }
     else {
         Uninstall-Chocolatey -InstallDir $InstallationDirectory
