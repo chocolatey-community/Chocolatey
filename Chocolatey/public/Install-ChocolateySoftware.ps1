@@ -91,7 +91,17 @@ function Install-ChocolateySoftware {
                 Write-Verbose "Getting latest version of the Chocolatey package for download."
                 $url = "$url/Packages()?`$filter=((Id%20eq%20%27chocolatey%27)%20and%20(not%20IsPrerelease))%20and%20IsLatestVersion"
                 Write-Debug "Retrieving Binary URL from Package Metadata: $url"
-                [xml]$result = Get-RemoteString $url
+
+                $GetRemoteStringParams = @{
+                    url = $url
+                }
+                $GetRemoteStringParamsName = (get-command Get-RemoteString).parameters.keys
+                $KeysForRemoteString = $PSBoundParameters.keys | Where-Object { $_ -in $GetRemoteStringParamsName}
+                foreach ($key in $KeysForRemoteString ) { 
+                    Write-Debug "`tWith $key :: $($PSBoundParameters[$key])"
+                    $null = $GetRemoteStringParams.Add($key ,$PSBoundParameters[$key]) 
+                }
+                [xml]$result = Get-RemoteString @GetRemoteStringParams
                 Write-Debug "New URL for nupkg: $url"
                 $url = $result.feed.entry.content.src
             }
@@ -112,11 +122,19 @@ function Install-ChocolateySoftware {
     }
     $file = Join-Path $tempDir "chocolatey.zip"
 
-   
-
     # Download the Chocolatey package
     Write-Verbose "Getting Chocolatey from $url."
-    $null = Get-RemoteFile $url $file
+    $GetRemoteFileParams = @{
+        url = $url
+        file = $file
+    }
+    $GetRemoteFileParamsName = (get-command Get-RemoteFile).parameters.keys
+    $KeysForRemoteFile = $PSBoundParameters.keys | Where-Object { $_ -in $GetRemoteFileParamsName}
+    foreach ($key in $KeysForRemoteFile ) { 
+        Write-Debug "`tWith $key :: $($PSBoundParameters[$key])"
+        $null = $GetRemoteFileParams.Add($key ,$PSBoundParameters[$key]) 
+    }
+    $null = Get-RemoteFile @GetRemoteFileParams
 
     # unzip the package
     Write-Verbose "Extracting $file to $tempDir..."
