@@ -50,7 +50,10 @@ function Install-ChocolateySoftware {
 
         # To bypass the use of any proxy, please set chocolateyIgnoreProxy = 'true'
         [switch]
-        $IgnoreProxy
+        $IgnoreProxy,
+
+        [string]
+        $InstallationDirectory
     )
 
     if($PSVersionTable.PSVersion.Major -lt 4) {
@@ -137,6 +140,10 @@ function Install-ChocolateySoftware {
     Write-Verbose "Installing chocolatey on this machine"
     $chocInstallPS1 = [io.path]::combine($tempDir,'tools','chocolateyInstall.ps1')
 
+    if($InstallationDirectory) {
+        [Environment]::SetEnvironmentVariable('ChocolateyInstall', $InstallationDirectory, 'Machine')
+        [Environment]::SetEnvironmentVariable('ChocolateyInstall', $InstallationDirectory, 'Process')
+    }
     & $chocInstallPS1 | Write-Debug
 
     Write-Verbose 'Ensuring chocolatey commands are on the path'
