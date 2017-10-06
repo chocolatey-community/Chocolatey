@@ -118,7 +118,7 @@ function Install-ChocolateySoftware {
 
     $tempDir = [io.path]::Combine($Env:TEMP,'chocolatey','chocInstall')
     if (![System.IO.Directory]::Exists($tempDir)) {
-        [void][System.IO.Directory]::CreateDirectory($tempDir)
+        $null = New-Item -path $tempDir -ItemType Directory
     }
     $file = Join-Path $tempDir "chocolatey.zip"
 
@@ -156,7 +156,8 @@ function Install-ChocolateySoftware {
 
     # Call chocolatey install
     Write-Verbose "Installing chocolatey on this machine"
-    $chocInstallPS1 = [io.path]::combine($tempDir,'tools','chocolateyInstall.ps1')
+    $TempTools = [io.path]::combine($tempDir,'tools')
+    $chocInstallPS1 = Join-Path $TempTools 'chocolateyInstall.ps1' #To be able to mock
 
     if($InstallationDirectory) {
         [Environment]::SetEnvironmentVariable('ChocolateyInstall', $InstallationDirectory, 'Machine')
