@@ -11,8 +11,6 @@
     [string]
     $BuildOutput = (property BuildOutput 'C:\BuildOutput'),
 
-    $ArtefactFolder = 'Artefact',
-
     $MergeList = (property MergeList @('enum*','class*','priv*','pub*') ),
     
     [string]
@@ -28,7 +26,7 @@ Task CopySourceToModuleOut {
     if (![io.path]::IsPathRooted($BuildOutput)) {
         $BuildOutput = Join-Path -Path $ProjectPath.FullName -ChildPath $BuildOutput
     }
-    $BuiltModuleFolder = [io.Path]::Combine($BuildOutput,$ArtefactFolder,$ProjectName)
+    $BuiltModuleFolder = [io.Path]::Combine($BuildOutput,$ProjectName)
     "Copying $ProjectPath\$SourceFolder To $BuiltModuleFolder\"
     Copy-Item -Path "$ProjectPath\$SourceFolder" -Destination "$BuiltModuleFolder\" -Recurse
 }
@@ -40,7 +38,7 @@ Task MergeFilesToPSM1 {
     if (![io.path]::IsPathRooted($BuildOutput)) {
         $BuildOutput = Join-Path -Path $ProjectPath.FullName -ChildPath $BuildOutput
     }
-    $BuiltModuleFolder = [io.Path]::Combine($BuildOutput,$ArtefactFolder,$ProjectName)
+    $BuiltModuleFolder = [io.Path]::Combine($BuildOutput,$ProjectName)
 
     # Merge individual PS1 files into a single PSM1, and delete merged files
     $OutModulePSM1 = [io.path]::Combine($BuiltModuleFolder,"$ProjectName.psm1")

@@ -30,7 +30,7 @@ CompanyName = 'Unknown'
 Copyright = '(c) 2017 Gael Colas. All rights reserved.'
 
 # Description of the functionality provided by this module
-Description = 'This is module with DSC resource to bootstrap Package providers.'
+Description = 'This is module with DSC resource to Install and configure Chocolatey.'
 
 # Minimum version of the Windows PowerShell engine required by this module
 # PowerShellVersion = ''

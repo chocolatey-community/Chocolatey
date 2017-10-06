@@ -19,7 +19,8 @@ Param (
     $ForceEnvironmentVariables = [switch]$true,
 
     $MergeList = @('enum*',[PSCustomObject]@{Name='class*';order={(Import-PowerShellDataFile .\SampleModule\Classes\classes.psd1).order.indexOf($_.BaseName)}},'priv*','pub*')
-    ,$CodeCoverageThreshold = 0
+    
+    ,$CodeCoverageThreshold = 90
 )
 
 Process {
@@ -34,17 +35,18 @@ Process {
             . $_.FullName 
         }
     task none {}
-    task .  Clean,
+     task .  Clean,
             SetBuildEnvironment,
+            QualityTestsStopOnFail,
+            CopySourceToModuleOut,
+            MergeFilesToPSM1,
+            CleanOutputEmptyFolders,
             UnitTests,
             UploadUnitTestResultsToAppVeyor,
             FailBuildIfFailedUnitTest, 
             FailIfLastCodeConverageUnderThreshold,
-            CopySourceToModuleOut,
-            MergeFilesToPSM1,
-            CleanOutputEmptyFolders,
-            IntegrationTests, 
-            QualityTestsStopOnFail
+            IntegrationTests,
+            DeployAll
 
     task testAll UnitTests, IntegrationTests, QualityTestsStopOnFail
 }

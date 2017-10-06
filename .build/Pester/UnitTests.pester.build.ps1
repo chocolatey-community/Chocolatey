@@ -6,6 +6,9 @@ Param (
     [string]
     $BuildOutput = (property BuildOutput 'C:\BuildOutput'),
 
+    [bool]
+    $TestFromBuildOutput = $true,
+
     [string]
     $ProjectName = (property ProjectName (Split-Path -Leaf (Join-Path $PSScriptRoot '../..')) ),
 
@@ -34,6 +37,12 @@ task UnitTests {
     "`tProject Name = $ProjectName"
     "`tUnit Tests   = $PathToUnitTests"
     "`tResult Folder= $BuildOutput\Unit\"
+    if($TestFromBuildOutput) {
+        "`tTesting against compiled Module: $BuildOutput\$ProjectName"
+    }
+    else {
+        "`tTesting against Source Code: $BuildOutput\$ProjectPath"
+    }
 
     #Resolving the Unit Tests path based on 2 possible Path: 
     #    ProjectPath\ProjectName\tests\Unit (my way, I like to ship tests with Modules)
@@ -77,8 +86,18 @@ task UnitTests {
     }
     
     Push-Location $UnitTestPath
-    $ListOfTestedFile = Get-ChildItem | Foreach-Object { $fileName = $_.BaseName -replace '\.tests',''; "$ProjectPath\$ProjectName\*\$fileName.ps1"  }
+    if($TestFromBuildOutput) {
+        $ListOfTestedFile = Get-ChildItem -Recurse "$BuildOutput\$ProjectName" -include *.ps1,*.psm1 -Exclude *.tests.ps1
+    }
+    else {
+        $ListOfTestedFile = Get-ChildItem | Foreach-Object { 
+            $fileName = $_.BaseName -replace '\.tests'
+            "$ProjectPath\$ProjectName\*\$fileName.ps1"
+        }
+    }
+    
     $ListOfTestedFile | ForEach-Object { Write-Verbose $_}
+    "Number of tested files: $($ListOfTestedFile.Count)"
     $PesterParams = @{
         ErrorAction  = 'Stop'
         OutputFormat = $PesterOutputFormat
@@ -87,6 +106,13 @@ task UnitTests {
         PassThru     = $true
     }
     Import-module Pester
+    if($TestFromBuildOutput) {
+        Import-Module -Force ("$BuildOutput\$ProjectName" -replace '\\$')
+    }
+    else {
+        Import-Module -Force ("$ProjectPath\$ProjectName" -replace '\\$')
+    }
+
     $script:UnitTestResults = Invoke-Pester @PesterParams
     $null = $script:UnitTestResults | Export-Clixml -Path $PesterOutFilePath -Force
     Pop-Location
@@ -111,11 +137,11 @@ task FailIfLastCodeConverageUnderThreshold {
         $BuildOutput = Join-Path -Path $ProjectPath.FullName -ChildPath $BuildOutput
     }
 
-    $TestResultFileName = "Unit_*_*.xml"
+    $TestResultFileName = "Unit_*.xml"
     $PesterOutPath = [system.io.path]::Combine($BuildOutput,'testResults','unit',$PesterOutputSubFolder,$TestResultFileName)
     if (-Not (Test-Path $PesterOutPath)) {
         if ( $CodeCoverageThreshold -eq 0 ) {
-            Write-Host "Code Coverage accepted with value of 0%. No Pester output found." -ForegroundColor Magenta
+            Write-Host "Code Coverage SUCCESS with value of 0%. No Pester output found." -ForegroundColor Magenta
             return
         }
         else {
@@ -128,10 +154,10 @@ task FailIfLastCodeConverageUnderThreshold {
     if ($PesterObject.CodeCoverage.NumberOfCommandsAnalyzed) {
         $coverage = $PesterObject.CodeCoverage.NumberOfCommandsExecuted / $PesterObject.CodeCoverage.NumberOfCommandsAnalyzed
         if ($coverage -lt $CodeCoverageThreshold/100) {
-            Throw "The code coverage ($($Coverage*100) %) is under the threshold of $CodeCoverageThreshold %."
+            Throw "The Code Coverage FAILURE: ($($Coverage*100) %) is under the threshold of $CodeCoverageThreshold %."
         }
         else {
-            Write-Host "Code Coverage accepted with value of $($coverage*100) %" -ForegroundColor Green
+            Write-Host "Code Coverage SUCCESS with value of $($coverage*100) %" -ForegroundColor Green
         }
     }
 }
