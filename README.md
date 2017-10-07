@@ -1,6 +1,6 @@
 # Chocolatey Module
 
-This module intend to wrap around the Chocolatet Software binary, to create a PowerShell interface and provide DSC resources.
+This module intend to wrap around the [Chocolatey Software](https://chocolatey.org) binary, to create a PowerShell interface and provide DSC resources.
 The module let you install the chocolatey binary from a Nuget feed, optionally specifying a version, Proxy and Credentials to use.
 
 ## Content
