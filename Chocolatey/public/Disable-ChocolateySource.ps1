@@ -1,3 +1,23 @@
+<#
+.SYNOPSIS
+Disable a Source set in the Chocolatey Config
+
+.DESCRIPTION
+Lets you disable an existing source.
+The equivalent Choco command is Choco source disable -n=sourcename
+
+.PARAMETER Name
+Name of the Chocolatey source to Disable
+
+.PARAMETER NoProgress
+This allows to reduce the output created by the Chocolatey Command.
+
+.EXAMPLE
+Disable-ChocolateySource -Name chocolatey
+
+.NOTES
+https://github.com/chocolatey/choco/wiki/CommandsSource
+#>
 function Disable-ChocolateySource {
     [CmdletBinding()]
     Param(

@@ -1,3 +1,21 @@
+<#
+.SYNOPSIS
+Test if the Chocolatey Software is installed.
+
+.DESCRIPTION
+To test whether the Chocolatey Software is installed, it first look for the Command choco.exe.
+It then check if it's installed in the InstallDir path, if provided.
+
+.PARAMETER InstallDir
+To ensure the software is installed in the given directory. If not specified,
+ it will only test if the commadn choco.exe is available. 
+
+.EXAMPLE
+Test-ChocolateyInstall
+
+.NOTES
+General notes
+#>
 function Test-ChocolateyInstall
 {
     [CmdletBinding()]

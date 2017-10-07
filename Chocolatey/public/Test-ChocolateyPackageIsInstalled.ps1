@@ -1,3 +1,34 @@
+<#
+.SYNOPSIS
+Verify if a Chocolatey Package is installed locally
+
+.DESCRIPTION
+Search and compare the Installed PackageName locally, and compare the provided property.
+The command return an object with the detailed properties, and a comparison between the installed version
+and the expected version.
+
+.PARAMETER Name
+Exact name of the package to be testing against.
+
+.PARAMETER Version
+Version expected of the package, or latest to compare against the latest version from a source.
+
+.PARAMETER Source
+Source to compare the latest version against. It will retrieve the 
+
+.PARAMETER Credential
+Credential used with authenticated feeds. Defaults to empty.
+
+.PARAMETER CacheLocation
+CacheLocation - Location for download cache, defaults to %TEMP% or value 
+in chocolatey.config file.
+
+.EXAMPLE
+Test-ChocolateyPackageIsInstall -Name Chocolatey -Source https://chocolatey.org/api/v2
+
+.NOTES
+https://github.com/chocolatey/choco/wiki/CommandsList
+#>
 function Test-ChocolateyPackageIsInstalled {
     [CmdletBinding()]
     Param(

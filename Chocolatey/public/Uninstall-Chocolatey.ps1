@@ -16,7 +16,7 @@ Or, if specified with an empty/$null value, tries to find from the choco.exe pat
 
 .EXAMPLE
 Uninstall-Chocolatey -InstallDir ''
-#Will uninstall Chocolatey from the location of Choco.exe
+#Will uninstall Chocolatey from the location of Choco.exe if found from $Env:PATH
 
 #>
 function Uninstall-Chocolatey {

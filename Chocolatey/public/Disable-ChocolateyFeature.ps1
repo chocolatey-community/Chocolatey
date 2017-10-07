@@ -1,3 +1,22 @@
+<#
+.SYNOPSIS
+Disable a Chocolatey Feature
+
+.DESCRIPTION
+Allows you to disable a Chocolatey Feature usually accessed by choco feature disable -n=bob
+
+.PARAMETER Name
+Name of the Chocolatey Feature to disable. Some are only available in the Chocolatey for business version.
+
+.PARAMETER NoProgress
+This allows to reduce the output created by the Chocolatey Command.
+
+.EXAMPLE
+Disable-ChocolateyFeature -Name 'Bob'
+
+.NOTES
+https://github.com/chocolatey/choco/wiki/CommandsFeature
+#>
 function Disable-ChocolateyFeature {
     [CmdletBinding()]
     Param(

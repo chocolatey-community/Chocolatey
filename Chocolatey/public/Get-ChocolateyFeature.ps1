@@ -1,3 +1,22 @@
+<#
+.SYNOPSIS
+Gets the Features set in the Configuration file.
+
+.DESCRIPTION
+This command looks up in the Chocolatey Config file, and returns 
+the Features available from there.
+Some feature may be available but now show up with this command.
+
+.PARAMETER Feature
+Name of the Feature when retrieving a single Feature. It defaults to returning
+all feature available in the config file.
+
+.EXAMPLE
+Get-ChocolateyFeature
+
+.NOTES
+https://github.com/chocolatey/choco/wiki/CommandsFeature
+#>
 function Get-ChocolateyFeature {
     [CmdletBinding()]
     Param(
