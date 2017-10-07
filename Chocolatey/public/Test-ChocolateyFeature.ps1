@@ -37,7 +37,7 @@ function Test-ChocolateyFeature {
     )
 
     Process {
-        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
+        if (-not (Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
             Throw "Chocolatey Software not found"
         }
 

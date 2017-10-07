@@ -12,7 +12,7 @@ Name of the Feature when retrieving a single Feature. It defaults to returning
 all feature available in the config file.
 
 .EXAMPLE
-Get-ChocolateyFeature
+Get-ChocolateyFeature -Name MyFeatureName
 
 .NOTES
 https://github.com/chocolatey/choco/wiki/CommandsFeature

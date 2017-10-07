@@ -39,7 +39,7 @@ else {
 foreach ($function in $allModuleFunctions) {
     Describe "Quality for $($function.BaseName)" -Tags 'TestQuality' {
         It "$($function.BaseName) has a unit test" {
-            Test-Path "$modulePath\tests\Unit\$($function.BaseName).tests.ps1" | Should be true
+            Test-Path "$modulePath\tests\Unit\*\$($function.BaseName).tests.ps1" | Should be true
         }
             
         if ($scriptAnalyzerRules) {

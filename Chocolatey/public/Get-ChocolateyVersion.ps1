@@ -6,7 +6,7 @@ Retrieve the version of the Chocolatey available in $Env:Path
 Get the version of the Chocolatey currently installed.
 
 .EXAMPLE
-Get-ChocolateyVersion.
+Get-ChocolateyVersion #This command does not accept parameter
 
 .NOTES
 This does not specify the SKU (C4B or Community)

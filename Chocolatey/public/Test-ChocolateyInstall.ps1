@@ -11,7 +11,7 @@ To ensure the software is installed in the given directory. If not specified,
  it will only test if the commadn choco.exe is available. 
 
 .EXAMPLE
-Test-ChocolateyInstall
+Test-ChocolateyInstall #Test whether the Chocolatey Software is installed
 
 .NOTES
 General notes
@@ -29,7 +29,9 @@ function Test-ChocolateyInstall
     )
 
     Write-Verbose "Loading machine Path Environment variable into session"
-    $env:Path = [Environment]::GetEnvironmentVariable('Path','Machine')
+    $envPath = [Environment]::GetEnvironmentVariable('Path','Machine')
+    [Environment]::SetEnvironmentVariable($envPath,'Process')
+    
     if($InstallDir) {
         $InstallDir = (Resolve-Path $InstallDir -ErrorAction Stop).Path
     }

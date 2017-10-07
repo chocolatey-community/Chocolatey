@@ -24,7 +24,7 @@ CacheLocation - Location for download cache, defaults to %TEMP% or value
 in chocolatey.config file.
 
 .EXAMPLE
-Test-ChocolateyPackageIsInstall -Name Chocolatey -Source https://chocolatey.org/api/v2
+Test-ChocolateyPackageIsInstalled -Name Chocolatey -Source https://chocolatey.org/api/v2
 
 .NOTES
 https://github.com/chocolatey/choco/wiki/CommandsList
@@ -96,7 +96,7 @@ function Test-ChocolateyPackageIsInstalled {
         $MatchingPackages = $InstalledPackages | Where-Object {
             Write-Debug "Testing $($_.Name) against $($ReferenceObject.Name)"
             if($_.Name -eq $ReferenceObject.Name) {
-                $PackageFound = $True;
+                $PackageFound = $True
                 Write-Debug "Package Found"
                 
                 if ($_.version -ge $ReferenceObject.version) {
