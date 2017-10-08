@@ -53,13 +53,14 @@ foreach ($function in $allModuleFunctions) {
     }
 
     Describe "Help for $($function.BaseName)" -Tags 'helpQuality' {
-            $AbstractSyntaxTree = [System.Management.Automation.Language.Parser]::
-                ParseInput((Get-Content -raw $function.FullName), [ref]$null, [ref]$null)
-                $AstSearchDelegate = { $args[0] -is [System.Management.Automation.Language.FunctionDefinitionAst] }
-                $ParsedFunction = $AbstractSyntaxTree.FindAll( $AstSearchDelegate,$true )   |
-                                    ? Name -eq $function.BaseName
+        $AbstractSyntaxTree = [System.Management.Automation.Language.Parser]::
+            ParseInput((Get-Content -raw $function.FullName), [ref]$null, [ref]$null)
+            $AstSearchDelegate = { $args[0] -is [System.Management.Automation.Language.FunctionDefinitionAst] }
+            $ParsedFunction = $AbstractSyntaxTree.FindAll( $AstSearchDelegate,$true )   |
+                                ? Name -eq $function.BaseName
+        if($ParsedFunction.GetHelpContent) {
             $FunctionHelp = $ParsedFunction.GetHelpContent()
-
+        
             It 'Has a SYNOPSIS' {
                 $FunctionHelp.Synopsis | should not BeNullOrEmpty
             }
@@ -74,13 +75,16 @@ foreach ($function in $allModuleFunctions) {
                 $FunctionHelp.Examples[0].Length | Should BeGreaterThan ($function.BaseName.Length + 10)
             }
 
-            $parameters = $ParsedFunction.Body.ParamBlock.Parameters.name.VariablePath | % {$_.ToString() }
-            foreach ($parameter in $parameters) {
-                It "Has help for Parameter: $parameter" {
-                    $FunctionHelp.Parameters.($parameter.ToUpper())        | Should Not BeNullOrEmpty
-                    $FunctionHelp.Parameters.($parameter.ToUpper()).Length | Should BeGreaterThan 25
+            if($ParameterNames = $ParsedFunction.Body.ParamBlock.Parameters.name) {
+                $parameters = $ParameterNames.VariablePath | % {$_.ToString() }
+                foreach ($parameter in $parameters) {
+                    It "Has help for Parameter: $parameter" {
+                        $FunctionHelp.Parameters.($parameter.ToUpper())        | Should Not BeNullOrEmpty
+                        $FunctionHelp.Parameters.($parameter.ToUpper()).Length | Should BeGreaterThan 25
+                    }
                 }
             }
+        }
     }
 }
 

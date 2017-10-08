@@ -155,7 +155,8 @@ function Install-ChocolateySoftware {
                 $url = $result.feed.entry.content.src
             }
         }
-        'FromPackageUrl' { #ignore version
+        'FromPackageUrl' { 
+            #ignores version
             Write-Verbose "Downloading Chocolatey from : $ChocolateyPackageUrl"
             $url = $ChocolateyPackageUrl
         }
@@ -206,7 +207,8 @@ function Install-ChocolateySoftware {
     # Call chocolatey install
     Write-Verbose "Installing chocolatey on this machine"
     $TempTools = [io.path]::combine($tempDir,'tools')
-    $chocInstallPS1 = Join-Path $TempTools 'chocolateyInstall.ps1' #To be able to mock
+    #   To be able to mock
+    $chocInstallPS1 = Join-Path $TempTools 'chocolateyInstall.ps1' 
 
     if($InstallationDirectory) {
         [Environment]::SetEnvironmentVariable('ChocolateyInstall', $InstallationDirectory, 'Machine')
@@ -235,7 +237,7 @@ function Install-ChocolateySoftware {
     $nupkg = Join-Path $chocoPkgDir 'chocolatey.nupkg'
 
     if (![System.IO.Directory]::Exists($chocoPkgDir)) { 
-        [System.IO.Directory]::CreateDirectory($chocoPkgDir)
+        $null = [System.IO.Directory]::CreateDirectory($chocoPkgDir)
     }
     Copy-Item "$file" "$nupkg" -Force -ErrorAction SilentlyContinue
 }

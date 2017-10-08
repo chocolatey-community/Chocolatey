@@ -31,6 +31,8 @@ https://github.com/chocolatey/choco/wiki/CommandsList
 #>
 function Test-ChocolateyPackageIsInstalled {
     [CmdletBinding()]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseOutputTypeCorrectly', '')]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", "")]
     Param(
         [Parameter(
             Mandatory
@@ -67,7 +69,7 @@ function Test-ChocolateyPackageIsInstalled {
     )
 
     Process {
-        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
+        if (-not (Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
             Throw "Chocolatey Software not found"
         }
         

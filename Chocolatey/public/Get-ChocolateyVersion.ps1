@@ -13,6 +13,7 @@ This does not specify the SKU (C4B or Community)
 #>
 function Get-ChocolateyVersion {
     [CmdletBinding()]
+    [OutputType([version])]
     Param(
     )
 

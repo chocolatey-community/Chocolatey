@@ -4,7 +4,7 @@ Download the content from url using specified proxy settings.
 
 .DESCRIPTION
 Helper function to Download the content from a url 
-using specified proxy settings.
+ using specified proxy settings.
 
 .PARAMETER url
 URL of the file to download.

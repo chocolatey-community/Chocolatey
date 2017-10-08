@@ -19,6 +19,7 @@ General notes
 function Test-ChocolateyInstall
 {
     [CmdletBinding()]
+    [OutputType([bool])]
     Param(
         [Parameter(
             Mandatory = $false

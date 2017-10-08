@@ -20,6 +20,7 @@ https://github.com/chocolatey/choco/wiki/CommandsFeature
 #>
 function Test-ChocolateyFeature {
     [CmdletBinding()]
+    [outputType([bool])]
     Param(
         [Parameter(
             Mandatory

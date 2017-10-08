@@ -40,7 +40,7 @@ function Disable-ChocolateySource {
             Throw "Chocolatey Software not found"
         }
 
-        if (!(Get-ChocolateySource -id $Name)) {
+        if (!(Get-ChocolateySource -Name $Name)) {
             Throw "Chocolatey Source $Name cannot be found. You can Register it using Register-ChocolateySource."
         }
         

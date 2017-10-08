@@ -51,6 +51,7 @@ Test-ChocolateySource -source https://chocolatey.org/api/v2 -priority 0
 https://github.com/chocolatey/choco/wiki/CommandsSource
 #>
 function Test-ChocolateySource {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseOutputTypeCorrectly', '')]
     [CmdletBinding()]
     Param(
         [Parameter(
@@ -102,7 +103,7 @@ function Test-ChocolateySource {
     )
 
     Process {
-        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
+        if (-not (Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
             Throw "Chocolatey Software not found"
         }
 

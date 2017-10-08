@@ -20,7 +20,9 @@ Uninstall-Chocolatey -InstallDir ''
 
 #>
 function Uninstall-Chocolatey {
-    [CmdletBinding()]
+    [CmdletBinding(
+        SupportsShouldProcess
+    )]
     Param(
         [AllowNull()]
         [string]
@@ -90,8 +92,8 @@ function Uninstall-Chocolatey {
         [Environment]::SetEnvironmentVariable('Path', ($AllPaths -Join ';'), 'Machine')
 
         #refresh after uninstall
-        $env:Path = [Environment]::GetEnvironmentVariable('Path','Machine')   
-
+        $envPath = [Environment]::GetEnvironmentVariable('Path','Machine')   
+        [Environment]::SetEnvironmentVariable($EnvPath,'process')
         Write-Verbose 'Unistallation complete'
     }
 }
