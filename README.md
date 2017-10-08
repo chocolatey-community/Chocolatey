@@ -1,5 +1,7 @@
 # Chocolatey Module
 
+[![Build status](https://ci.appveyor.com/api/projects/status/ulul0agv7kgo8a7n?svg=true)](https://ci.appveyor.com/project/gaelcolas/chocolatey)
+
 This module intend to wrap around the [Chocolatey Software](https://chocolatey.org) binary, to create a PowerShell interface and provide DSC resources.
 The module let you install the chocolatey binary from a Nuget feed, optionally specifying a version, Proxy and Credentials to use.
 

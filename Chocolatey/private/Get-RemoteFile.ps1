@@ -13,7 +13,7 @@ URL of the file to download
 File path and name to save the downloaded file to.
 
 .PARAMETER ProxyLocation
-Proxy uri to use.
+Proxy uri to use for the download.
 
 .PARAMETER ProxyCredential
 Credential to use for authenticating to the proxy.

@@ -10,7 +10,7 @@ simultaneously in one FileStream and in Win32 code or another
 FileStream."
 
 .EXAMPLE
-Repair-PowerShellOutputRedirectionBug
+Repair-PowerShellOutputRedirectionBug #Only for PSVersion below PS4
 
 #>
 function Repair-PowerShellOutputRedirectionBug {

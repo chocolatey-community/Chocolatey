@@ -92,7 +92,7 @@ Pushd $PSScriptRoot
             Path = "$PSScriptRoot\Dependencies.psd1"
         }
         if($PSBoundParameters.ContainsKey('verbose')) { $PSDependParams.add('verbose',$verbose)}
-        Invoke-PSDepend @PSDependParams -Verbose
+        Invoke-PSDepend @PSDependParams
         Write-Verbose "Project Bootstrapped, returning to Invoke-Build"
     }
 

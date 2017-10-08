@@ -30,7 +30,7 @@ Filter out the packages that are reported broken.
 List all version available.
 
 .PARAMETER Priority
-Priority of the feed
+Priority of the feed, default to 0
 
 .PARAMETER Credential
 Credential to authenticate to the source feed. 

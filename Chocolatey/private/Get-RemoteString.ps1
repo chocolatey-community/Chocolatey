@@ -7,13 +7,13 @@ Helper function to Download the content from a url
 using specified proxy settings.
 
 .PARAMETER url
-URL of the file to download
+URL of the file to download.
 
 .PARAMETER file
 File path and name to save the downloaded file to.
 
 .PARAMETER ProxyLocation
-Proxy uri to use.
+Proxy uri to use for the download.
 
 .PARAMETER ProxyCredential
 Credential to use for authenticating to the proxy.
@@ -23,7 +23,7 @@ By default it will try to load cached credentials.
 Bypass the proxy for this request.
 
 .EXAMPLE
-Get-RemoteFile -Url https://chocolatey.org/install.ps1
+Get-RemoteString -Url https://chocolatey.org/install.ps1
 
 #>
 function Get-RemoteString {
