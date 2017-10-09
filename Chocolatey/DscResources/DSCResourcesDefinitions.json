@@ -54,7 +54,7 @@
                 "Name": "InstallationDirectory",
                 "Type": "String",
                 "Attribute": "Write",
-                "Description": "Path where Chocolatey should be installed, default to `$Env:ChocolateyInstall or C:\\ProgramData\\Chocolatey"
+                "Description": "Path where Chocolatey should be installed, default to `$Env:ChocolateyInstall or C:\\\\ProgramData\\\\Chocolatey"
             }
         ]
     },

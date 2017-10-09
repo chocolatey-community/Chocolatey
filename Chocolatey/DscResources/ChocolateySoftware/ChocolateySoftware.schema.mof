@@ -10,6 +10,6 @@ class ChocolateySoftware : OMI_BaseResource
     [Write, Description("Url of the proxy to use to download the Chocolatey binaries.")] String ProxyLocation;
     [Write, EmbeddedInstance("MSFT_Credential"), Description("Credential to be used to authenticate to the Proxy for downloading the Chocolatey Package.")] String ProxyCredential;
     [Write, Description("Ignore proxy during download.")] Boolean IgnoreProxy;
-    [Write, Description("Path where Chocolatey should be installed, default to `$Env:ChocolateyInstall or C:\ProgramData\Chocolatey")] String InstallationDirectory;
+    [Write, Description("Path where Chocolatey should be installed, default to `$Env:ChocolateyInstall or C:\\ProgramData\\Chocolatey")] String InstallationDirectory;
 };
 
