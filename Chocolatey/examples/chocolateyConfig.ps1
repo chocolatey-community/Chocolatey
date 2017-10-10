@@ -6,31 +6,13 @@ configuration Chocolatey {
             Ensure = 'Present'
         }
 
-        ChocolateySource ShouldNotBeThereAnyway {
-            DependsOn = '[ChocolateyPackage]Putty'
-            Ensure = 'Absent'
-            Name = 'ShouldNotBeThereAnyway'
-        }
-
-        ChocolateySource chocolatey {
-            DependsOn = '[ChocolateyPackage]Putty'
+        ChocolateySource ChocolateyOrg {
+            DependsOn = '[ChocolateySoftware]ChocoInst'
             Ensure = 'Present'
-            Name = 'chocolatey'
-            Source = 'https://chocolatey.org/api/v2/'
-            disabled = $true
-            priority = 5
-        }
-
-        ChocolateySource MyOtherChocolatey {
-            DependsOn = '[ChocolateyPackage]Putty'
-            Ensure = 'Present'
-            Name = 'MyOtherChocolatey'
-            Source = 'http://This/is/another/feed/'
-            SelfService = $true
-            #bypass default to $false
-            disabled = $True
-            priority = 10
-            #No Creds on this one anyway
+            Name = 'Chocolatey'
+            Source = 'https://chocolatey.org/api/v2'
+            Priority = 0
+            Disabled = $false
         }
 
         ChocolateyFeature NoVIrusCheck {
@@ -39,13 +21,11 @@ configuration Chocolatey {
         }
 
         ChocolateyPackage Putty {
-           DependsOn = '[ChocolateyInstall]ChocoInst'
+           DependsOn = '[ChocolateySoftware]ChocoInst'
             Ensure  = 'Present'
             Name    = 'Putty'
             Version = 'Latest'
-            ChocolateyOptions = @{ source = 'https://chocolatey.org/api/v2/'}
+            ChocolateyOptions = @{ source = 'https://chocolatey.org/api/v2/' }
         }
-
-        
     }
 }

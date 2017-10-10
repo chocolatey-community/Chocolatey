@@ -282,7 +282,7 @@ function Uninstall-ChocolateyPackage {
             $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
             Write-Verbose "choco $($ChocoArguments -join ' ')"
 
-            if ($PSCmdlet.ShouldProcess($PackageName,"Upgrade")) {
+            if ($PSCmdlet.ShouldProcess($PackageName,"Uninstall")) {
                 #Impact confirmed, go choco go!
                 $ChocoArguments += '-y'
                 &$chocoCmd $ChocoArguments | Write-Verbose

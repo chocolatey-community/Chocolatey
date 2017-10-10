@@ -5,6 +5,9 @@
 This module intend to wrap around the [Chocolatey Software](https://chocolatey.org) binary, to create a PowerShell interface and provide DSC resources.
 The module let you install the chocolatey binary from a Nuget feed, optionally specifying a version, Proxy and Credentials to use.
 
+This project has adopted the Microsoft Open Source Code of Conduct.
+For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
+
 ## Content
 
 This is the current content of the module, besides the file used for managing the project.
