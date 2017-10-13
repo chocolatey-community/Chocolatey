@@ -23,6 +23,11 @@ Credential used with authenticated feeds. Defaults to empty.
 CacheLocation - Location for download cache, defaults to %TEMP% or value 
 in chocolatey.config file.
 
+.PARAMETER UpdateOnly
+Test if the package needs to be installed if absent.
+In Update Only mode, a package of lower version needs to be updated, but a package absent
+won't be installed.
+
 .EXAMPLE
 Test-ChocolateyPackageIsInstalled -Name Chocolatey -Source https://chocolatey.org/api/v2
 
@@ -64,7 +69,13 @@ function Test-ChocolateyPackageIsInstalled {
             ValueFromPipelineByPropertyName
         )]
         [String]
-        $CacheLocation
+        $CacheLocation,
+
+        [Parameter(
+            ValueFromPipelineByPropertyName
+        )]
+        [switch]
+        $UpdateOnly
 
     )
 
@@ -74,18 +85,18 @@ function Test-ChocolateyPackageIsInstalled {
         }
         
         #if version latest verify against sources
-        if (! ($InstalledPackages += Get-ChocolateyPackage -LocalOnly -Name $Name) ) {
+        if (! ($InstalledPackages = @(Get-ChocolateyPackage -LocalOnly -Name $Name)) ) {
             Write-Verbose "Could not find Package $Name"
-            return $false
         }
 
         $SearchPackageParams = $PSBoundParameters
         $null = $SearchPackageParams.Remove('version')
+        $null = $SearchPackageParams.Remove('UpdateOnly')
 
         if ($Version -eq 'latest') {
             $ReferenceObject = Get-ChocolateyPackage @SearchPackageParams -Exact
             if(!$ReferenceObject) {
-                Throw "Latest version of Package $name not found. Verify that the sources are reachable."
+                Throw "Latest version of Package $name not found. Verify that the sources are reachable and package exists."
             }
         }
         else {
@@ -94,6 +105,7 @@ function Test-ChocolateyPackageIsInstalled {
             }
             if($Version) { $ReferenceObject | Add-Member -MemberType NoteProperty -Name version -value $Version }
         }
+
         $PackageFound = $false
         $MatchingPackages = $InstalledPackages | Where-Object {
             Write-Debug "Testing $($_.Name) against $($ReferenceObject.Name)"
@@ -109,19 +121,27 @@ function Test-ChocolateyPackageIsInstalled {
                 }
             }
         }
+
         if ($MatchingPackages) {
             Write-Verbose ("'{0}' packages match the given properties." -f $MatchingPackages.Count)
-            Write-Output ([PSCustomObject]@{
-                PackagePresent          =  $PackageFound
-                VersionGreaterOrEqual   =  $True
-            })
+            $VersionGreaterOrEqual   =  $true
+        }
+        elseif ($PackageFound -and $UpdateOnly) {
+            Write-Verbose "This package is installed with a lower version than specified."
+            $VersionGreaterOrEqual   =  $false
+        }
+        elseif (!$PackageFound -and $UpdateOnly) {
+            Write-Verbose "No packages match the selection, but no need to Install."
+            $VersionGreaterOrEqual   =  $true
         }
         else {
-            Write-Verbose "No packages match the selection."
-            Write-Output ([PSCustomObject]@{
-                PackagePresent          =  $PackageFound
-                VersionGreaterOrEqual   =  $False
-            })
+            Write-Verbose "No packages match the selection and need Installing."
+            $VersionGreaterOrEqual   =  $False
         }
+
+        Write-Output ([PSCustomObject]@{
+            PackagePresent          =  $PackageFound
+            VersionGreaterOrEqual  =  $VersionGreaterOrEqual
+        })
     }
 }

@@ -172,6 +172,12 @@
                 "Type": "hashtable",
                 "Attribute": "Write",
                 "Description": "Chocolatey Options"
+            },
+            {
+                "Name": "UpdateOnly",
+                "Type": "boolean",
+                "Attribute": "Write",
+                "Description": "Only updates installed package and ignores packages not Installed."
             }
         ]
     }
