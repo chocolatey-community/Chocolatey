@@ -83,10 +83,7 @@ function Set-TargetResource
 
     Process {
         Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -verbose:$False
-        Write-Verbose "Building Command with parameters:"
         
-        $TestResult = Test-ChocolateyPackageIsInstalled @TestParams
-
         $ChocoCommand = switch ($Ensure) {
             'Present' {
                 if($testResult.VersionGreaterOrEqual) {
