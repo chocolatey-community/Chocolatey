@@ -240,4 +240,6 @@ function Install-ChocolateySoftware {
         $null = [System.IO.Directory]::CreateDirectory($chocoPkgDir)
     }
     Copy-Item "$file" "$nupkg" -Force -ErrorAction SilentlyContinue
+
+    & "$chocoPath\choco.exe" -v
 }
