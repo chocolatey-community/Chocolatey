@@ -241,5 +241,7 @@ function Install-ChocolateySoftware {
     }
     Copy-Item "$file" "$nupkg" -Force -ErrorAction SilentlyContinue
 
-    & "$chocoPath\choco.exe" -v
+    if ($ChocoVersion = & "$chocoPath\choco.exe" -v) {
+        Write-Verbose "Installed Chocolatey Version: $ChocoVersion"
+    }
 }
