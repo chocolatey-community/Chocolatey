@@ -35,7 +35,7 @@ function Get-ChocolateyFeature {
         }
 
         #Run once to update config file
-		& $chocoCmd.Source features | Out-Null
+		$null = & $chocoCmd features
 
         $ChocoConfigPath = join-path $chocoCmd.Path ..\..\config\chocolatey.config -Resolve
         $ChocoXml = [xml]::new()
