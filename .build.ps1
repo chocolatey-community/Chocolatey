@@ -29,11 +29,20 @@ Process {
         return
     }
 
+    if (![io.path]::IsPathRooted($BuildOutput)) {
+        $BuildOutput = Join-Path -Path $PSScriptRoot -ChildPath $BuildOutput
+    }
+
+    if(($Env:PSModulePath -split ';') -notcontains (Join-Path $BuildOutput 'modules') ) {
+        $Env:PSModulePath += ';' + (Join-Path $BuildOutput 'modules')
+    }
+    
     Get-ChildItem -Path "$PSScriptRoot/.build/" -Recurse -Include *.ps1 -Verbose |
         Foreach-Object {
             "Importing file $($_.BaseName)" | Write-Verbose
             . $_.FullName 
         }
+        
     task none {}
      task .  Clean,
             SetBuildEnvironment,

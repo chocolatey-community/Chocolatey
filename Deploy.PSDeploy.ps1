@@ -5,7 +5,7 @@ if(
 {
     Deploy DeveloperBuild {
         By AppVeyorModule {
-            FromSource $(Get-Item ".\BuildOutput\$Env:ProjectName")
+            FromSource $(Get-Item ".\BuildOutput\$Env:ProjectName\$Env:ProjectName.psd1")
             To AppVeyor
             WithOptions @{
                 Version = $env:APPVEYOR_BUILD_VERSION
