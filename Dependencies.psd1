@@ -12,7 +12,7 @@
     pester = 'latest'
     PSScriptAnalyzer = 'latest'
     PlatyPS = 'latest'
-    psdeploy = 'latest'
+    'gaelcolas/psdeploy' = 'appveyorfix'
 
     xDscResourceDesigner ='latest'
 
