@@ -92,7 +92,7 @@ function Set-TargetResource
         $testResult = Test-ChocolateyPackageIsInstalled @TestParams
         $ChocoCommand = switch ($Ensure) {
             'Present' {
-                if($testResult.VersionGreaterOrEqual) {
+                if($testResult.PackagePresent -and !$testResult.VersionGreaterOrEqual) {
                     Get-Command Update-ChocolateyPackage 
                 }
                 elseif(!$UpdateOnly) {
