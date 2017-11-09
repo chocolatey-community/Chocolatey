@@ -240,4 +240,8 @@ function Install-ChocolateySoftware {
         $null = [System.IO.Directory]::CreateDirectory($chocoPkgDir)
     }
     Copy-Item "$file" "$nupkg" -Force -ErrorAction SilentlyContinue
+
+    if ($ChocoVersion = & "$chocoPath\choco.exe" -v) {
+        Write-Verbose "Installed Chocolatey Version: $ChocoVersion"
+    }
 }

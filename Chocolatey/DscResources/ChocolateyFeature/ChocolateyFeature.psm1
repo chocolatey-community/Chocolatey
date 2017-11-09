@@ -77,8 +77,8 @@ function Test-TargetResource
     Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -verbose:$False
 
     $EnsureResultMap = @{
-        'Present'=$true
-        'Absent'=$false
+        'Present'=$false
+        'Absent'=$true
     }
     
     return (Test-ChocolateyFeature -Name $Name -Disabled:($EnsureResultMap[$Ensure]))
