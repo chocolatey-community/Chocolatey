@@ -9,6 +9,8 @@ Param (
     [String]
     $BuildOutput = "BuildOutput",
 
+    $ModuleVersion = $(if($Env:APPVEYOR_BUILD_VERSION) {$ENV:APPVEYOR_BUILD_VERSION} else { Get-NextNugetPackageVersion -Name 'Chocolatey'} ),
+
     [String[]]
     $GalleryRepository,
 
@@ -42,7 +44,7 @@ Process {
             "Importing file $($_.BaseName)" | Write-Verbose
             . $_.FullName 
         }
-        
+
     task none {}
      task .  Clean,
             SetBuildEnvironment,
@@ -50,6 +52,7 @@ Process {
             CopySourceToModuleOut,
             MergeFilesToPSM1,
             CleanOutputEmptyFolders,
+            UpdateModuleManifest,
             UnitTests,
             UploadUnitTestResultsToAppVeyor,
             FailBuildIfFailedUnitTest, 
@@ -62,7 +65,7 @@ Process {
 
 
 begin {
-Pushd $PSScriptRoot
+    Pushd $PSScriptRoot
     function Resolve-Dependency {
         [CmdletBinding()]
         param()
