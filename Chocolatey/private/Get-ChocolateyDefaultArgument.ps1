@@ -50,10 +50,11 @@ Arguments to pass to the Installer (Not Package args)
 .PARAMETER InstallArgumentsSensitive
 Arguments to pass to the Installer that should be obfuscated from log and output.
 
-.PARAMETER PackageArguments
-Arguments to pass to the Package
+.PARAMETER PackageParameters
+PackageParameters - Parameters to pass to the package, that should be handled by the ChocolateyInstall.ps1
 
-.PARAMETER PackageArgumentsSensitive
+
+.PARAMETER PackageParametersSensitive
 Arguments to pass to the Package that should be obfuscated from log and output.
 
 .PARAMETER OverrideArguments
@@ -332,7 +333,13 @@ function Get-ChocolateyDefaultArgument {
             ValueFromPipelineByPropertyName
         )]
         [String]
-        $PackageArgumentsSensitive,
+        $PackageParameters,
+
+        [Parameter(
+            ValueFromPipelineByPropertyName
+        )]
+        [String]
+        $PackageParametersSensitive,
 
         [Parameter(
             ValueFromPipelineByPropertyName
@@ -634,7 +641,6 @@ function Get-ChocolateyDefaultArgument {
 
             #Install Parameters
             'x86'               { "--x86"}
-            'InstallArguments'  { "--install-arguments=`"$InstallArguments`""}
             'OverrideArguments' { '--override-arguments' }
             'NotSilent'         { '--not-silent' }
             'ApplyArgsToDependencies' { '--apply-install-arguments-to-dependencies' }
@@ -659,9 +665,10 @@ function Get-ChocolateyDefaultArgument {
             'SkipVirusCheck'    { '--skip-virus-check' }
             'VirusCheck'        { '--virus-check' }
             'VirusPositive'     { "--virus-positives-minimum=`"$VirusPositive`"" }
+            'InstallArguments'  { "--install-arguments=`"$InstallArguments`""}
             'InstallArgumentsSensitive' { "--install-arguments-sensitive=`"$InstallArgumentsSensitive`""}
-            'PackageArgumentsSensitive' { "--package-arguments-sensitive=`"$PackageArgumentsSensitive`""}
-            'PackageArguments' { "--package-arguments=`"$PackageArguments`""}
+            'PackageParameters' {"--package-parameters=`"$PackageParameters`"" }
+            'PackageParametersSensitive' { "--package-parameters-sensitive=`"$PackageParametersSensitive`""}
             'MaxDownloadRate'   { "--maximum-download-bits-per-second=$MaxDownloadRate" }
             'IgnoreRememberedArguments' { '--ignore-remembered-arguments' }
             'UseRememberedArguments' { '--use-remembered-options' }

@@ -54,7 +54,10 @@ InstallArgumentsSensitive - Install Arguments to pass to the native
 installer in the package that are sensitive and you do not want logged. 
 Defaults to unspecified. Available in 0.10.1+. [Licensed editions](https://chocolatey.org/compare) only.
 
-.PARAMETER PackageArgumentsSensitive
+.PARAMETER PackageParameters
+PackageParameters - Parameters to pass to the package, that should be handled by the ChocolateyInstall.ps1
+
+.PARAMETER PackageParametersSensitive
 PackageParametersSensitive - Package Parameters to pass the package that 
 are sensitive and you do not want logged. Defaults to unspecified. 
 Available in 0.10.1+. [Licensed editions](https://chocolatey.org/compare) only.
@@ -232,12 +235,18 @@ function Install-ChocolateyPackage {
         )]
         [String]
         $InstallArgumentsSensitive,
+        
+        [Parameter(
+            ValueFromPipelineByPropertyName
+        )]
+        [String]
+        $PackageParameters,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
         [String]
-        $PackageArgumentsSensitive,
+        $PackageParametersSensitive,
 
         [Parameter(
             ValueFromPipelineByPropertyName
