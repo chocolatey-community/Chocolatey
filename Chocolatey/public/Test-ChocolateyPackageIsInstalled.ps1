@@ -113,7 +113,7 @@ function Test-ChocolateyPackageIsInstalled {
                 $PackageFound = $True
                 Write-Debug "Package Found"
                 
-                if ($_.version -ge $ReferenceObject.version) {
+                if ([version]$_.version -ge [version]$ReferenceObject.version) {
                     return $true
                 }
                 else {
