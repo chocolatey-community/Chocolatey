@@ -96,7 +96,7 @@ PrivateData = @{
         ProjectUri = 'https://github.com/gaelcolas/Chocolatey'
 
         # A URL to an icon representing this module.
-        IconUri = 'http://codebetter.com/robreynolds/files/2016/04/new_icon.png'
+        IconUri = ''
 
         # ReleaseNotes of this module
         ReleaseNotes = 'This is an unofficial (beta) release of a Chocolatey module and DSC resource.'
