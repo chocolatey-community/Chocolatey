@@ -30,7 +30,7 @@ Process {
         Invoke-Build $Tasks $MyInvocation.MyCommand.Path @PSBoundParameters
         return
     }
-
+    Write-Warning $ModuleVersion
     if (![io.path]::IsPathRooted($BuildOutput)) {
         $BuildOutput = Join-Path -Path $PSScriptRoot -ChildPath $BuildOutput
     }
