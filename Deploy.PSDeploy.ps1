@@ -3,6 +3,18 @@ if(
     $env:BuildSystem -eq 'AppVeyor'
    )
 {
+    if ($Env:BuildSystem -eq 'AppVeyor' -and $Env:BranchName -eq 'master') {
+        Deploy Module {
+            By PSGalleryModule {
+                FromSource $(Get-Item ".\BuildOutput\$Env:ProjectName")
+                To PSGallery
+                WithOptions @{
+                    ApiKey = $ENV:NugetApiKey
+                }
+            }
+        }
+    }
+
     Deploy DeveloperBuild {
         By AppVeyorModule {
             FromSource $(Get-Item ".\BuildOutput\$Env:ProjectName\$Env:ProjectName.psd1")
@@ -13,15 +25,5 @@ if(
         }
     }
 
-    if ($Env:BuildSystem -eq 'AppVeyor' -and $Env:BranchName -eq 'master') {
-        Deploy Module {
-            By PSGalleryModule {
-                FromSource $ENV:ProjectName
-                To PSGallery
-                WithOptions @{
-                    ApiKey = $ENV:NugetApiKey
-                }
-            }
-        }
-    }
+   
 }
