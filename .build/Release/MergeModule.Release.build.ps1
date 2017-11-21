@@ -12,7 +12,7 @@
     $BuildOutput = (property BuildOutput 'C:\BuildOutput'),
     
     [string]
-    $ModuleVersion = (property ModuleVersion ''),
+    $ModuleVersion = (property ModuleVersion $env:APPVEYOR_BUILD_VERSION),
 
     $MergeList = (property MergeList @('enum*','class*','priv*','pub*') ),
     
