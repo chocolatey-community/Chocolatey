@@ -12,4 +12,16 @@ if(
             }
         }
     }
+
+    if ($Env:BuildSystem -eq 'AppVeyor' -and $Env:BranchName -eq 'master') {
+        Deploy Module {
+            By PSGalleryModule {
+                FromSource $ENV:ProjectName
+                To PSGallery
+                WithOptions @{
+                    ApiKey = $ENV:NugetApiKey
+                }
+            }
+        }
+    }
 }
