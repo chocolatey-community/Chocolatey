@@ -12,3 +12,5 @@ environment:
 
 skip_commits:
   message: /updated doc.*|update doc.*s/
+
+version: 0.0.{build}
