@@ -34,9 +34,6 @@ function Get-ChocolateyFeature {
             Throw "Chocolatey Software not found"
         }
 
-        #Run once to update config file
-		$null = & $chocoCmd features
-
         $ChocoConfigPath = join-path $chocoCmd.Path ..\..\config\chocolatey.config -Resolve
         $ChocoXml = [xml]::new()
         $ChocoXml.Load($ChocoConfigPath)

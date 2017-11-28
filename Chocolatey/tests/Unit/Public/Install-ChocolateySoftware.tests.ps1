@@ -34,7 +34,6 @@ InModuleScope Chocolatey {
                     { Assert-MockCalled Expand-Archive } | Should Not Throw
                 }
             }
-
         }
     }
 }

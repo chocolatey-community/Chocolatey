@@ -11,6 +11,10 @@ by the Commands leveraging this function.
 .PARAMETER Name
 Name of the element being targeted (can be source, feature, package and so on).
 
+.PARAMETER Value
+The value of the config setting. Required with some Actions. 
+Defaults to empty.
+
 .PARAMETER Source
 Source uri (whether local or remote)
 
@@ -52,7 +56,6 @@ Arguments to pass to the Installer that should be obfuscated from log and output
 
 .PARAMETER PackageParameters
 PackageParameters - Parameters to pass to the package, that should be handled by the ChocolateyInstall.ps1
-
 
 .PARAMETER PackageParametersSensitive
 Arguments to pass to the Package that should be obfuscated from log and output.
@@ -262,6 +265,11 @@ function Get-ChocolateyDefaultArgument {
         )]
         [switch]
         $Disabled,
+
+        [Parameter(
+            ValueFromPipelineByPropertyName
+        )]
+        $Value,
 
         [Parameter(
             ValueFromPipelineByPropertyName
@@ -587,9 +595,10 @@ function Get-ChocolateyDefaultArgument {
     Process {
 
         $ChocoArguments = switch($PSBoundParameters.Keys) {
+            'Value'         { "--value=`"$value`""}
             'Priority'      { if ( $Priority -gt 0) {"--priority=$priority" } }
-            'SelfService'   {  "--allow-self-service"}
-            'Name'          { "-n`"$Name`"" }
+            'SelfService'   { "--allow-self-service"}
+            'Name'          { "--name=`"$Name`"" }
             'Source'        { "-s`"$Source`"" }
             'ByPassProxy'   {  "--bypass-proxy" }
             'CacheLocation' { "--cache-location=`"$CacheLocation`"" }
