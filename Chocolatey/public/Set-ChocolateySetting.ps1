@@ -58,13 +58,20 @@ function Set-ChocolateySetting {
         }
         
         $ChocoArguments = @('config')
+        #Removing PSBoundParameters that could impact Chocolatey's "choco config set" command
+        foreach ($key in @([System.Management.Automation.Cmdlet]::CommonParameters + [System.Management.Automation.Cmdlet]::OptionalCommonParameters)) {
+            if($PSBoundParameters.ContainsKey($key)) {
+                $null = $PSBoundParameters.remove($key)
+            }
+        }
+
         if($Unset -or [string]::IsNullOrEmpty($Value)) {
             if($PSBoundParameters.ContainsKey('value')) { $null = $PSBoundParameters.Remove('Value') }
             $null = $PSBoundParameters.remove('unset')
             $ChocoArguments += 'unset'
         }
         else {
-            $PSBoundParameters['Value'] = $ExecutionContext.InvokeCommand.ExpandString($Value)
+            $PSBoundParameters['Value'] = $ExecutionContext.InvokeCommand.ExpandString($Value).TrimEnd(@('/','\'))
             $ChocoArguments += 'set'
         }
         $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
