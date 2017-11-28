@@ -180,5 +180,28 @@
                 "Description": "Only updates installed package and ignores packages not Installed."
             }
         ]
+    },
+    {
+        "ChocolateySetting": [
+            {
+                "Name": "Ensure",
+                "Type": "String",
+                "Attribute": "Require",
+                "ValidateSet": ["Present","Absent"],
+                "Description": "Specifies whether the Chocolatey Setting should be set or unset."
+            },
+            {
+                "Name": "Name",
+                "Type": "String",
+                "Attribute": "Key",
+                "Description": "Chocolatey Setting Name"
+            },
+            {
+                "Name": "Value",
+                "Type": "String",
+                "Attribute": "Write",
+                "Description": "Chocolatey setting value"
+            }
+        ]
     }
 ]

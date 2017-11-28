@@ -15,17 +15,28 @@ function Get-TargetResource
 
         [parameter(Mandatory = $true)]
         [System.String]
-        $Version
+        $Version,
+
+        [Microsoft.Management.Infrastructure.CimInstance[]]
+        $ChocolateyOptions
     )
     
     $Env:Path = [Environment]::GetEnvironmentVariable('Path','Machine')
-    
+    Write-Verbose "Converting CIMInstance[] to hashtable"
+    $ChocoOptions = Convert-CimInstancesToHashtable $ChocolateyOptions
+
     Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -verbose:$False
     $TestParams = @{
         Name = $Name
     }
     if($Version) { $TestParams.Add('Version',$Version) }
-
+    foreach ($Option in $ChocoOptions.keys) {
+        if(!$TestParams.ContainsKey($Option) -and
+            $option -in (Get-Command Test-ChocolateyPackageIsInstalled).Parameters.keys) {
+            $null = $TestParams.Add($option,$ChocoOptions[$Option])
+        }
+    }
+    
     $InstalledPackage = Test-ChocolateyPackageIsInstalled @TestParams
     
     $returnValue = @{
@@ -65,18 +76,6 @@ function Set-TargetResource
 
     Begin {
         $Env:Path = [Environment]::GetEnvironmentVariable('Path','Machine')
-
-        #As per Dave Wyatt's : https://powershell.org/forums/topic/hashtable-as-parameter-for-custom-dsc-resource/
-        function Convert-CimInstancesToHashtable([Microsoft.Management.Infrastructure.CimInstance[]] $Pairs)
-        {
-            Write-Verbose ">> Converting CIM Pairs"
-            $hash = @{}
-            foreach ($pair in $Pairs)
-            {
-                $hash[$pair.Key] = $pair.Value
-            }
-            return $hash
-        }
         Write-Verbose "Converting CIMInstance[] to hashtable"
         $ChocoOptions = Convert-CimInstancesToHashtable $ChocolateyOptions
     }
@@ -88,6 +87,12 @@ function Set-TargetResource
             Name = $Name
         }
         if($Version) { $TestParams.Add('Version',$Version) }
+        foreach ($Option in $ChocoOptions.keys) {
+            if(!$TestParams.ContainsKey($Option) -and
+                $option -in (Get-Command Test-ChocolateyPackageIsInstalled).Parameters.keys) {
+                $null = $TestParams.Add($option,$ChocoOptions[$Option])
+            }
+        }
 
         $testResult = Test-ChocolateyPackageIsInstalled @TestParams
         $ChocoCommand = switch ($Ensure) {
@@ -158,6 +163,9 @@ function Test-TargetResource
         [System.Boolean]
         $UpdateOnly
     )
+    
+    Write-Verbose "Converting CIMInstance[] to hashtable"
+    $ChocoOptions = Convert-CimInstancesToHashtable $ChocolateyOptions
 
     $Env:Path = [Environment]::GetEnvironmentVariable('Path','Machine')
     Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -verbose:$False
@@ -167,15 +175,33 @@ function Test-TargetResource
     }
     #Not decided whether Version should be mandatory or not
     if($Version) { $TestParams.Add('Version',$Version) }
-    
+    foreach ($Option in $ChocoOptions.keys) {
+        if(!$TestParams.ContainsKey($Option) -and
+            $option -in (Get-Command Test-ChocolateyPackageIsInstalled).Parameters.keys) {
+            $null = $TestParams.Add($option,$ChocoOptions[$Option])
+        }
+    }
+
     $EnsureResultMap = @{
         'Present'=$true
         'Absent'=$false
     }
     Write-Verbose "Testing whether the Package $Name is Installed"
     return ($EnsureResultMap[$Ensure] -eq (Test-ChocolateyPackageIsInstalled @TestParams).VersionGreaterOrEqual)
+
 }
 
 
 Export-ModuleMember -Function *-TargetResource
 
+#As per Dave Wyatt's : https://powershell.org/forums/topic/hashtable-as-parameter-for-custom-dsc-resource/
+function Convert-CimInstancesToHashtable([Microsoft.Management.Infrastructure.CimInstance[]] $Pairs)
+{
+    Write-Verbose ">> Converting CIM Pairs"
+    $hash = @{}
+    foreach ($pair in $Pairs)
+    {
+        $hash[$pair.Key] = $pair.Value
+    }
+    return $hash
+}
