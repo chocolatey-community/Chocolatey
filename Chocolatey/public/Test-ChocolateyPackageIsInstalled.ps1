@@ -85,7 +85,7 @@ function Test-ChocolateyPackageIsInstalled {
         }
         
         #if version latest verify against sources
-        if (! ($InstalledPackages = @(Get-ChocolateyPackage -LocalOnly -Name $Name)) ) {
+        if (! ($InstalledPackages = @(Get-ChocolateyPackage -LocalOnly -Name $Name -Exact)) ) {
             Write-Verbose "Could not find Package $Name"
         }
 

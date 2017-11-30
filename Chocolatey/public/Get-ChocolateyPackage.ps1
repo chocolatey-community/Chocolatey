@@ -144,10 +144,16 @@ function Get-ChocolateyPackage {
             Throw "Chocolatey Software not found"
         }
         
-        $ChocoArguments = @('list',$Name)
-        if ($PSBoundParameters.ContainsKey('name')) {
-            $null = $PSBoundParameters.remove('Name')
+        $ChocoArguments = @('list','-r')
+        $paramKeys = [Array]::CreateInstance([string],$PSboundparameters.Keys.count)
+        $PSboundparameters.Keys.CopyTo($paramKeys,0)
+        switch ($paramKeys) {
+            'verbose'   { $null = $PSBoundParameters.remove('Verbose') }
+            'debug'     { $null = $PSBoundParameters.remove('debug') }
+            'Name'      { $null = $PSBoundParameters.remove('Name') }
+            'Exact'     { $null = $PSBoundParameters.remove('Exact') }
         }
+        
         $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
         Write-Verbose "choco $($ChocoArguments -join ' ')"
 
@@ -155,26 +161,39 @@ function Get-ChocolateyPackage {
             $ChocoArguments = [System.Collections.ArrayList]$ChocoArguments
             $ChocoArguments.remove('--verbose')
         }
-        $ChocoListOutput = &$chocoCmd $ChocoArguments
-
-        $ChocoListOutput | Foreach-Object {
-            #line should be Name,version,approved,Description
-            $SplittedLine = $_.split(' ',4)
-            if($SplittedLine[1] -as [version]){
-                $package = [PSCustomObject]@{
-                    PSTypeName = 'Chocolatey.Package'
-                    Name       = $SplittedLine[0]
-                    Version    = $SplittedLine[1]
+        
+        
+        if( $LocalOnly -and 
+            !$PSboundparameters.containsKey('Version') -and
+            (($Name -and $Exact) -or ([string]::IsNullOrEmpty($Name)))
+        ) {
+            $CachePath = [io.path]::Combine($Env:ChocolateyInstall,'cache','GetChocolateyPackageCache.xml')
+            if( (Test-Path $CachePath) -and
+                (Get-Item $CachePath).LastWriteTime -gt ([datetime]::Now.AddSeconds(-60))
+            ) {
+                Write-Debug "Retrieving from cache at $CachePath"
+                $UnfilteredResults = @(Import-Clixml -Path $CachePath)
+            }
+            else {
+                Write-Debug "Running from command before caching"
+                $ChocoListOutput = &$chocoCmd $ChocoArguments
+                $UnfilteredResults = $ChocoListOutput | ConvertFrom-Csv -Delimiter '|' -Header 'Name','Version'
+                
+                if(!(Test-path $CachePath)) {
+                    $CacheFile = [io.fileInfo]$CachePath
+                    $null = New-Item -Path $CacheFile.Directory -Name $CacheFile.Name -Value '' -Force
                 }
-                if(!$LocalOnly) {
-                    $Package | add-member -MemberType NoteProperty -Name Description -value $SplittedLine[3]
-                    $Package | add-member -MemberType NoteProperty -Name Approved -value $(
-                        if($SplittedLine[2] -eq '[Approved]'){ $true } else { $false }
-                    )
-                }
-                $Package
+                $null = $UnfilteredResults | Export-Clixml -Path $CachePath -Force
             }
             
+            $UnfilteredResults.Where{
+                $( if($Name) {$_.Name -eq $Name} else { $true })
+            }
+        }
+        else {
+            Write-Debug "Running from command without caching."
+            $ChocoListOutput = &$chocoCmd $ChocoArguments $Name $( if($Exact) { '--exact' } )
+            $ChocoListOutput | ConvertFrom-Csv -Delimiter '|' -Header 'Name','Version'
         }
     }
 }
