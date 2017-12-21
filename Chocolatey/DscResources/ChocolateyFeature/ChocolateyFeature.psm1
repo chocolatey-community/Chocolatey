@@ -25,7 +25,7 @@ function Get-TargetResource
     $FeatureConfig = Get-ChocolateyFeature -Name $Name
 
     return @{
-        Ensure = @('Absent','Present')[[int]$FeatureConfig.enabled]
+        Ensure = @('Absent','Present')[[int][bool]$FeatureConfig.enabled]
         Name = $FeatureConfig.Name
     }
 }
