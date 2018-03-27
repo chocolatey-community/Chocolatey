@@ -1,0 +1,14 @@
+---
+suites:
+#  - name: Default
+#    driver:
+#      ip_address: 10.111.111.192
+  - name: chocolatey
+    driver:
+      ip_address: 10.111.111.193
+    provisioner:
+      configuration_script_folder: Chocolatey/examples
+      configuration_script: chocolateyConfig.ps1
+#  - name: Remove
+#    driver:
+#      ip_address: 10.111.111.194
