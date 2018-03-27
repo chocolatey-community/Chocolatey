@@ -135,6 +135,21 @@ function Set-TargetResource
         }
         Write-Verbose "Starting the Execution..."
         &$ChocoCommand @ChocoCommandParams -verbose | Write-Verbose
+
+        $PostActionResult = Test-ChocolateyPackageIsInstalled @TestParams
+        if($PostActionResult.PackagePresent -and 
+            $PostActionResult.VersionGreaterOrEqual -and
+            $Ensure -eq 'Present') {
+            Write-Verbose -Message "--> Package Successfully Installed"
+        }
+        elseif((!$PostActionResult.PackagePresent -or 
+                !$PostActionResult.VersionGreaterOrEqual) -and
+                 $Ensure -eq 'Absent') {
+            Write-Verbose -Message "--> Package Successfully Removed"
+        }
+        else {
+            Throw "Chocolatey Package $($ChocoCommand.verb) Failed"
+        }
     }
 }
 

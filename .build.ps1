@@ -65,7 +65,7 @@ Process {
 
 
 begin {
-    Pushd $PSScriptRoot
+    Push-Location $PSScriptRoot
     function Resolve-Dependency {
         [CmdletBinding()]
         param()
