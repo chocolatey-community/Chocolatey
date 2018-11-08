@@ -1,20 +1,21 @@
 $here = Split-Path -Parent $MyInvocation.MyCommand.Path
 $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
 
-$modulePath = "$here\..\.."
+$modulePath = Resolve-Path "$here\..\.."
 $moduleName = Split-Path -Path $modulePath -Leaf
 
 
 Describe 'General module control' -Tags 'FunctionalQuality'   {
 
     It 'imports without errors' {
-        { Import-Module -Name $modulePath -Force -ErrorAction Stop } | Should Not Throw
-        Get-Module $moduleName | Should Not BeNullOrEmpty
+        Write-Warning $modulePath.Path
+        { Import-Module -Name $modulePath.Path -Force -ErrorAction Stop } | Should -Not -Throw
+        Get-Module $moduleName | Should -Not -BeNullOrEmpty
     }
 
     It 'Removes without error' {
-        { Remove-Module -Name $moduleName -ErrorAction Stop} | Should not Throw
-        Get-Module $moduleName | Should beNullOrEmpty
+        { Remove-Module -Name $moduleName -ErrorAction Stop} | Should -not -Throw
+        Get-Module $moduleName | Should -beNullOrEmpty
     }
 }
 
@@ -39,14 +40,14 @@ else {
 foreach ($function in $allModuleFunctions) {
     Describe "Quality for $($function.BaseName)" -Tags 'TestQuality' {
         It "$($function.BaseName) has a unit test" {
-            Test-Path "$modulePath\tests\Unit\*\$($function.BaseName).tests.ps1" | Should be true
+            Test-Path "$modulePath\tests\Unit\*\$($function.BaseName).tests.ps1" | Should -be $true
         }
             
         if ($scriptAnalyzerRules) {
             It "Script Analyzer for $($function.BaseName)" {
                 forEach ($scriptAnalyzerRule in $scriptAnalyzerRules) {
                     (Invoke-ScriptAnalyzer -Path $function.FullName -IncludeRule $scriptAnalyzerRule).count |
-                         Should Be 0
+                         Should -Be 0
                 }
             }
         }
@@ -62,25 +63,25 @@ foreach ($function in $allModuleFunctions) {
             $FunctionHelp = $ParsedFunction.GetHelpContent()
         
             It 'Has a SYNOPSIS' {
-                $FunctionHelp.Synopsis | should not BeNullOrEmpty
+                $FunctionHelp.Synopsis | should -not -BeNullOrEmpty
             }
 
             It 'Has a Description, with length > 40' {
-                $FunctionHelp.Description.Length | Should beGreaterThan 40
+                $FunctionHelp.Description.Length | Should -beGreaterThan 40
             }
 
             It 'Has at least 1 example' {
-                $FunctionHelp.Examples.Count | Should beGreaterThan 0 
-                $FunctionHelp.Examples[0] | Should match ([regex]::Escape($function.BaseName))
-                $FunctionHelp.Examples[0].Length | Should BeGreaterThan ($function.BaseName.Length + 10)
+                $FunctionHelp.Examples.Count | Should -beGreaterThan 0 
+                $FunctionHelp.Examples[0] | Should -match ([regex]::Escape($function.BaseName))
+                $FunctionHelp.Examples[0].Length | Should -BeGreaterThan ($function.BaseName.Length + 10)
             }
 
             if($ParameterNames = $ParsedFunction.Body.ParamBlock.Parameters.name) {
                 $parameters = $ParameterNames.VariablePath | % {$_.ToString() }
                 foreach ($parameter in $parameters) {
                     It "Has help for Parameter: $parameter" {
-                        $FunctionHelp.Parameters.($parameter.ToUpper())        | Should Not BeNullOrEmpty
-                        $FunctionHelp.Parameters.($parameter.ToUpper()).Length | Should BeGreaterThan 25
+                        $FunctionHelp.Parameters.($parameter.ToUpper())        | Should -Not -BeNullOrEmpty
+                        $FunctionHelp.Parameters.($parameter.ToUpper()).Length | Should -BeGreaterThan 25
                     }
                 }
             }
