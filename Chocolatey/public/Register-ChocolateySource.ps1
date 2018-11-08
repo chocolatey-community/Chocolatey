@@ -12,43 +12,43 @@ Name - the name of the source. Required with some actions. Defaults to empty.
 
 .PARAMETER Source
 Source - The source. This can be a folder/file share or an http location.
-If it is a url, it will be a location you can go to in a browser and 
+If it is a url, it will be a location you can go to in a browser and
 it returns OData with something that says Packages in the browser,
-similar to what you see when you go to https://chocolatey.org/api/v2/. 
+similar to what you see when you go to https://chocolatey.org/api/v2/.
 Defaults to empty.
 
 .PARAMETER Disabled
 Allow the source to be registered but disabled.
 
 .PARAMETER BypassProxy
-Bypass Proxy - Should this source explicitly bypass any explicitly or 
+Bypass Proxy - Should this source explicitly bypass any explicitly or
 system configured proxies? Defaults to false. Available in 0.10.4+.
 
 .PARAMETER SelfService
 Allow Self-Service - Should this source be allowed to be used with self-
-service? Requires business edition (v1.10.0+) with feature 
-'useBackgroundServiceWithSelfServiceSourcesOnly' turned on. Defaults to 
+service? Requires business edition (v1.10.0+) with feature
+'useBackgroundServiceWithSelfServiceSourcesOnly' turned on. Defaults to
 false. Available in 0.10.4+.
 
 .PARAMETER Priority
-Priority - The priority order of this source as compared to other 
-sources, lower is better. Defaults to 0 (no priority). All priorities 
-above 0 will be evaluated first, then zero-based values will be 
+Priority - The priority order of this source as compared to other
+sources, lower is better. Defaults to 0 (no priority). All priorities
+above 0 will be evaluated first, then zero-based values will be
 evaluated in config file order. Available in 0.9.9.9+.
 
 .PARAMETER Credential
 Credential used with authenticated feeds. Defaults to empty.
 
 .PARAMETER Force
-Force - force the behavior. Do not use force during normal operation - 
+Force - force the behavior. Do not use force during normal operation -
 it subverts some of the smart behavior for commands.
 
 .PARAMETER CacheLocation
-CacheLocation - Location for download cache, defaults to %TEMP% or value 
+CacheLocation - Location for download cache, defaults to %TEMP% or value
 in chocolatey.config file.
 
 .PARAMETER NoProgress
-Do Not Show Progress - Do not show download progress percentages. 
+Do Not Show Progress - Do not show download progress percentages.
 Available in 0.10.4+.
 
 .PARAMETER KeyUser

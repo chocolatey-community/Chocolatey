@@ -23,15 +23,15 @@ Id Only - Only return Package Ids in the list results. Available in 0.1-0.6+.
 Prerelease - Include Prereleases? Defaults to false
 
 .PARAMETER ApprovedOnly
-ApprovedOnly - Only return approved packages - this option will filter 
+ApprovedOnly - Only return approved packages - this option will filter
 out results not from the community repository (https://chocolatey.org/packages). Available in 0.9.10+
 
 .PARAMETER ByIdOnly
-ByIdOnly - Only return packages where the id contains the search filter. 
+ByIdOnly - Only return packages where the id contains the search filter.
 Available in 0.9.10+.
 
 .PARAMETER IdStartsWith
-IdStartsWith - Only return packages where the id starts with the search 
+IdStartsWith - Only return packages where the id starts with the search
 filter. Available in 0.9.10+.
 
 .PARAMETER NoProgress
@@ -66,7 +66,7 @@ function Get-ChocolateyPackage {
         $Name,
 
         [Parameter(
-            ,ValueFromPipelineByPropertyName
+            , ValueFromPipelineByPropertyName
         )]
         [ValidateNotNullOrEmpty()]
         [String]
@@ -119,7 +119,7 @@ function Get-ChocolateyPackage {
         )]
         [switch]
         $Exact,
-        
+
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
@@ -143,17 +143,17 @@ function Get-ChocolateyPackage {
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
             Throw "Chocolatey Software not found"
         }
-        
-        $ChocoArguments = @('list','-r')
-        $paramKeys = [Array]::CreateInstance([string],$PSboundparameters.Keys.count)
-        $PSboundparameters.Keys.CopyTo($paramKeys,0)
+
+        $ChocoArguments = @('list', '-r')
+        $paramKeys = [Array]::CreateInstance([string], $PSboundparameters.Keys.count)
+        $PSboundparameters.Keys.CopyTo($paramKeys, 0)
         switch ($paramKeys) {
-            'verbose'   { $null = $PSBoundParameters.remove('Verbose') }
-            'debug'     { $null = $PSBoundParameters.remove('debug') }
-            'Name'      { $null = $PSBoundParameters.remove('Name') }
-            'Exact'     { $null = $PSBoundParameters.remove('Exact') }
+            'verbose' { $null = $PSBoundParameters.remove('Verbose') }
+            'debug' { $null = $PSBoundParameters.remove('debug') }
+            'Name' { $null = $PSBoundParameters.remove('Name') }
+            'Exact' { $null = $PSBoundParameters.remove('Exact') }
         }
-        
+
         $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
         Write-Verbose "choco $($ChocoArguments -join ' ')"
 
@@ -161,33 +161,33 @@ function Get-ChocolateyPackage {
             $ChocoArguments = [System.Collections.ArrayList]$ChocoArguments
             $ChocoArguments.remove('--verbose')
         }
-        
-        
-        if( $LocalOnly -and 
+
+
+        if ( $LocalOnly -and
             !$PSboundparameters.containsKey('Version') -and
             (($Name -and $Exact) -or ([string]::IsNullOrEmpty($Name)))
         ) {
-            $CachePath = [io.path]::Combine($Env:ChocolateyInstall,'cache','GetChocolateyPackageCache.xml')
+            $CachePath = [io.path]::Combine($Env:ChocolateyInstall, 'cache', 'GetChocolateyPackageCache.xml')
             Write-Debug "Attempting to load list from cache at $CachePath"
-            if( (Test-Path $CachePath) -and
+            if ( (Test-Path $CachePath) -and
                 (Get-Item $CachePath).LastWriteTime -gt ([datetime]::Now.AddSeconds(-60))
             ) {
                 Write-Debug "Retrieving from cache at $CachePath"
                 $UnfilteredResults = @(Import-Clixml -Path $CachePath)
             }
-            elseif(($CachePath = [io.path]::Combine([System.IO.Path]::GetTempPath(),'GetChocolateyPackageCache.xml')) -and
-                    (Test-Path $CachePath) -and
-                    (Get-Item $CachePath).LastWriteTime -gt ([datetime]::Now.AddSeconds(-60)) 
-            ){
+            elseif (($CachePath = [io.path]::Combine([System.IO.Path]::GetTempPath(), 'GetChocolateyPackageCache.xml')) -and
+                (Test-Path $CachePath) -and
+                (Get-Item $CachePath).LastWriteTime -gt ([datetime]::Now.AddSeconds(-60))
+            ) {
                 Write-Debug "Attempting to load list from USER cache at $CachePath"
                 $UnfilteredResults = @(Import-Clixml -Path $CachePath)
             }
             else {
                 Write-Debug "Running from command before caching"
                 $ChocoListOutput = &$chocoCmd $ChocoArguments
-                $UnfilteredResults = $ChocoListOutput | ConvertFrom-Csv -Delimiter '|' -Header 'Name','Version'
+                $UnfilteredResults = $ChocoListOutput | ConvertFrom-Csv -Delimiter '|' -Header 'Name', 'Version'
                 $CacheFile = [io.fileInfo]$CachePath
-                if(!(Test-path $CachePath)) {
+                if (!(Test-path $CachePath)) {
                     Write-Debug "> $CachePath"
                     try {
                         $null = New-Item -Path $CacheFile.Directory -Name $CacheFile.Name -Value '' -Force -ErrorAction Stop
@@ -198,18 +198,18 @@ function Get-ChocolateyPackage {
                         $null = New-Item -Path $CacheFile.Directory -Name $CacheFile.Name -Value '' -Force
                     }
                 }
-                
+
                 $null = $UnfilteredResults | Export-Clixml -Path $CacheFile -Force -ErrorAction SilentlyContinue
             }
-            
+
             $UnfilteredResults.Where{
-                $( if($Name) {$_.Name -eq $Name} else { $true })
+                $( if ($Name) {$_.Name -eq $Name} else { $true })
             }
         }
         else {
             Write-Debug "Running from command without caching."
-            $ChocoListOutput = &$chocoCmd $ChocoArguments $Name $( if($Exact) { '--exact' } )
-            $ChocoListOutput | ConvertFrom-Csv -Delimiter '|' -Header 'Name','Version'
+            $ChocoListOutput = &$chocoCmd $ChocoArguments $Name $( if ($Exact) { '--exact' } )
+            $ChocoListOutput | ConvertFrom-Csv -Delimiter '|' -Header 'Name', 'Version'
         }
     }
 }

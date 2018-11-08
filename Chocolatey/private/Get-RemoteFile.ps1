@@ -3,7 +3,7 @@
 Download a file from url using specified proxy settings.
 
 .DESCRIPTION
-Helper function to Download a file from a given url 
+Helper function to Download a file from a given url
  using specified proxy settings.
 
 .PARAMETER url
@@ -43,13 +43,13 @@ function Get-RemoteFile {
         [switch]
         $IgnoreProxy
     )
-    
+
     Write-Debug "Downloading $url to $file"
     $downloaderParams = @{}
     $KeysForDownloader = $PSBoundParameters.keys | Where-Object { $_ -notin @('file')}
-    foreach ($key in $KeysForDownloader ) { 
+    foreach ($key in $KeysForDownloader ) {
         Write-Debug "`tWith $key :: $($PSBoundParameters[$key])"
-        $null = $downloaderParams.Add($key ,$PSBoundParameters[$key]) 
+        $null = $downloaderParams.Add($key ,$PSBoundParameters[$key])
     }
     $downloader = Get-Downloader @downloaderParams
     $downloader.DownloadFile($url, $file)

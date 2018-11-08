@@ -43,7 +43,7 @@ function Disable-ChocolateySource {
         if (!(Get-ChocolateySource -Name $Name)) {
             Throw "Chocolatey Source $Name cannot be found. You can Register it using Register-ChocolateySource."
         }
-        
+
         $ChocoArguments = @('source','disable')
         $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
         Write-Verbose "choco $($ChocoArguments -join ' ')"

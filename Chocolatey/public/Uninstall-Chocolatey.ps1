@@ -31,7 +31,7 @@ function Uninstall-Chocolatey {
 
     process {
         #If InstallDir is empty or null, select from whee choco.exe is available
-        
+
         if (-not $InstallDir) {
             Write-Debug "Attempting to find the choco.exe command."
             $chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue
@@ -49,17 +49,17 @@ function Uninstall-Chocolatey {
 
         $chocoFiles = @('choco.exe','chocolatey.exe','cinst.exe','cuninst.exe','clist.exe','cpack.exe','cpush.exe',
         'cver.exe','cup.exe').Foreach{$_;"$_.old"} #ensure the .old are also removed
-        
+
         #If Install dir does not have a choco.exe, do nothing as it could delete unwanted files
         if (
             [string]::IsNullOrEmpty($InstallDir) -or
             -not ((Test-Path $InstallDir) -and (Test-Path "$InstallDir\Choco.exe"))
-             ) 
+             )
         {
             Write-Warning 'Chocolatey Installation Folder Not found'
             return
         }
-        
+
         #all files under $InstallDir
         # Except those in $InstallDir\lib unless $_.Basename -in $chocoFiles
         # Except those in $installDir\bin unless $_.Basename -in $chocoFiles
@@ -74,7 +74,7 @@ function Uninstall-Chocolatey {
         }
 
         Write-Debug ($FilesToRemove -join "`r`n>>  ")
-        
+
         if ($Pscmdlet.ShouldProcess('Chocofiles')) {
             $FilesToRemove | Sort-Object -Descending FullName | remove-item -Force -recurse -ErrorAction SilentlyContinue
         }
@@ -83,16 +83,16 @@ function Uninstall-Chocolatey {
         [Environment]::SetEnvironmentVariable('ChocolateyInstall', $null, 'Machine')
         $Env:ChocolateyInstall = $null
         $AllPaths = [Environment]::GetEnvironmentVariable('Path','machine').split(';').where{
-                        ![string]::IsNullOrEmpty($_) -and 
+                        ![string]::IsNullOrEmpty($_) -and
                         $_ -notmatch "^$([regex]::Escape($InstallDir))\\bin$"
                     } | Select-Object -unique
-        
+
         Write-Debug 'Reset the machine Path without choco (and dedupe/no null)'
         Write-Debug ($AllPaths |Format-Table | Out-String)
         [Environment]::SetEnvironmentVariable('Path', ($AllPaths -Join ';'), 'Machine')
 
         #refresh after uninstall
-        $envPath = [Environment]::GetEnvironmentVariable('Path','Machine')   
+        $envPath = [Environment]::GetEnvironmentVariable('Path','Machine')
         [Environment]::SetEnvironmentVariable($EnvPath,'process')
         Write-Verbose 'Unistallation complete'
     }

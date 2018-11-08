@@ -3,7 +3,7 @@
 Download the content from url using specified proxy settings.
 
 .DESCRIPTION
-Helper function to Download the content from a url 
+Helper function to Download the content from a url
  using specified proxy settings.
 
 .PARAMETER url
@@ -41,13 +41,13 @@ function Get-RemoteString {
         [switch]
         $IgnoreProxy
     )
-    
+
     Write-Debug "Downloading string from $url"
     $downloaderParams = @{}
     $KeysForDownloader = $PSBoundParameters.keys | Where-Object { $_ -notin @()}
-    foreach ($key in $KeysForDownloader ) { 
+    foreach ($key in $KeysForDownloader ) {
         Write-Debug "`tWith $key :: $($PSBoundParameters[$key])"
-        $null = $downloaderParams.Add($key,$PSBoundParameters[$key]) 
+        $null = $downloaderParams.Add($key,$PSBoundParameters[$key])
     }
     $downloader = Get-Downloader @downloaderParams
     return $downloader.DownloadString($url)

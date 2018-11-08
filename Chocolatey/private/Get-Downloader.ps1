@@ -45,7 +45,7 @@ function Get-Downloader {
 
     $downloader = new-object System.Net.WebClient
     $defaultCreds = [System.Net.CredentialCache]::DefaultCredentials
-    
+
     if ($defaultCreds -ne $null) {
         $downloader.Credentials = $defaultCreds
     }
@@ -53,7 +53,7 @@ function Get-Downloader {
     if ($ignoreProxy -ne $null -and $ignoreProxy -eq 'true') {
         Write-Debug "Explicitly bypassing proxy"
         $downloader.Proxy = [System.Net.GlobalProxySelection]::GetEmptyWebProxy()
-    } 
+    }
     else {  # check if a proxy is required
         if ($ProxyLocation -and ![string]::IsNullOrEmpty($ProxyLocation)) {
             $proxy = New-Object System.Net.WebProxy($ProxyLocation, $true)

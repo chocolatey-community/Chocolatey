@@ -49,7 +49,7 @@ The temporary folder to extract the Chocolatey Binaries during install. This doe
 Proxy url to use when downloading the Chocolatey Package for installation.
 
 .PARAMETER ProxyCredential
-Credential to authenticate to the proxy, if not specified but the ProxyLocation is set, an attempt 
+Credential to authenticate to the proxy, if not specified but the ProxyLocation is set, an attempt
 to use the Cached credential will be made.
 
 .PARAMETER IgnoreProxy
@@ -146,16 +146,16 @@ function Install-ChocolateySoftware {
                 }
                 $GetRemoteStringParamsName = (get-command Get-RemoteString).parameters.keys
                 $KeysForRemoteString = $PSBoundParameters.keys | Where-Object { $_ -in $GetRemoteStringParamsName}
-                foreach ($key in $KeysForRemoteString ) { 
+                foreach ($key in $KeysForRemoteString ) {
                     Write-Debug "`tWith $key :: $($PSBoundParameters[$key])"
-                    $null = $GetRemoteStringParams.Add($key ,$PSBoundParameters[$key]) 
+                    $null = $GetRemoteStringParams.Add($key ,$PSBoundParameters[$key])
                 }
                 [xml]$result = Get-RemoteString @GetRemoteStringParams
                 Write-Debug "New URL for nupkg: $url"
                 $url = $result.feed.entry.content.src
             }
         }
-        'FromPackageUrl' { 
+        'FromPackageUrl' {
             #ignores version
             Write-Verbose "Downloading Chocolatey from : $ChocolateyPackageUrl"
             $url = $ChocolateyPackageUrl
@@ -180,9 +180,9 @@ function Install-ChocolateySoftware {
     }
     $GetRemoteFileParamsName = (get-command Get-RemoteFile).parameters.keys
     $KeysForRemoteFile = $PSBoundParameters.keys | Where-Object { $_ -in $GetRemoteFileParamsName}
-    foreach ($key in $KeysForRemoteFile ) { 
+    foreach ($key in $KeysForRemoteFile ) {
         Write-Debug "`tWith $key :: $($PSBoundParameters[$key])"
-        $null = $GetRemoteFileParams.Add($key ,$PSBoundParameters[$key]) 
+        $null = $GetRemoteFileParams.Add($key ,$PSBoundParameters[$key])
     }
     $null = Get-RemoteFile @GetRemoteFileParams
 
@@ -208,7 +208,7 @@ function Install-ChocolateySoftware {
     Write-Verbose "Installing chocolatey on this machine"
     $TempTools = [io.path]::combine($tempDir,'tools')
     #   To be able to mock
-    $chocInstallPS1 = Join-Path $TempTools 'chocolateyInstall.ps1' 
+    $chocInstallPS1 = Join-Path $TempTools 'chocolateyInstall.ps1'
 
     if($InstallationDirectory) {
         [Environment]::SetEnvironmentVariable('ChocolateyInstall', $InstallationDirectory, 'Machine')
@@ -236,7 +236,7 @@ function Install-ChocolateySoftware {
     $chocoPkgDir = Join-Path $chocoPath 'lib\chocolatey'
     $nupkg = Join-Path $chocoPkgDir 'chocolatey.nupkg'
 
-    if (![System.IO.Directory]::Exists($chocoPkgDir)) { 
+    if (![System.IO.Directory]::Exists($chocoPkgDir)) {
         $null = [System.IO.Directory]::CreateDirectory($chocoPkgDir)
     }
     Copy-Item "$file" "$nupkg" -Force -ErrorAction SilentlyContinue
