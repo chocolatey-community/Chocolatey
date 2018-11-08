@@ -3,16 +3,16 @@
 Transforms parameters Key/value into choco.exe Parameters.
 
 .DESCRIPTION
-This private command allows to pass parameters and it returns 
+This private command allows to pass parameters and it returns
 an array of parameters to be used with the choco.exe command.
-No validation is done at this level, it should be handled 
+No validation is done at this level, it should be handled
 by the Commands leveraging this function.
 
 .PARAMETER Name
 Name of the element being targeted (can be source, feature, package and so on).
 
 .PARAMETER Value
-The value of the config setting. Required with some Actions. 
+The value of the config setting. Required with some Actions.
 Defaults to empty.
 
 .PARAMETER Source
@@ -37,7 +37,7 @@ List all version available.
 Priority of the feed, default to 0
 
 .PARAMETER Credential
-Credential to authenticate to the source feed. 
+Credential to authenticate to the source feed.
 
 .PARAMETER ProxyCredential
 Credential for the Proxy.
@@ -67,7 +67,7 @@ Should install arguments be used exclusively without appending to current packag
 Do not install this silently. Defaults to false.
 
 .PARAMETER ApplyArgsToDependencies
-Apply Install Arguments To Dependencies  - Should install arguments be 
+Apply Install Arguments To Dependencies  - Should install arguments be
 applied to dependent packages? Defaults to false
 
 .PARAMETER AllowDowngrade
@@ -83,72 +83,72 @@ IgnoreDependencies - Ignore dependencies when installing package(s).
 Do Not Show Progress - Do not show download progress percentages
 
 .PARAMETER ForceDependencies
-Force dependencies to be reinstalled when force 
-installing package(s). Must be used in conjunction with --force. 
+Force dependencies to be reinstalled when force
+installing package(s). Must be used in conjunction with --force.
 Defaults to false.
 
 .PARAMETER SkipPowerShell
 Skip Powershell - Do not run chocolateyInstall.ps1. Defaults to false.
 
 .PARAMETER IgnoreChecksum
-IgnoreChecksums - Ignore checksums provided by the package. Overrides 
+IgnoreChecksums - Ignore checksums provided by the package. Overrides
 the default feature 'checksumFiles' set to 'True'.
 
 .PARAMETER AllowEmptyChecksum
-Allow Empty Checksums - Allow packages to have empty/missing checksums 
-for downloaded resources from non-secure locations (HTTP, FTP). Use this 
-switch is not recommended if using sources that download resources from 
-the internet. Overrides the default feature 'allowEmptyChecksums' set to 
+Allow Empty Checksums - Allow packages to have empty/missing checksums
+for downloaded resources from non-secure locations (HTTP, FTP). Use this
+switch is not recommended if using sources that download resources from
+the internet. Overrides the default feature 'allowEmptyChecksums' set to
 'False'. Available in 0.10.0+.
 
 .PARAMETER ignorePackageCodes
 IgnorePackageExitCodes - Exit with a 0 for success and 1 for non-success,
-no matter what package scripts provide for exit codes. Overrides the 
+no matter what package scripts provide for exit codes. Overrides the
 default feature 'usePackageExitCodes' set to 'True'. Available in 0.-
 9.10+.
 
 .PARAMETER UsePackageCodes
-UsePackageExitCodes - Package scripts can provide exit codes. Use those 
-for choco's exit code when non-zero (this value can come from a 
-dependency package). Chocolatey defines valid exit codes as 0, 1605, 
-1614, 1641, 3010.  Overrides the default feature 'usePackageExitCodes' 
+UsePackageExitCodes - Package scripts can provide exit codes. Use those
+for choco's exit code when non-zero (this value can come from a
+dependency package). Chocolatey defines valid exit codes as 0, 1605,
+1614, 1641, 3010.  Overrides the default feature 'usePackageExitCodes'
 set to 'True'. Available in 0.9.10+.
 
 .PARAMETER StopOnFirstFailure
-Stop On First Package Failure - stop running install, upgrade or 
-uninstall on first package failure instead of continuing with others. 
+Stop On First Package Failure - stop running install, upgrade or
+uninstall on first package failure instead of continuing with others.
 Overrides the default feature 'stopOnFirstPackageFailure' set to 'False-
 '. Available in 0.10.4+.
 
 .PARAMETER SkipCache
-Skip Download Cache - Use the original download even if a private CDN 
-cache is available for a package. Overrides the default feature 
-'downloadCache' set to 'True'. Available in 0.9.10+. [Licensed editions](https://chocolatey.org/compare) 
-only. See https://chocolatey.org/docs/features-private-cdn 
+Skip Download Cache - Use the original download even if a private CDN
+cache is available for a package. Overrides the default feature
+'downloadCache' set to 'True'. Available in 0.9.10+. [Licensed editions](https://chocolatey.org/compare)
+only. See https://chocolatey.org/docs/features-private-cdn
 
 .PARAMETER UseDownloadCache
-Use Download Cache - Use private CDN cache if available for a package. 
-Overrides the default feature 'downloadCache' set to 'True'. Available 
+Use Download Cache - Use private CDN cache if available for a package.
+Overrides the default feature 'downloadCache' set to 'True'. Available
 in 0.9.10+. [Licensed editions](https://chocolatey.org/compare) only. See https://chocolate-
-y.org/docs/features-private-cdn 
+y.org/docs/features-private-cdn
 
 .PARAMETER SkipVirusCheck
 Skip Virus Check - Skip the virus check for downloaded files on this run.
- Overrides the default feature 'virusCheck' set to 'True'. Available 
-in 0.9.10+. [Licensed editions](https://chocolatey.org/compare) only. 
-See https://chocolatey.org/docs/features-virus-check 
+ Overrides the default feature 'virusCheck' set to 'True'. Available
+in 0.9.10+. [Licensed editions](https://chocolatey.org/compare) only.
+See https://chocolatey.org/docs/features-virus-check
 
 .PARAMETER VirusCheck
-Virus Check - check downloaded files for viruses. Overrides the default 
-feature 'virusCheck' set to 'True'. Available in 0.9.10+. Licensed 
+Virus Check - check downloaded files for viruses. Overrides the default
+feature 'virusCheck' set to 'True'. Available in 0.9.10+. Licensed
 editions only. See https://chocolatey.org/docs/features-virus-check
 
 .PARAMETER VirusPositive
-Virus Check Minimum Scan Result Positives - the minimum number of scan 
-result positives required to flag a package. Used when virusScannerType 
-is VirusTotal. Overrides the default configuration value 
-'virusCheckMinimumPositives' set to '5'. Available in 0.9.10+. Licensed 
-editions only. See https://chocolatey.org/docs/features-virus-check 
+Virus Check Minimum Scan Result Positives - the minimum number of scan
+result positives required to flag a package. Used when virusScannerType
+is VirusTotal. Overrides the default configuration value
+'virusCheckMinimumPositives' set to '5'. Available in 0.9.10+. Licensed
+editions only. See https://chocolatey.org/docs/features-virus-check
 
 .PARAMETER OrderByPopularity
 Order the community packages (chocolatey.org) by popularity.
@@ -166,20 +166,20 @@ LocalOnly - Only search against local machine items.
 Prerelease - Include Prereleases? Defaults to false.
 
 .PARAMETER ApprovedOnly
-ApprovedOnly - Only return approved packages - this option will filter 
+ApprovedOnly - Only return approved packages - this option will filter
 out results not from the [community repository](https://chocolatey.org/packages). Available in 0.9.10+.
 
 .PARAMETER IncludePrograms
-IncludePrograms - Used in conjunction with LocalOnly, filters out apps 
-chocolatey has listed as packages and includes those in the list. 
+IncludePrograms - Used in conjunction with LocalOnly, filters out apps
+chocolatey has listed as packages and includes those in the list.
 Defaults to false.
 
 .PARAMETER ByIdOnly
-ByIdOnly - Only return packages where the id contains the search filter. 
+ByIdOnly - Only return packages where the id contains the search filter.
 Available in 0.9.10+.
 
 .PARAMETER IdStartsWith
-IdStartsWith - Only return packages where the id starts with the search 
+IdStartsWith - Only return packages where the id starts with the search
 filter. Available in 0.9.10+.
 
 .PARAMETER Exact
@@ -189,47 +189,47 @@ Exact - Only return packages with this exact name. Available in 0.9.10+.
 Force the x86 packages on x64 machines.
 
 .PARAMETER AcceptLicense
-AcceptLicense - Accept license dialogs automatically. 
+AcceptLicense - Accept license dialogs automatically.
 Reserved for future use.
 
 .PARAMETER Timeout
-CommandExecutionTimeout (in seconds) - The time to allow a command to 
-finish before timing out. Overrides the default execution timeout in the 
+CommandExecutionTimeout (in seconds) - The time to allow a command to
+finish before timing out. Overrides the default execution timeout in the
 configuration of 2700 seconds. '0' for infinite starting in 0.10.4.
 
 .PARAMETER UseRememberedArguments
-Use Remembered Options for Upgrade - use the arguments and options used 
-during install for upgrade. Does not override arguments being passed at 
-runtime. Overrides the default feature 
+Use Remembered Options for Upgrade - use the arguments and options used
+during install for upgrade. Does not override arguments being passed at
+runtime. Overrides the default feature
 'useRememberedArgumentsForUpgrades' set to 'False'. Available in 0.10.4+.
 
 .PARAMETER IgnoreRememberedArguments
-Ignore Remembered Options for Upgrade - ignore the arguments and options 
-used during install for upgrade. Overrides the default feature 
+Ignore Remembered Options for Upgrade - ignore the arguments and options
+used during install for upgrade. Overrides the default feature
 'useRememberedArgumentsForUpgrades' set to 'False'. Available in 0.10.4+.
 
 .PARAMETER ExcludePrerelease
-Exclude Prerelease - Should prerelease be ignored for upgrades? Will be 
+Exclude Prerelease - Should prerelease be ignored for upgrades? Will be
 ignored if you pass `--pre`. Available in 0.10.4+.
 
 .PARAMETER AutoUninstaller
-UseAutoUninstaller - Use auto uninstaller service when uninstalling. 
-Overrides the default feature 'autoUninstaller' set to 'True'. Available 
+UseAutoUninstaller - Use auto uninstaller service when uninstalling.
+Overrides the default feature 'autoUninstaller' set to 'True'. Available
 in 0.9.10+.
 
 .PARAMETER SkipAutoUninstaller
-SkipAutoUninstaller - Skip auto uninstaller service when uninstalling. 
-Overrides the default feature 'autoUninstaller' set to 'True'. Available 
+SkipAutoUninstaller - Skip auto uninstaller service when uninstalling.
+Overrides the default feature 'autoUninstaller' set to 'True'. Available
 in 0.9.10+.
 
 .PARAMETER FailOnAutouninstaller
-FailOnAutoUninstaller - Fail the package uninstall if the auto 
-uninstaller reports and error. Overrides the default feature 
+FailOnAutoUninstaller - Fail the package uninstall if the auto
+uninstaller reports and error. Overrides the default feature
 'failOnAutoUninstaller' set to 'False'. Available in 0.9.10+.
 
 .PARAMETER IgnoreAutoUninstallerFailure
-Ignore Auto Uninstaller Failure - Do not fail the package if auto 
-uninstaller reports an error. Overrides the default feature 
+Ignore Auto Uninstaller Failure - Do not fail the package if auto
+uninstaller reports an error. Overrides the default feature
 'failOnAutoUninstaller' set to 'False'. Available in 0.9.10+.
 
 .PARAMETER KeyUser
@@ -438,7 +438,7 @@ function Get-ChocolateyDefaultArgument {
         )]
         [switch]
         $SkipCache,
-        
+
 
         [Parameter(
             ValueFromPipelineByPropertyName
@@ -544,19 +544,19 @@ function Get-ChocolateyDefaultArgument {
         )]
         [int]
         $Timeout,
-        
+
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
         [switch]
         $UseRememberedArguments,
-        
+
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
         [switch]
         $IgnoreRememberedArguments,
-        
+
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
@@ -568,19 +568,19 @@ function Get-ChocolateyDefaultArgument {
         )]
         [switch]
         $AutoUninstaller,
-        
+
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
         [switch]
         $SkipAutoUninstaller,
-        
+
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
         [switch]
         $FailOnAutouninstaller,
-        
+
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
@@ -604,17 +604,17 @@ function Get-ChocolateyDefaultArgument {
             'CacheLocation' { "--cache-location=`"$CacheLocation`"" }
             'WhatIf'        {  "--whatif"  }
             'cert'          { "--cert=`"$Cert`"" }
-            'Force'         {  '--yes'; '--force' } 
+            'Force'         {  '--yes'; '--force' }
             'AcceptLicense' { '--accept-license' }
             'Verbose'       { '--verbose'}
             'Debug'         { '--debug'  }
             'NoProgress'    { '--no-progress' }
             'Credential'    {
-                if ($Username = $Credential.Username) {
-                    "--user=`"$Username`""
+                if ($Credential.Username) {
+                    "--user=`"$($Credential.Username)`""
                 }
-                if($Password = $Credential.GetNetworkCredential().Password) {
-                    "--password=`"$Password`""
+                if($Credential.GetNetworkCredential().Password) {
+                    "--password=`"$($Credential.GetNetworkCredential().Password)`""
                 }
             }
             'KeyUser'           { "--user=`"$KeyUser`"" }
@@ -624,11 +624,11 @@ function Get-ChocolateyDefaultArgument {
             'FailOnSTDErr'      { '--fail-on-stderr' }
             'Proxy'             { "--Proxy=`"$Proxy`"" }
             'ProxyCredential'   {
-                if ($ProxyUsername = $Credential.Username) {
-                    "--proxy-user=`"$ProxyUsername`""
+                if ($ProxyCredential.Username) {
+                    "--proxy-user=`"$($ProxyCredential.Username)`""
                 }
-                if($ProxyPassword = $Credential.GetNetworkCredential().Password) {
-                    "--proxy-password=`"$ProxyPassword`""
+                if($ProxyCredential.GetNetworkCredential().Password) {
+                    "--proxy-password=`"$($ProxyCredential.GetNetworkCredential().Password)`""
                 }
             }
             'ProxyBypassList'   { "--proxy-bypass-list=`"$($ProxyBypassList -join ',')`"" }

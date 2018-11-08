@@ -1,4 +1,4 @@
-<# 
+<#
 .SYNOPSIS
 Fix for PS2/3
 
@@ -18,12 +18,12 @@ function Repair-PowerShellOutputRedirectionBug {
     Param(
 
     )
-    
-    if($PSVersionTable.PSVersion.Major -lt 4) {
+
+    if ($PSVersionTable.PSVersion.Major -lt 4) {
         return
     }
 
-    try{
+    try {
         # http://www.leeholmes.com/blog/2008/07/30/workaround-the-os-handles-position-is-not-what-filestream-expected/ plus comments
         $bindingFlags = [Reflection.BindingFlags] "Instance,NonPublic,GetField"
         $objectRef = $host.GetType().GetField("externalHostRef", $bindingFlags).GetValue($host)

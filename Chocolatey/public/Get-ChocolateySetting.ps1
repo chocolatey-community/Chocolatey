@@ -3,11 +3,11 @@
 Gets the Settings set in the Configuration file.
 
 .DESCRIPTION
-This command looks up in the Chocolatey Config file, and returns 
+This command looks up in the Chocolatey Config file, and returns
 the Settings available from there.
 
 .PARAMETER Setting
-Name of the Setting when retrieving a single one or a specific list. 
+Name of the Setting when retrieving a single one or a specific list.
 It defaults to returning all Settings available in the config file.
 
 .EXAMPLE

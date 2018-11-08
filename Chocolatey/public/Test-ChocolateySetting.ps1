@@ -44,7 +44,7 @@ function Test-ChocolateySetting {
         [AllowNull()]
         [String]
         $Value,
-        
+
         [Parameter(
             ValueFromPipelineByPropertyName
             ,ParameterSetName = 'Unset'
@@ -66,7 +66,7 @@ function Test-ChocolateySetting {
         if($Unset) {
             $Value = ''
         }
-        
+
         $Value = $ExecutionContext.InvokeCommand.ExpandString($Value).TrimEnd(@('/','\'))
         if ([string]$Setting.value -eq $Value) {
             Write-Verbose ("The Chocolatey Setting {0} is set to '{1}' as expected" -f $Name,$Value)

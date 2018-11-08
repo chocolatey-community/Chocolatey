@@ -3,7 +3,7 @@
 Gets the Features set in the Configuration file.
 
 .DESCRIPTION
-This command looks up in the Chocolatey Config file, and returns 
+This command looks up in the Chocolatey Config file, and returns
 the Features available from there.
 Some feature may be available but now show up with this command.
 

@@ -14,8 +14,8 @@ or the current directory '.'
 Version - A specific version to install.
 
 .PARAMETER Source
-Source - The source to find the package(s) to install. Special sources 
-include: ruby, webpi, cygwin, windowsfeatures, and python. To specify 
+Source - The source to find the package(s) to install. Special sources
+include: ruby, webpi, cygwin, windowsfeatures, and python. To specify
 more than one source, pass it with a semi-colon separating the values (-
 e.g. "'source1;source2'"). Defaults to default feeds.
 
@@ -23,46 +23,46 @@ e.g. "'source1;source2'"). Defaults to default feeds.
 Credential used with authenticated feeds. Defaults to empty.
 
 .PARAMETER Force
-Force - force the behavior. Do not use force during normal operation - 
+Force - force the behavior. Do not use force during normal operation -
 it subverts some of the smart behavior for commands.
 
 .PARAMETER CacheLocation
-CacheLocation - Location for download cache, defaults to %TEMP% or value 
+CacheLocation - Location for download cache, defaults to %TEMP% or value
 in chocolatey.config file.
 
 .PARAMETER NoProgress
-Do Not Show Progress - Do not show download progress percentages. 
+Do Not Show Progress - Do not show download progress percentages.
 Available in 0.10.4+.
 
 .PARAMETER AcceptLicense
 AcceptLicense - Accept license dialogs automatically. Reserved for future use.
 
 .PARAMETER Timeout
-CommandExecutionTimeout (in seconds) - The time to allow a command to 
-finish before timing out. Overrides the default execution timeout in the 
+CommandExecutionTimeout (in seconds) - The time to allow a command to
+finish before timing out. Overrides the default execution timeout in the
 configuration of 2700 seconds. '0' for infinite starting in 0.10.4.
 
 .PARAMETER UninstallArguments
-UninstallArguments - Uninstall Arguments to pass to the native installer 
+UninstallArguments - Uninstall Arguments to pass to the native installer
 in the package. Defaults to unspecified.
 
 .PARAMETER OverrideArguments
-OverrideArguments - Should uninstall arguments be used exclusively 
+OverrideArguments - Should uninstall arguments be used exclusively
 without appending to current package passed arguments? Defaults to false.
 
 .PARAMETER NotSilent
 NotSilent - Do not uninstall this silently. Defaults to false.
 
 .PARAMETER ApplyArgsToDependencies
-Apply Install Arguments To Dependencies  - Should install arguments be 
+Apply Install Arguments To Dependencies  - Should install arguments be
 applied to dependent packages? Defaults to false.
 
 .PARAMETER SideBySide
-AllowMultipleVersions - Should multiple versions of a package be 
+AllowMultipleVersions - Should multiple versions of a package be
 installed? Defaults to false.
 
 .PARAMETER IgnoreDependencies
-IgnoreDependencies - Ignore dependencies when installing package(s). 
+IgnoreDependencies - Ignore dependencies when installing package(s).
 Defaults to false.
 
 .PARAMETER ForceDependencies
@@ -74,41 +74,41 @@ Skip Powershell - Do not run chocolateyUninstall.ps1. Defaults to false.
 
 .PARAMETER ignorePackageCodes
 IgnorePackageExitCodes - Exit with a 0 for success and 1 for non-succes-s,
-no matter what package scripts provide for exit codes. Overrides the 
+no matter what package scripts provide for exit codes. Overrides the
 default feature 'usePackageExitCodes' set to 'True'. Available in 0.9.10+.
 
 .PARAMETER UsePackageCodes
-UsePackageExitCodes - Package scripts can provide exit codes. Use those 
-for choco's exit code when non-zero (this value can come from a 
-dependency package). Chocolatey defines valid exit codes as 0, 1605, 
-1614, 1641, 3010. Overrides the default feature 'usePackageExitCodes' 
-set to 'True'. 
+UsePackageExitCodes - Package scripts can provide exit codes. Use those
+for choco's exit code when non-zero (this value can come from a
+dependency package). Chocolatey defines valid exit codes as 0, 1605,
+1614, 1641, 3010. Overrides the default feature 'usePackageExitCodes'
+set to 'True'.
 Available in 0.9.10+.
 
 .PARAMETER StopOnFirstFailure
-Stop On First Package Failure - stop running install, upgrade or 
-uninstall on first package failure instead of continuing with others. 
+Stop On First Package Failure - stop running install, upgrade or
+uninstall on first package failure instead of continuing with others.
 Overrides the default feature 'stopOnFirstPackageFailure' set to 'False'.
 Available in 0.10.4+.
 
 .PARAMETER AutoUninstaller
-UseAutoUninstaller - Use auto uninstaller service when uninstalling. 
-Overrides the default feature 'autoUninstaller' set to 'True'. 
+UseAutoUninstaller - Use auto uninstaller service when uninstalling.
+Overrides the default feature 'autoUninstaller' set to 'True'.
 Available in 0.9.10+.
 
 .PARAMETER SkipAutoUninstaller
-SkipAutoUninstaller - Skip auto uninstaller service when uninstalling. 
-Overrides the default feature 'autoUninstaller' set to 'True'. Available 
+SkipAutoUninstaller - Skip auto uninstaller service when uninstalling.
+Overrides the default feature 'autoUninstaller' set to 'True'. Available
 in 0.9.10+.
 
 .PARAMETER FailOnAutouninstaller
-FailOnAutoUninstaller - Fail the package uninstall if the auto 
-uninstaller reports and error. Overrides the default feature 
+FailOnAutoUninstaller - Fail the package uninstall if the auto
+uninstaller reports and error. Overrides the default feature
 'failOnAutoUninstaller' set to 'False'. Available in 0.9.10+.
 
 .PARAMETER IgnoreAutoUninstallerFailure
-Ignore Auto Uninstaller Failure - Do not fail the package if auto 
-uninstaller reports an error. Overrides the default feature 
+Ignore Auto Uninstaller Failure - Do not fail the package if auto
+uninstaller reports an error. Overrides the default feature
 'failOnAutoUninstaller' set to 'False'. Available in 0.9.10+.
 
 .EXAMPLE
@@ -244,25 +244,25 @@ function Uninstall-ChocolateyPackage {
         )]
         [switch]
         $StopOnFirstFailure,
-       
+
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
         [switch]
         $AutoUninstaller,
-        
+
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
         [switch]
         $SkipAutoUninstaller,
-        
+
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
         [switch]
         $FailOnAutouninstaller,
-        
+
         [Parameter(
             ValueFromPipelineByPropertyName
         )]

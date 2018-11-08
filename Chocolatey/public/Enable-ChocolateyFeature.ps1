@@ -43,7 +43,7 @@ function Enable-ChocolateyFeature {
         if (!(Get-ChocolateyFeature -Name $Name)) {
             Throw "Chocolatey Feature $Name cannot be found."
         }
-        
+
         $ChocoArguments = @('feature','enable')
         $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
         Write-Verbose "choco $($ChocoArguments -join ' ')"

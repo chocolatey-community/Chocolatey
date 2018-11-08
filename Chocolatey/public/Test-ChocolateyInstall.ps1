@@ -8,7 +8,7 @@ It then check if it's installed in the InstallDir path, if provided.
 
 .PARAMETER InstallDir
 To ensure the software is installed in the given directory. If not specified,
- it will only test if the commadn choco.exe is available. 
+ it will only test if the commadn choco.exe is available.
 
 .EXAMPLE
 Test-ChocolateyInstall #Test whether the Chocolatey Software is installed
@@ -32,7 +32,7 @@ function Test-ChocolateyInstall
     Write-Verbose "Loading machine Path Environment variable into session"
     $envPath = [Environment]::GetEnvironmentVariable('Path','Machine')
     [Environment]::SetEnvironmentVariable($envPath,'Process')
-    
+
     if($InstallDir) {
         $InstallDir = (Resolve-Path $InstallDir -ErrorAction Stop).Path
     }
@@ -42,12 +42,12 @@ function Test-ChocolateyInstall
         if (
             !$InstallDir -or
             $chocoCmd.Path -match [regex]::Escape($InstallDir)
-        ) 
+        )
         {
             Write-Verbose ('Chocolatey Software found in {0}' -f $chocoCmd.Path)
             return $true
         }
-        else 
+        else
         {
             Write-Verbose (
                 'Chocolatey Software not installed in {0}`n but in {1}' -f $InstallDir,$chocoCmd.Path

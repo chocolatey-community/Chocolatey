@@ -14,13 +14,13 @@ Exact name of the package to be testing against.
 Version expected of the package, or latest to compare against the latest version from a source.
 
 .PARAMETER Source
-Source to compare the latest version against. It will retrieve the 
+Source to compare the latest version against. It will retrieve the
 
 .PARAMETER Credential
 Credential used with authenticated feeds. Defaults to empty.
 
 .PARAMETER CacheLocation
-CacheLocation - Location for download cache, defaults to %TEMP% or value 
+CacheLocation - Location for download cache, defaults to %TEMP% or value
 in chocolatey.config file.
 
 .PARAMETER UpdateOnly
@@ -41,7 +41,7 @@ function Test-ChocolateyPackageIsInstalled {
     Param(
         [Parameter(
             Mandatory
-            ,ValueFromPipelineByPropertyName
+            , ValueFromPipelineByPropertyName
         )]
         [ValidateNotNullOrEmpty()]
         [String]
@@ -53,7 +53,7 @@ function Test-ChocolateyPackageIsInstalled {
         [ValidateNotNullOrEmpty()]
         [String]
         $Version,
-        
+
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
@@ -83,7 +83,7 @@ function Test-ChocolateyPackageIsInstalled {
         if (-not (Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
             Throw "Chocolatey Software not found"
         }
-        
+
         #if version latest verify against sources
         if (! ($InstalledPackages = @(Get-ChocolateyPackage -LocalOnly -Name $Name -Exact)) ) {
             Write-Verbose "Could not find Package $Name"
@@ -95,7 +95,7 @@ function Test-ChocolateyPackageIsInstalled {
 
         if ($Version -eq 'latest') {
             $ReferenceObject = Get-ChocolateyPackage @SearchPackageParams -Exact
-            if(!$ReferenceObject) {
+            if (!$ReferenceObject) {
                 Throw "Latest version of Package $name not found. Verify that the sources are reachable and package exists."
             }
         }
@@ -103,17 +103,17 @@ function Test-ChocolateyPackageIsInstalled {
             $ReferenceObject = [PSCustomObject]@{
                 Name = $Name
             }
-            if($Version) { $ReferenceObject | Add-Member -MemberType NoteProperty -Name version -value $Version }
+            if ($Version) { $ReferenceObject | Add-Member -MemberType NoteProperty -Name version -value $Version }
         }
 
         $PackageFound = $false
         $MatchingPackages = $InstalledPackages | Where-Object {
             Write-Debug "Testing $($_.Name) against $($ReferenceObject.Name)"
-            if($_.Name -eq $ReferenceObject.Name) {
+            if ($_.Name -eq $ReferenceObject.Name) {
                 $PackageFound = $True
                 Write-Debug "Package Found"
-                
-                if ((Compare-SemVerVersion $_.version $ReferenceObject.version) -in @('=','>')) {
+
+                if ((Compare-SemVerVersion $_.version $ReferenceObject.version) -in @('=', '>')) {
                     return $true
                 }
                 else {
@@ -124,24 +124,24 @@ function Test-ChocolateyPackageIsInstalled {
 
         if ($MatchingPackages) {
             Write-Verbose ("'{0}' packages match the given properties." -f $MatchingPackages.Count)
-            $VersionGreaterOrEqual   =  $true
+            $VersionGreaterOrEqual = $true
         }
         elseif ($PackageFound -and $UpdateOnly) {
             Write-Verbose "This package is installed with a lower version than specified."
-            $VersionGreaterOrEqual   =  $false
+            $VersionGreaterOrEqual = $false
         }
         elseif (!$PackageFound -and $UpdateOnly) {
             Write-Verbose "No packages match the selection, but no need to Install."
-            $VersionGreaterOrEqual   =  $true
+            $VersionGreaterOrEqual = $true
         }
         else {
             Write-Verbose "No packages match the selection and need Installing."
-            $VersionGreaterOrEqual   =  $False
+            $VersionGreaterOrEqual = $False
         }
 
         Write-Output ([PSCustomObject]@{
-            PackagePresent          =  $PackageFound
-            VersionGreaterOrEqual  =  $VersionGreaterOrEqual
-        })
+                PackagePresent        = $PackageFound
+                VersionGreaterOrEqual = $VersionGreaterOrEqual
+            })
     }
 }

@@ -43,7 +43,7 @@ function Set-ChocolateySetting {
         [AllowEmptyString()]
         [String]
         $Value,
-        
+
         [Parameter(
             ValueFromPipelineByPropertyName
             ,ParameterSetName = 'Unset'
@@ -56,7 +56,7 @@ function Set-ChocolateySetting {
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
             Throw "Chocolatey Software not found"
         }
-        
+
         $ChocoArguments = @('config')
         #Removing PSBoundParameters that could impact Chocolatey's "choco config set" command
         foreach ($key in @([System.Management.Automation.Cmdlet]::CommonParameters + [System.Management.Automation.Cmdlet]::OptionalCommonParameters)) {
