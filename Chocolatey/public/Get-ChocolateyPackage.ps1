@@ -167,42 +167,49 @@ function Get-ChocolateyPackage {
             !$PSboundparameters.containsKey('Version') -and
             (($Name -and $Exact) -or ([string]::IsNullOrEmpty($Name)))
         ) {
-            $CachePath = [io.path]::Combine($Env:ChocolateyInstall, 'cache', 'GetChocolateyPackageCache.xml')
-            Write-Debug "Attempting to load list from cache at $CachePath"
-            if ( (Test-Path $CachePath) -and
-                (Get-Item $CachePath).LastWriteTime -gt ([datetime]::Now.AddSeconds(-60))
+            $CacheFolder = Join-Path -Path $Env:ChocolateyInstall -ChildPath 'cache'
+            $CachePath   = Join-Path -Path $CacheFolder -ChildPath 'GetChocolateyPackageCache.xml'
+            try {
+                if (!(Test-Path $CacheFolder)) {
+                    $null = New-Item -Type Directory -Path $CacheFolder -Force -ErrorAction Stop
+                }
+                if (Test-Path $CachePath) {
+                    $CachedFile = Get-Item $CachePath
+                }
+                [io.file]::OpenWrite($CachePath).close()
+                $CacheAvailable = $true
+            }
+            catch {
+                Write-Debug "Unable to write to cache $CachePath, caching unavailable"
+                $CacheAvailable = $false
+            }
+
+            if ( $CacheAvailable -and $CachedFile -and
+                 $CachedFile.LastWriteTime -gt ([datetime]::Now.AddSeconds(-60))
             ) {
                 Write-Debug "Retrieving from cache at $CachePath"
                 $UnfilteredResults = @(Import-Clixml -Path $CachePath)
-            }
-            elseif (($CachePath = [io.path]::Combine([System.IO.Path]::GetTempPath(), 'GetChocolateyPackageCache.xml')) -and
-                (Test-Path $CachePath) -and
-                (Get-Item $CachePath).LastWriteTime -gt ([datetime]::Now.AddSeconds(-60))
-            ) {
-                Write-Debug "Attempting to load list from USER cache at $CachePath"
-                $UnfilteredResults = @(Import-Clixml -Path $CachePath)
+                Write-Debug "Loaded $($UnfilteredResults.count) from cache"
             }
             else {
-                Write-Debug "Running from command before caching"
+                Write-Debug "Running command (before caching)"
                 $ChocoListOutput = &$chocoCmd $ChocoArguments
+                Write-Debug "$chocoCmd $($ChocoArguments -join ' ')"
                 $UnfilteredResults = $ChocoListOutput | ConvertFrom-Csv -Delimiter '|' -Header 'Name', 'Version'
                 $CacheFile = [io.fileInfo]$CachePath
-                if (!(Test-path $CachePath)) {
-                    Write-Debug "> $CachePath"
+
+                if ($CacheAvailable) {
                     try {
-                        $null = New-Item -Path $CacheFile.Directory -Name $CacheFile.Name -Value '' -Force -ErrorAction Stop
+                        $null = $UnfilteredResults | Export-Clixml -Path $CacheFile -Force -ErrorAction Stop
+                        Write-Debug "Unfiltered list cached at $CacheFile"
                     }
                     catch {
-                        $CachePath = $CacheFile = [io.fileInfo](Join-Path ([System.IO.Path]::GetTempPath()) 'GetChocolateyPackageCache.xml')
-                        Write-Debug "New Cache file at $CacheFile"
-                        $null = New-Item -Path $CacheFile.Directory -Name $CacheFile.Name -Value '' -Force
+                        Write-Debug "Error Creating the cache at $CacheFile"
                     }
                 }
-
-                $null = $UnfilteredResults | Export-Clixml -Path $CacheFile -Force -ErrorAction SilentlyContinue
             }
 
-            $UnfilteredResults.Where{
+            $UnfilteredResults | Where-Object {
                 $( if ($Name) {$_.Name -eq $Name} else { $true })
             }
         }
