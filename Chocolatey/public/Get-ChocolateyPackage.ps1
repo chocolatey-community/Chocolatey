@@ -136,7 +136,6 @@ function Get-ChocolateyPackage {
         )]
         [String]
         $CacheLocation
-
     )
 
     Process {
@@ -161,7 +160,6 @@ function Get-ChocolateyPackage {
             $ChocoArguments = [System.Collections.ArrayList]$ChocoArguments
             $ChocoArguments.remove('--verbose')
         }
-
 
         if ( $LocalOnly -and
             !$PSboundparameters.containsKey('Version') -and
