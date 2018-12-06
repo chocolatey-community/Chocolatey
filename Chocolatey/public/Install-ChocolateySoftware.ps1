@@ -235,10 +235,7 @@ function Install-ChocolateySoftware {
     Write-Verbose 'Ensuring chocolatey.nupkg is in the lib folder'
     $chocoPkgDir = Join-Path $chocoPath 'lib\chocolatey'
     $nupkg = Join-Path $chocoPkgDir 'chocolatey.nupkg'
-
-    if (![System.IO.Directory]::Exists($chocoPkgDir)) {
-        $null = [System.IO.Directory]::CreateDirectory($chocoPkgDir)
-    }
+    $null = [System.IO.Directory]::CreateDirectory($chocoPkgDir)
     Copy-Item "$file" "$nupkg" -Force -ErrorAction SilentlyContinue
 
     if ($ChocoVersion = & "$chocoPath\choco.exe" -v) {
