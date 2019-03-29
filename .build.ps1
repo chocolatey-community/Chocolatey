@@ -35,7 +35,7 @@ Process {
         $BuildOutput = Join-Path -Path $PSScriptRoot -ChildPath $BuildOutput
     }
 
-    if(($Env:PSModulePath -split ';') -notcontains (Join-Path $BuildOutput 'modules') ) {
+    if (($Env:PSModulePath -split ';') -notcontains (Join-Path $BuildOutput 'modules') ) {
         $Env:PSModulePath += ';' + (Join-Path $BuildOutput 'modules')
     }
     
@@ -63,7 +63,6 @@ Process {
     task testAll UnitTests, IntegrationTests, QualityTestsStopOnFail
 }
 
-
 begin {
     Push-Location $PSScriptRoot
     function Resolve-Dependency {
@@ -76,7 +75,7 @@ begin {
                 force = $true
                 ForceBootstrap = $true
             }
-            if($PSBoundParameters.ContainsKey('verbose')) { $providerBootstrapParams.add('verbose',$verbose)}
+            if ($PSBoundParameters.ContainsKey('verbose')) { $providerBootstrapParams.add('verbose',$verbose)}
             if ($GalleryProxy) { $providerBootstrapParams.Add('Proxy',$GalleryProxy) }
             $null = Install-PackageProvider @providerBootstrapParams
             Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
@@ -92,7 +91,7 @@ begin {
                 Force = $true
                 Scope = 'CurrentUser'
             }
-            if($PSBoundParameters.ContainsKey('verbose')) { $InstallPSDependParams.add('verbose',$verbose)}
+            if ($PSBoundParameters.ContainsKey('verbose')) { $InstallPSDependParams.add('verbose',$verbose)}
             if ($GalleryRepository) { $InstallPSDependParams.Add('Repository',$GalleryRepository) }
             if ($GalleryProxy)      { $InstallPSDependParams.Add('Proxy',$GalleryProxy) }
             if ($GalleryCredential) { $InstallPSDependParams.Add('ProxyCredential',$GalleryCredential) }
@@ -103,7 +102,7 @@ begin {
             Force = $true
             Path = "$PSScriptRoot\Dependencies.psd1"
         }
-        if($PSBoundParameters.ContainsKey('verbose')) { $PSDependParams.add('verbose',$verbose)}
+        if ($PSBoundParameters.ContainsKey('verbose')) { $PSDependParams.add('verbose',$verbose)}
         Invoke-PSDepend @PSDependParams
         Write-Verbose "Project Bootstrapped, returning to Invoke-Build"
     }
