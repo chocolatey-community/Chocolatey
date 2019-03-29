@@ -1,12 +1,29 @@
+<#
+.SYNOPSIS
+    Gets the pinned Chocolatey Packages.
 
+.DESCRIPTION
+    This command gets the pinned Chocolatey Packages, and returns
+    the Settings available from there.
+
+.PARAMETER Name
+    Name of the Packages when retrieving a single one or a specific list.
+    It defaults to returning all Packages available in the config file.
+
+.EXAMPLE
+    Get-ChocolateyPin -Name packageName
+
+.NOTES
+    https://chocolatey.org/docs/commands-pin
+#>
 function Get-ChocolateyPin {
     [CmdletBinding()]
     Param(
         [Parameter(
             ValueFromPipeline
-            ,ValueFromPipelineByPropertyName
+            , ValueFromPipelineByPropertyName
         )]
-        [string[]]
+        [System.String[]]
         $Name = '*'
     )
 
@@ -26,7 +43,7 @@ function Get-ChocolateyPin {
     else {
         Write-Verbose ("Found {0} Packages" -f $ChocoPinListOutput.count)
         # Convert the list to objects
-        $ChocoPinListOutput = $ChocoPinListOutput | ConvertFrom-Csv -Delimiter '|' -Header 'Name','Version'
+        $ChocoPinListOutput = $ChocoPinListOutput | ConvertFrom-Csv -Delimiter '|' -Header 'Name', 'Version'
     }
 
     if ($Name -ne '*') {
@@ -39,9 +56,9 @@ function Get-ChocolateyPin {
 
     foreach ($Pin in $ChocoPinListOutput) {
         [PSCustomObject]@{
-            PSTypeName  = 'Chocolatey.Pin'
-            Name        = $Pin.Name
-            Version     = $Pin.Version
+            PSTypeName = 'Chocolatey.Pin'
+            Name       = $Pin.Name
+            Version    = $Pin.Version
         }
     }
 }

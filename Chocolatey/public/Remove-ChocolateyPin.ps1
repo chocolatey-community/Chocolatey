@@ -1,21 +1,40 @@
+<#
+.SYNOPSIS
+    Remove a Pin from a Chocolatey Package
+
+.DESCRIPTION
+    Allows you to remove a pinned Chocolatey Package like choco pin remove -n=packagename
+
+.PARAMETER Name
+    Name of the Chocolatey Package to remove the pin.
+
+.PARAMETER Version
+    This allows to unpin a Chocolatey Package.
+
+.EXAMPLE
+    Remove-ChocolateyPin -Name 'PackageName' -Version '1.0.0'
+
+.NOTES
+    https://chocolatey.org/docs/commands-pin
+#>
 function Remove-ChocolateyPin {
     [CmdletBinding(
-        SupportsShouldProcess=$true,
-        ConfirmImpact='High'
+        SupportsShouldProcess = $true,
+        ConfirmImpact = 'High'
     )]
     Param(
         [Parameter(
             Mandatory
-            ,ValueFromPipelineByPropertyName
+            , ValueFromPipelineByPropertyName
         )]
         [Alias('Package')]
-        [String]
+        [System.String]
         $Name,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [String]
+        [System.String]
         $Version
     )
 
@@ -24,12 +43,11 @@ function Remove-ChocolateyPin {
             Throw "Chocolatey Software not found"
         }
 
-        $ChocoArguments = @('pin','remove','-r')
+        $ChocoArguments = @('pin', 'remove', '-r')
         $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
         Write-Verbose "choco $($ChocoArguments -join ' ')"
 
-        if ($PSCmdlet.ShouldProcess("$Name $Version", "Remove Pin"))
-        {
+        if ($PSCmdlet.ShouldProcess("$Name $Version", "Remove Pin")) {
             &$chocoCmd $ChocoArguments | Write-Verbose
 
             # LASTEXITCODE is always 0 unless point an existing version (0 when remove but already removed)

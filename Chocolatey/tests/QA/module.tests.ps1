@@ -4,10 +4,9 @@ $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
 $modulePath = Resolve-Path "$here\..\.."
 $moduleName = Split-Path -Path $modulePath -Leaf
 
-
 Describe 'General module control' -Tags 'FunctionalQuality'   {
 
-    It 'imports without errors' {
+    It 'Imports without errors' {
         Write-Warning $modulePath.Path
         { Import-Module -Name $modulePath.Path -Force -ErrorAction Stop } | Should -Not -Throw
         Get-Module $moduleName | Should -Not -BeNullOrEmpty
@@ -59,7 +58,7 @@ foreach ($function in $allModuleFunctions) {
             $AstSearchDelegate = { $args[0] -is [System.Management.Automation.Language.FunctionDefinitionAst] }
             $ParsedFunction = $AbstractSyntaxTree.FindAll( $AstSearchDelegate,$true )   |
                                 ? Name -eq $function.BaseName
-        if($ParsedFunction.GetHelpContent) {
+        if ($ParsedFunction.GetHelpContent) {
             $FunctionHelp = $ParsedFunction.GetHelpContent()
         
             It 'Has a SYNOPSIS' {
@@ -76,7 +75,7 @@ foreach ($function in $allModuleFunctions) {
                 $FunctionHelp.Examples[0].Length | Should -BeGreaterThan ($function.BaseName.Length + 10)
             }
 
-            if($ParameterNames = $ParsedFunction.Body.ParamBlock.Parameters.name) {
+            if ($ParameterNames = $ParsedFunction.Body.ParamBlock.Parameters.name) {
                 $parameters = $ParameterNames.VariablePath | % {$_.ToString() }
                 foreach ($parameter in $parameters) {
                     It "Has help for Parameter: $parameter" {
@@ -88,4 +87,3 @@ foreach ($function in $allModuleFunctions) {
         }
     }
 }
-
