@@ -6,7 +6,7 @@ InModuleScope Chocolatey {
             'MyChocoPin'
         }
         Mock Get-ChocolateyDefaultArgument -MockWith { 'TestArgument' }
-        
+
         Context 'Default' {
 
             It 'Should call Get-Command' {
@@ -18,7 +18,7 @@ InModuleScope Chocolatey {
                 $null = Add-ChocolateyPin -Name 'TestPackage'
                 {Assert-MockCalled Get-ChocolateyPackage} | Should not Throw
             }
-            
+
             It 'Should not return value' {
                 $return = Add-ChocolateyPin -Name 'TestPackage'
                 $return | Should BeNullOrEmpty
