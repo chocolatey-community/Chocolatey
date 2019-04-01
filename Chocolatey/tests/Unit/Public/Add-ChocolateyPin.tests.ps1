@@ -2,10 +2,9 @@ InModuleScope Chocolatey {
     Describe Add-ChocolateyPin {
 
         Mock Get-Command -MockWith { Get-Command Write-Output } -ParameterFilter {$Name -eq 'choco.exe'}
-        Mock Get-ChocolateyPackage -MockWith {
+        Mock Get-ChocolateyPin -MockWith {
             'MyChocoPin'
         }
-        Mock Get-ChocolateyDefaultArgument -MockWith { 'TestArgument' }
 
         Context 'Default' {
 
@@ -14,9 +13,9 @@ InModuleScope Chocolatey {
                 {Assert-MockCalled Get-Command} | Should not Throw
             }
 
-            It 'Should call Get-ChocolateyPackage' {
+            It 'Should call Get-ChocolateyPin' {
                 $null = Add-ChocolateyPin -Name 'TestPackage'
-                {Assert-MockCalled Get-ChocolateyPackage} | Should not Throw
+                {Assert-MockCalled Get-ChocolateyPin} | Should not Throw
             }
 
             It 'Should not return value' {
