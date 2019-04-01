@@ -203,5 +203,28 @@
                 "Description": "Chocolatey setting value"
             }
         ]
+    },
+    {
+        "ChocolateyPin": [
+            {
+                "Name": "Ensure",
+                "Type": "String",
+                "Attribute": "Require",
+                "ValidateSet": ["Present","Absent"],
+                "Description": "Specifies whether the Chocolatey Pin should be set or unset."
+            },
+            {
+                "Name": "Name",
+                "Type": "String",
+                "Attribute": "Key",
+                "Description": "Chocolatey Setting Name"
+            },
+            {
+                "Name": "Version",
+                "Type": "String",
+                "Attribute": "Write",
+                "Description": "Chocolatey Version value"
+            }
+        ]
     }
 ]
