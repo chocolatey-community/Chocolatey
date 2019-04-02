@@ -8,23 +8,23 @@ configuration Chocolatey {
 
         ChocolateySource ChocolateyOrg {
             DependsOn = '[ChocolateySoftware]ChocoInst'
-            Ensure = 'Present'
-            Name = 'Chocolatey'
-            Source = 'https://chocolatey.org/api/v2'
-            Priority = 0
-            Disabled = $false
+            Ensure    = 'Present'
+            Name      = 'Chocolatey'
+            Source    = 'https://chocolatey.org/api/v2'
+            Priority  = 0
+            Disabled  = $false
         }
 
         ChocolateyFeature NoVIrusCheck {
             Ensure = 'Absent'
-            Name = 'viruscheck'
+            Name   = 'viruscheck'
         }
 
         ChocolateyPackage Putty {
-           DependsOn = '[ChocolateySoftware]ChocoInst'
-            Ensure  = 'Present'
-            Name    = 'Putty'
-            Version = 'Latest'
+           DependsOn          = '[ChocolateySoftware]ChocoInst'
+            Ensure            = 'Present'
+            Name              = 'Putty'
+            Version           = 'Latest'
             ChocolateyOptions = @{ source = 'https://chocolatey.org/api/v2/' }
         }
     }

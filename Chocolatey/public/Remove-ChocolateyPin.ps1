@@ -52,7 +52,6 @@ function Remove-ChocolateyPin {
 
             # LASTEXITCODE is always 0 unless point an existing version (0 when remove but already removed)
             if ($LASTEXITCODE -ne 0) {
-                Write-Host
                 Throw ("Error when trying to Remove Pin for {0}.`r`n {1}" -f "$Name $Version", ($output -join "`r`n"))
             }
             else {

@@ -12,6 +12,7 @@ Param (
     [string]
     $LineSeparation = (property LineSeparation ('-' * 78))
 )
+
 task IntegrationTests {
     $LineSeparation
     "`t`t`t RUNNING INTEGRATION TESTS"
@@ -41,5 +42,4 @@ task IntegrationTests {
 
         Pop-Location
     }
-   
 }

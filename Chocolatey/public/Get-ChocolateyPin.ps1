@@ -21,7 +21,7 @@ function Get-ChocolateyPin {
     Param(
         [Parameter(
             ValueFromPipeline
-            , ValueFromPipelineByPropertyName
+            ,ValueFromPipelineByPropertyName
         )]
         [System.String[]]
         $Name = '*'
