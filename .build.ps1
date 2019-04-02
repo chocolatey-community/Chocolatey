@@ -6,7 +6,7 @@ Param (
     [switch]
     $ResolveDependency,
 
-    [String]
+    [System.String]
     $BuildOutput = "BuildOutput",
 
     $ModuleVersion = $(if($Env:APPVEYOR_BUILD_VERSION) {$ENV:APPVEYOR_BUILD_VERSION} else { try { Get-NextNugetPackageVersion -Name 'Chocolatey' -EA Stop} catch { '0.0.1' }} ),
