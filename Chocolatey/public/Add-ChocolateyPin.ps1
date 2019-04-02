@@ -49,6 +49,10 @@ function Add-ChocolateyPin {
             Throw "Chocolatey Software not found"
         }
 
+        if (!(Get-ChocolateyPin -Name $Name)) {
+            Throw "Chocolatey Package $Name cannot be found. You can install it using Install-ChocolateyPackage."
+        }
+
         $ChocoArguments = @('pin', 'add', '-r')
         $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
         Write-Verbose "choco $($ChocoArguments -join ' ')"

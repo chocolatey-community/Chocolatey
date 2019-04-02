@@ -34,6 +34,10 @@ function Remove-ChocolateyPin {
             Throw "Chocolatey Software not found"
         }
 
+        if (!(Get-ChocolateyPin -Name $Name)) {
+            Throw "Chocolatey Package $Name cannot be found."
+        }
+
         $ChocoArguments = @('pin', 'remove', '-r')
         $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
         Write-Verbose "choco $($ChocoArguments -join ' ')"
