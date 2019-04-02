@@ -69,19 +69,19 @@ function Test-ChocolateySource {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $Disabled,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $BypassProxy,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $SelfService,
 
         [Parameter(
@@ -103,7 +103,7 @@ function Test-ChocolateySource {
 
     Process {
         if (-not (Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
-            Throw "Chocolatey Software not found"
+            Throw "Chocolatey Software not found."
         }
 
         if (-not ($Source = (Get-ChocolateySource -Name $Name)) ) {
@@ -157,11 +157,11 @@ function Test-ChocolateySource {
                 }
 
                 if ($PasswordInFile -eq $PasswordParameter) {
-                    Write-Verbose "The Passwords Match"
+                    Write-Verbose "The Passwords Match."
                     $Source.Password = 'Reference Object Password'
                 }
                 else {
-                    Write-Verbose "The Password Do not Match"
+                    Write-Verbose "The Password Do not Match."
                     $Source.Password = 'Source Object Password'
                 }
             }

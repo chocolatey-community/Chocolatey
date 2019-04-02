@@ -36,7 +36,7 @@ function Uninstall-Chocolatey {
             $chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue
             #Install dir is where choco.exe is found minus \bin subfolder
             if (-not ($chocoCmd -and ($chocoBin = Split-Path -Parent $chocoCmd.Path -ErrorAction SilentlyContinue))) {
-                Write-Warning "Could not find Chocolatey Software Install Folder"
+                Write-Warning "Could not find Chocolatey Software Install Folder."
                 return
             }
             else {
@@ -55,7 +55,7 @@ function Uninstall-Chocolatey {
             -not ((Test-Path $InstallDir) -and (Test-Path "$InstallDir\Choco.exe"))
              )
         {
-            Write-Warning 'Chocolatey Installation Folder Not found'
+            Write-Warning 'Chocolatey Installation Folder Not found.'
             return
         }
 
@@ -86,7 +86,7 @@ function Uninstall-Chocolatey {
                         $_ -notmatch "^$([regex]::Escape($InstallDir))\\bin$"
                     } | Select-Object -unique
 
-        Write-Debug 'Reset the machine Path without choco (and dedupe/no null)'
+        Write-Debug 'Reset the machine Path without choco (and dedupe/no null).'
         Write-Debug ($AllPaths |Format-Table | Out-String)
         [Environment]::SetEnvironmentVariable('Path', ($AllPaths -Join ';'), 'Machine')
 

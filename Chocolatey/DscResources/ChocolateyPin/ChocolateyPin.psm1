@@ -54,15 +54,11 @@ function Set-TargetResource
     $null = $PSBoundParameters.remove('Ensure')
 
     switch ($Ensure) {
-        #'Present' { }
         'Absent' {
-            if ( $PSBoundParameters.ContainsKey('Value') ) {
-                $PSBoundParameters.remove('Value')
+            if ( $PSBoundParameters.ContainsKey('Version') ) {
+                $PSBoundParameters.remove('Version')
             }
-
-            $null = $PSBoundParameters.add('Unset',$true)
-
-            Write-Verbose "Remove Pin to the Chocolatey Package $Name."
+            Write-Verbose "Remove Pin for the Chocolatey Package $Name."
             Remove-ChocolateyPin @PSBoundParameters
         }
         'Present' {
@@ -97,10 +93,10 @@ function Test-TargetResource
     $null = $PSBoundParameters.remove('Ensure')
     
     switch ($Ensure) {
-        'Present' { $PSBoundParameters['value'] = $Value }
-        'Absent'  { $PSBoundParameters['value'] = '' }
+        'Present' { $PSBoundParameters['Version'] = $Version }
+        'Absent'  { $PSBoundParameters['Version'] = '' }
     }
-    return (Test-ChocolateySetting @PSBoundParameters)
+    return (Test-ChocolateyPin @PSBoundParameters)
 }
 
 Export-ModuleMember -Function *-TargetResource

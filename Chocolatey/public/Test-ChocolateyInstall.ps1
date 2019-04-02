@@ -29,7 +29,7 @@ function Test-ChocolateyInstall
         $InstallDir
     )
 
-    Write-Verbose "Loading machine Path Environment variable into session"
+    Write-Verbose "Loading machine Path Environment variable into session."
     $envPath = [Environment]::GetEnvironmentVariable('Path','Machine')
     [Environment]::SetEnvironmentVariable($envPath,'Process')
 

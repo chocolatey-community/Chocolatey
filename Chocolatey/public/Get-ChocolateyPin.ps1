@@ -16,9 +16,10 @@
 .NOTES
     https://chocolatey.org/docs/commands-pin
 #>
+
 function Get-ChocolateyPin {
     [CmdletBinding()]
-    param(
+    Param(
         [Parameter(
             ValueFromPipeline
             ,ValueFromPipelineByPropertyName
@@ -28,7 +29,7 @@ function Get-ChocolateyPin {
     )
 
     if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
-        Throw "Chocolatey Software not found"
+        Throw "Chocolatey Software not found."
     }
 
     # Prepare the arguments for `choco pin list -r`
@@ -43,7 +44,7 @@ function Get-ChocolateyPin {
     else {
         Write-Verbose ("Found {0} Packages" -f $ChocoPinListOutput.count)
         # Convert the list to objects
-        $ChocoPinListOutput = $ChocoPinListOutput | ConvertFrom-Csv -Delimiter '|' -Header 'Name', 'Version'
+        $ChocoPinListOutput = $ChocoPinListOutput | ConvertFrom-Csv -Delimiter '|' -Header 'Name','Version'
     }
 
     if ($Name -ne '*') {
@@ -56,9 +57,9 @@ function Get-ChocolateyPin {
 
     foreach ($Pin in $ChocoPinListOutput) {
         [PSCustomObject]@{
-            PSTypeName = 'Chocolatey.Pin'
-            Name       = $Pin.Name
-            Version    = $Pin.Version
+            PSTypeName  = 'Chocolatey.Pin'
+            Name        = $Pin.Name
+            Version     = $Pin.Version
         }
     }
 }

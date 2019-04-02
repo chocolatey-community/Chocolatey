@@ -30,7 +30,7 @@ function Get-ChocolateySetting {
     )
     Begin {
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
-            Throw "Chocolatey Software not found"
+            Throw "Chocolatey Software not found."
         }
 
         $ChocoConfigPath = join-path $chocoCmd.Path ..\..\config\chocolatey.config -Resolve
@@ -40,7 +40,7 @@ function Get-ChocolateySetting {
 
     Process {
         if (!$ChocoXml) {
-            Throw "Error with Chocolatey config"
+            Throw "Error with Chocolatey config."
         }
 
         foreach ($Name in $Setting) {
@@ -49,7 +49,7 @@ function Get-ChocolateySetting {
                 $SettingNodes = $ChocoXml.SelectNodes("//add[translate(@key,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='$([Security.SecurityElement]::Escape($Name.ToLower()))']")
             }
             else {
-                Write-Verbose 'Returning all Sources configured'
+                Write-Verbose 'Returning all Sources configured.'
                 $SettingNodes = $ChocoXml.chocolatey.config.childNodes
             }
 

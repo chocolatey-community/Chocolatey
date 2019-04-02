@@ -39,7 +39,7 @@ function Test-ChocolateyFeature {
 
     Process {
         if (-not (Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
-            Throw "Chocolatey Software not found"
+            Throw "Chocolatey Software not found."
         }
 
         if (!($Feature = Get-ChocolateyFeature -Name $Name)) {
@@ -48,11 +48,11 @@ function Test-ChocolateyFeature {
         }
         $Feature | Write-Verbose
         if ($Feature.enabled -eq !$Disabled.ToBool()) {
-            Write-Verbose ("The Chocolatey Feature {0} is {1} as expected" -f $Name,(@('Disabled','Enabled')[([int]$Disabled.ToBool())]))
+            Write-Verbose ("The Chocolatey Feature {0} is set to {1} as expected." -f $Name,(@('Disabled','Enabled')[([int]$Disabled.ToBool())]))
             return $true
         }
         else {
-            Write-Verbose ("The Chocolatey Feature {0} is {1} NOT as expected" -f $Name,(@('Disabled','Enabled')[([int]$Disabled.ToBool())]))
+            Write-Verbose ("The Chocolatey Feature {0} is NOT set to {1} as expected." -f $Name,(@('Disabled','Enabled')[([int]$Disabled.ToBool())]))
             return $False
         }
     }

@@ -33,7 +33,7 @@ function Get-ChocolateySource {
     )
     Begin {
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
-            Throw "Chocolatey Software not found"
+            Throw "Chocolatey Software not found."
         }
         $ChocoConfigPath = join-path $chocoCmd.Path ..\..\config\chocolatey.config -Resolve
         $ChocoXml = [xml]::new()
@@ -42,7 +42,7 @@ function Get-ChocolateySource {
 
     Process {
         if (!$ChocoXml) {
-            Throw "Error with Chocolatey config"
+            Throw "Error with Chocolatey config."
         }
 
         foreach ($id in $Name) {
@@ -51,7 +51,7 @@ function Get-ChocolateySource {
                 $sourceNodes = $ChocoXml.SelectNodes("//source[translate(@id,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='$([Security.SecurityElement]::Escape($id.ToLower()))']")
             }
             else {
-                Write-Verbose 'Returning all Sources configured'
+                Write-Verbose 'Returning all Sources configured.'
                 $sourceNodes = $ChocoXml.chocolatey.sources.childNodes
             }
 

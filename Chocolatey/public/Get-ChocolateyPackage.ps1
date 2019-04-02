@@ -140,7 +140,7 @@ function Get-ChocolateyPackage {
 
     Process {
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
-            Throw "Chocolatey Software not found"
+            Throw "Chocolatey Software not found."
         }
 
         $ChocoArguments = @('list', '-r')
@@ -178,19 +178,19 @@ function Get-ChocolateyPackage {
                 $CacheAvailable = $true
             }
             catch {
-                Write-Debug "Unable to write to cache $CachePath, caching unavailable"
+                Write-Debug "Unable to write to cache $CachePath, caching unavailable."
                 $CacheAvailable = $false
             }
 
             if ( $CacheAvailable -and $CachedFile -and
                  $CachedFile.LastWriteTime -gt ([datetime]::Now.AddSeconds(-60))
             ) {
-                Write-Debug "Retrieving from cache at $CachePath"
+                Write-Debug "Retrieving from cache at $CachePath."
                 $UnfilteredResults = @(Import-Clixml -Path $CachePath)
-                Write-Debug "Loaded $($UnfilteredResults.count) from cache"
+                Write-Debug "Loaded $($UnfilteredResults.count) from cache."
             }
             else {
-                Write-Debug "Running command (before caching)"
+                Write-Debug "Running command (before caching)."
                 $ChocoListOutput = &$chocoCmd $ChocoArguments
                 Write-Debug "$chocoCmd $($ChocoArguments -join ' ')"
                 $UnfilteredResults = $ChocoListOutput | ConvertFrom-Csv -Delimiter '|' -Header 'Name', 'Version'
@@ -199,10 +199,10 @@ function Get-ChocolateyPackage {
                 if ($CacheAvailable) {
                     try {
                         $null = $UnfilteredResults | Export-Clixml -Path $CacheFile -Force -ErrorAction Stop
-                        Write-Debug "Unfiltered list cached at $CacheFile"
+                        Write-Debug "Unfiltered list cached at $CacheFile."
                     }
                     catch {
-                        Write-Debug "Error Creating the cache at $CacheFile"
+                        Write-Debug "Error Creating the cache at $CacheFile."
                     }
                 }
             }

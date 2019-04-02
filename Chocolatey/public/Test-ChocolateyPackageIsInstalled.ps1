@@ -81,12 +81,12 @@ function Test-ChocolateyPackageIsInstalled {
 
     Process {
         if (-not (Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
-            Throw "Chocolatey Software not found"
+            Throw "Chocolatey Software not found."
         }
 
         #if version latest verify against sources
         if (! ($InstalledPackages = @(Get-ChocolateyPackage -LocalOnly -Name $Name -Exact)) ) {
-            Write-Verbose "Could not find Package $Name"
+            Write-Verbose "Could not find Package $Name."
         }
 
         $SearchPackageParams = $PSBoundParameters

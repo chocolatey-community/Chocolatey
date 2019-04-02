@@ -204,7 +204,7 @@ function Install-ChocolateySoftware {
     }
 
     # Call chocolatey install
-    Write-Verbose "Installing chocolatey on this machine"
+    Write-Verbose "Installing chocolatey on this machine."
     $TempTools = [io.path]::combine($tempDir,'tools')
     #   To be able to mock
     $chocInstallPS1 = Join-Path $TempTools 'chocolateyInstall.ps1'
@@ -215,7 +215,7 @@ function Install-ChocolateySoftware {
     }
     & $chocInstallPS1 | Write-Debug
 
-    Write-Verbose 'Ensuring chocolatey commands are on the path'
+    Write-Verbose 'Ensuring chocolatey commands are on the path.'
     $chocoPath = [Environment]::GetEnvironmentVariable('ChocolateyInstall')
     if ($chocoPath -eq $null -or $chocoPath -eq '') {
         $chocoPath = "$env:ALLUSERSPROFILE\Chocolatey"

@@ -55,7 +55,7 @@ function Test-ChocolateySetting {
 
     Process {
         if (-not (Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
-            Throw "Chocolatey Software not found"
+            Throw "Chocolatey Software not found."
         }
 
         if (!($Setting = Get-ChocolateySetting -Name $Name)) {
@@ -69,11 +69,11 @@ function Test-ChocolateySetting {
 
         $Value = $ExecutionContext.InvokeCommand.ExpandString($Value).TrimEnd(@('/','\'))
         if ([string]$Setting.value -eq $Value) {
-            Write-Verbose ("The Chocolatey Setting {0} is set to '{1}' as expected" -f $Name,$Value)
+            Write-Verbose ("The Chocolatey Setting {0} is set to '{1}' as expected." -f $Name,$Value)
             return $true
         }
         else {
-            Write-Verbose ("The Chocolatey Setting {0} is {1} NOT as expected:{2}" -f $Name,$Setting.value,$Value)
+            Write-Verbose ("The Chocolatey Setting {0} is NOT set to '{1}' as expected:{2}" -f $Name,$Setting.value,$Value)
             return $False
         }
     }

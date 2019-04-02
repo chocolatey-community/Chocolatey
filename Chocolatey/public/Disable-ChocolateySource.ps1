@@ -37,7 +37,7 @@ function Disable-ChocolateySource {
 
     Process {
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
-            Throw "Chocolatey Software not found"
+            Throw "Chocolatey Software not found."
         }
 
         if (!(Get-ChocolateySource -Name $Name)) {

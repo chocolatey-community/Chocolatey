@@ -37,7 +37,7 @@ function Disable-ChocolateyFeature {
 
     Process {
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
-            Throw "Chocolatey Software not found"
+            Throw "Chocolatey Software not found."
         }
 
         if (!(Get-ChocolateyFeature -Name $Name)) {
