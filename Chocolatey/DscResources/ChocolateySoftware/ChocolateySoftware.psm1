@@ -9,7 +9,7 @@ function Get-TargetResource
         [System.String]
         $Ensure
 
-        ,[string]
+        ,[System.String]
         $InstallationDirectory
     )
     <#

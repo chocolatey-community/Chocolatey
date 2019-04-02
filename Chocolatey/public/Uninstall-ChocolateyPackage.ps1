@@ -153,7 +153,7 @@ function Uninstall-ChocolateyPackage {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $Force,
 
         [Parameter(
@@ -165,13 +165,13 @@ function Uninstall-ChocolateyPackage {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $NoProgress,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $AcceptLicense,
 
         [Parameter(
@@ -189,85 +189,85 @@ function Uninstall-ChocolateyPackage {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $OverrideArguments,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $NotSilent,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $ApplyArgsToDependencies,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $SideBySide,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $IgnoreDependencies,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $ForceDependencies,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $SkipPowerShell,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $ignorePackageCodes,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $UsePackageCodes,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $StopOnFirstFailure,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $AutoUninstaller,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $SkipAutoUninstaller,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $FailOnAutouninstaller,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $IgnoreAutoUninstallerFailure
     )
 

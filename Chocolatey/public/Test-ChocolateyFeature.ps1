@@ -20,7 +20,7 @@
 #>
 function Test-ChocolateyFeature {
     [CmdletBinding()]
-    [outputType([bool])]
+    [outputType([Bool])]
     param(
         [Parameter(
             Mandatory
@@ -33,7 +33,7 @@ function Test-ChocolateyFeature {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $Disabled
     )
 

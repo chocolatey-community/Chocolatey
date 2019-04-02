@@ -13,7 +13,7 @@ Describe 'General module control' -Tags 'FunctionalQuality'   {
     }
 
     It 'Should remove without error' {
-        { Remove-Module -Name $moduleName -ErrorAction Stop} | Should -not -Throw
+        { Remove-Module -Name $moduleName -ErrorAction Stop} | Should -Not -Throw
         Get-Module $moduleName | Should -beNullOrEmpty
     }
 }
@@ -39,7 +39,7 @@ else {
 foreach ($function in $allModuleFunctions) {
     Describe "Quality for $($function.BaseName)" -Tags 'TestQuality' {
         It "$($function.BaseName) have a unit test" {
-            Test-Path "$modulePath\tests\Unit\*\$($function.BaseName).tests.ps1" | Should -be $true
+            Test-Path "$modulePath\tests\Unit\*\$($function.BaseName).tests.ps1" | Should -Be $true
         }
 
         if ($scriptAnalyzerRules) {

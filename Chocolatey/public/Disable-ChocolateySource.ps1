@@ -31,7 +31,7 @@ function Disable-ChocolateySource {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $NoProgress
     )
 

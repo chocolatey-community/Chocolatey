@@ -73,19 +73,19 @@ function Unregister-ChocolateySource {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $Disabled,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $BypassProxy,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $SelfService,
 
         [Parameter(
@@ -103,7 +103,7 @@ function Unregister-ChocolateySource {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $Force,
 
         [Parameter(
@@ -115,7 +115,7 @@ function Unregister-ChocolateySource {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $NoProgress
 
     )

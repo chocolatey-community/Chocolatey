@@ -25,7 +25,7 @@ function Get-TargetResource
     Write-Verbose "Converting CIMInstance[] to hashtable"
     $ChocoOptions = Convert-CimInstancesToHashtable $ChocolateyOptions
 
-    Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -verbose:$False
+    Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -Verbose:$False
     $TestParams = @{
         Name = $Name
     }
@@ -46,7 +46,6 @@ function Get-TargetResource
     }
     $returnValue
 }
-
 
 function Set-TargetResource
 {

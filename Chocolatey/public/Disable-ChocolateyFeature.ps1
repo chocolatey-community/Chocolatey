@@ -31,7 +31,7 @@ function Disable-ChocolateyFeature {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $NoProgress
     )
 

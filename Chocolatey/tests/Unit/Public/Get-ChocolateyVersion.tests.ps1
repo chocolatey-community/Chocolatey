@@ -10,7 +10,7 @@ InModuleScope Chocolatey {
 
             It 'Should return version 1.2.3' {
                 $version = Get-ChocolateyVersion
-                $version | Should be '1.2.3'
+                $version | Should -Be '1.2.3'
             }
         }
         

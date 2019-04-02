@@ -26,7 +26,6 @@ function Get-TargetResource
     }
 }
 
-
 function Set-TargetResource
 {
     [CmdletBinding()]
@@ -47,11 +46,10 @@ function Set-TargetResource
     Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -verbose:$False
 
     switch ($Ensure) {
-        'Present' { Enable-ChocolateyFeature -name $Name}
-        'Absent'  { Disable-ChocolateyFeature -name $Name}
+        'Present' { Enable-ChocolateyFeature -Name $Name}
+        'Absent'  { Disable-ChocolateyFeature -Name $Name}
     }
 }
-
 
 function Test-TargetResource
 {
@@ -73,8 +71,8 @@ function Test-TargetResource
     Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -verbose:$False
 
     $EnsureResultMap = @{
-        'Present'=$false
-        'Absent'=$true
+        'Present' = $false
+        'Absent'  = $true
     }
     return (Test-ChocolateyFeature -Name $Name -Disabled:($EnsureResultMap[$Ensure]))
 }

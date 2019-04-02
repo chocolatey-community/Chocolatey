@@ -12,7 +12,7 @@ InModuleScope Chocolatey {
 
             It 'Should Return a downloader object' {
                 $result = Get-RemoteString -url 'https://my/url'
-                $result.url | Should be 'https://my/url'
+                $result.url | Should -Be 'https://my/url'
             }
         }
     }

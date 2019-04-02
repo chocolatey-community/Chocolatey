@@ -11,17 +11,17 @@ InModuleScope Chocolatey {
 
             It 'Should call Get-Command' {
                 $null = Remove-ChocolateyPin -Name 'TestPackage'
-                {Assert-MockCalled Get-Command} | Should not Throw
+                {Assert-MockCalled Get-Command} | Should -Not Throw
             }
 
             It 'Should call Get-ChocolateyPin' {
                 $null = Remove-ChocolateyPin -Name 'TestPackage'
-                {Assert-MockCalled Get-ChocolateyPin} | Should not Throw
+                {Assert-MockCalled Get-ChocolateyPin} | Should -Not Throw
             }
             
             It 'Should not return value' {
                 $return = Remove-ChocolateyPin -Name 'TestPackage'
-                $return | Should BeNullOrEmpty
+                $return | Should -BeNullOrEmpty
             }
         }
     }

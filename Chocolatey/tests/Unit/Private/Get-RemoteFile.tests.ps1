@@ -12,8 +12,8 @@ InModuleScope Chocolatey {
 
             It 'Should Return a downloader object' {
                 $result = Get-RemoteFile -url 'https://my/url' -File 'C:\test.zip'
-                $result.url | Should be 'https://my/url'
-                $result.file | Should be 'C:\test.zip'
+                $result.url | Should -Be 'https://my/url'
+                $result.file | Should -Be 'C:\test.zip'
             }
         }
     }

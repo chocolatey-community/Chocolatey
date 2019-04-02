@@ -4,7 +4,7 @@ InModuleScope Chocolatey {
         Context 'Default' {
 
             It 'Should apply the fix silently' {
-                { Repair-PowerShellOutputRedirectionBug } | Should not throw
+                { Repair-PowerShellOutputRedirectionBug } | Should -Not Throw
             }
         }
     }

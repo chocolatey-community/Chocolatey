@@ -21,8 +21,8 @@ function Get-TargetResource
 
     $returnValue = @{
         Ensure = $Ensure
-        Name = $Name
-        value = $Setting.Value
+        Name   = $Name
+        value  = $Setting.Value
     }
 
     $returnValue
@@ -84,7 +84,7 @@ function Test-TargetResource
         $value
     )
     $Env:Path = [Environment]::GetEnvironmentVariable('Path','Machine')
-    Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -verbose:$False
+    Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -Verbose:$False
 
     $null = $PSBoundParameters.remove('Ensure')
     

@@ -125,7 +125,7 @@ function Set-TargetResource
         'Present' {
             #If we only ensure a Source is Enabled/Disabled by Name, without other arguments
             if (!$ChocoSourceParams.keys.Where{$_ -notin @('Name','Disabled')} ) {
-                if($Disabled) {
+                if ($Disabled) {
                     Disable-ChocolateySource -Name $Name -NoProgress
                 }
                 else {

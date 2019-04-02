@@ -76,6 +76,7 @@ CHOCOLATEY\CHOCOLATEY
 │       Test-ChocolateyFeature.ps1
 │       Test-ChocolateyInstall.ps1
 │       Test-ChocolateyPackageIsInstalled.ps1
+|       Test-ChocolateyPin.ps1
 │       Test-ChocolateySource.ps1
 │       Uninstall-Chocolatey.ps1
 │       Uninstall-ChocolateyPackage.ps1
