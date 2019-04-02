@@ -21,7 +21,7 @@
 #>
 function Get-ChocolateySource {
     [CmdletBinding()]
-    Param(
+    param(
         [Parameter(
             ValueFromPipeline
             ,ValueFromPipelineByPropertyName
@@ -57,16 +57,16 @@ function Get-ChocolateySource {
 
             foreach ($source in $sourceNodes) {
                 Write-Output ([PSCustomObject]@{
-                    PSTypeName  = 'Chocolatey.Source'
-                    Name          = $source.id
-                    Source       = $source.value
-                    disabled    = [bool]::Parse($source.disabled)
-                    bypassProxy = [bool]::Parse($source.bypassProxy)
-                    selfService = [bool]::Parse($source.selfService)
-                    priority    = [int]$source.priority
-                    username    = $source.user
-                    password    = $source.password
-                })
+                        PSTypeName  = 'Chocolatey.Source'
+                        Name        = $source.id
+                        Source      = $source.value
+                        disabled    = [bool]::Parse($source.disabled)
+                        bypassProxy = [bool]::Parse($source.bypassProxy)
+                        selfService = [bool]::Parse($source.selfService)
+                        priority    = [int]$source.priority
+                        username    = $source.user
+                        password    = $source.password
+                    })
             }
         }
     }

@@ -19,13 +19,13 @@
 #>
 function Disable-ChocolateyFeature {
     [CmdletBinding()]
-    Param(
+    param(
         [Parameter(
             Mandatory
             ,ValueFromPipelineByPropertyName
         )]
         [Alias('Feature')]
-        [String]
+        [System.String]
         $Name,
 
         [Parameter(
@@ -33,7 +33,6 @@ function Disable-ChocolateyFeature {
         )]
         [switch]
         $NoProgress
-
     )
 
     Process {

@@ -62,7 +62,7 @@ function Unregister-ChocolateySource {
             Mandatory
             ,ValueFromPipelineByPropertyName
         )]
-        [String]
+        [System.String]
         $Name,
 
         [Parameter(
@@ -109,7 +109,7 @@ function Unregister-ChocolateySource {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [String]
+        [System.String]
         $CacheLocation,
 
         [Parameter(

@@ -21,13 +21,13 @@
 function Test-ChocolateyFeature {
     [CmdletBinding()]
     [outputType([bool])]
-    Param(
+    param(
         [Parameter(
             Mandatory
             ,ValueFromPipelineByPropertyName
         )]
         [Alias('Feature')]
-        [String]
+        [System.String]
         $Name,
 
         [Parameter(

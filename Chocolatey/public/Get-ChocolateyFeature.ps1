@@ -19,7 +19,7 @@
 #>
 function Get-ChocolateyFeature {
     [CmdletBinding()]
-    Param(
+    param(
         [Parameter(
             ValueFromPipeline
             ,ValueFromPipelineByPropertyName

@@ -19,7 +19,7 @@ function Remove-ChocolateyPin {
         SupportsShouldProcess = $true,
         ConfirmImpact = 'High'
     )]
-    Param(
+    param(
         [Parameter(
             Mandatory
             , ValueFromPipelineByPropertyName

@@ -20,12 +20,12 @@
 #>
 function Disable-ChocolateySource {
     [CmdletBinding()]
-    Param(
+    param(
         [Parameter(
             Mandatory
             ,ValueFromPipelineByPropertyName
         )]
-        [String]
+        [System.String]
         $Name,
 
         [Parameter(

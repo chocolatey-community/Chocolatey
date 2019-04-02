@@ -31,17 +31,17 @@
 function Compare-SemVerVersion {
     [CmdletBinding()]
     [OutputType([string])]
-    Param (
+    param (
         [Parameter(
             Mandatory
         )]
-        [String]
+        [System.String]
         $ReferenceVersion,
 
         [Parameter(
             Mandatory
         )]
-        [String]
+        [System.String]
         $DifferenceVersion
     )
 

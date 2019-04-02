@@ -54,7 +54,7 @@ function Set-TargetResource
     switch ($Ensure) {
         #'Present' {  }
         'Absent'  {
-            if( $PSBoundParameters.ContainsKey('Value') ) {
+            if ( $PSBoundParameters.ContainsKey('Value') ) {
                 $PSBoundParameters.remove('Value')
             }
             $null = $PSBoundParameters.add('Unset',$true) 
@@ -62,7 +62,6 @@ function Set-TargetResource
     }
     Write-Verbose "Setting the Chocolatey Setting $Name."
     Set-ChocolateySetting @PSBoundParameters
-
 }
 
 
@@ -95,8 +94,6 @@ function Test-TargetResource
     }
 
     return (Test-ChocolateySetting @PSBoundParameters)
-
 }
 
 Export-ModuleMember -Function *-TargetResource
-

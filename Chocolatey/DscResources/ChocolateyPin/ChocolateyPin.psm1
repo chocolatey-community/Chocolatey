@@ -2,7 +2,7 @@ function Get-TargetResource
 {
     [CmdletBinding()]
     [OutputType([System.Collections.Hashtable])]
-    Param
+    param
     (
         [parameter(Mandatory = $true)]
         [ValidateSet("Present","Absent")]
@@ -19,12 +19,11 @@ function Get-TargetResource
 
     $Env:Path = [Environment]::GetEnvironmentVariable('Path','Machine')
     Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -verbose:$False
-
     $null = $PSBoundParameters.remove('Ensure')
 
     $returnValue = @{
-        Ensure = $Ensure
-        Name = $Name
+        Ensure  = $Ensure
+        Name    = $Name
         Version = $Version
     }
 
@@ -35,7 +34,7 @@ function Get-TargetResource
 function Set-TargetResource
 {
     [CmdletBinding()]
-    Param
+    param
     (
         [parameter(Mandatory = $true)]
         [ValidateSet("Present","Absent")]
@@ -49,9 +48,9 @@ function Set-TargetResource
         [System.String]
         $Version
     )
+
     $Env:Path = [Environment]::GetEnvironmentVariable('Path','Machine')
     Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -verbose:$False
-
     $null = $PSBoundParameters.remove('Ensure')
 
     switch ($Ensure) {
@@ -64,7 +63,6 @@ function Set-TargetResource
             $null = $PSBoundParameters.add('Unset',$true) 
         }
     }
-
     Write-Verbose "Setting the Chocolatey Package $Name."
     Set-ChocolateySetting @PSBoundParameters
 }
@@ -88,16 +86,15 @@ function Test-TargetResource
         [System.String]
         $Version
     )
+
     $Env:Path = [Environment]::GetEnvironmentVariable('Path','Machine')
     Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -verbose:$False
-
     $null = $PSBoundParameters.remove('Ensure')
     
     switch ($Ensure) {
         'Present' { $PSBoundParameters['value'] = $Value }
         'Absent'  { $PSBoundParameters['value'] = '' }
     }
-
     return (Test-ChocolateySetting @PSBoundParameters)
 }
 

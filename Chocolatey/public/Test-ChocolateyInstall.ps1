@@ -20,12 +20,12 @@ function Test-ChocolateyInstall
 {
     [CmdletBinding()]
     [OutputType([bool])]
-    Param(
+    param(
         [Parameter(
             Mandatory = $false
         )]
         [ValidateNotNullOrEmpty()]
-        [string]
+        [System.String]
         $InstallDir
     )
 
@@ -33,7 +33,7 @@ function Test-ChocolateyInstall
     $envPath = [Environment]::GetEnvironmentVariable('Path','Machine')
     [Environment]::SetEnvironmentVariable($envPath,'Process')
 
-    if($InstallDir) {
+    if ($InstallDir) {
         $InstallDir = (Resolve-Path $InstallDir -ErrorAction Stop).Path
     }
 

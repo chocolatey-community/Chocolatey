@@ -20,7 +20,7 @@ function Get-TargetResource
         [Microsoft.Management.Infrastructure.CimInstance[]]
         $ChocolateyOptions
     )
-    
+
     $Env:Path = [Environment]::GetEnvironmentVariable('Path','Machine')
     Write-Verbose "Converting CIMInstance[] to hashtable"
     $ChocoOptions = Convert-CimInstancesToHashtable $ChocolateyOptions
@@ -29,22 +29,21 @@ function Get-TargetResource
     $TestParams = @{
         Name = $Name
     }
-    if($Version) { $TestParams.Add('Version',$Version) }
+    if ($Version) { $TestParams.Add('Version',$Version) }
     foreach ($Option in $ChocoOptions.keys) {
-        if(!$TestParams.ContainsKey($Option) -and
+        if (!$TestParams.ContainsKey($Option) -and
             $option -in (Get-Command Test-ChocolateyPackageIsInstalled).Parameters.keys) {
             $null = $TestParams.Add($option,$ChocoOptions[$Option])
         }
     }
-    
+
     $InstalledPackage = Test-ChocolateyPackageIsInstalled @TestParams
-    
+
     $returnValue = @{
-        Ensure = @('Absent','Present')[[int]$InstalledPackage.VersionGreaterOrEqual]
-        Name = $Name
+        Ensure  = @('Absent', 'Present')[[int]$InstalledPackage.VersionGreaterOrEqual]
+        Name    = $Name
         Version = $Version
     }
-
     $returnValue
 }
 
@@ -82,13 +81,13 @@ function Set-TargetResource
 
     Process {
         Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -verbose:$False
-        
+
         $TestParams = @{
             Name = $Name
         }
-        if($Version) { $TestParams.Add('Version',$Version) }
+        if ($Version) { $TestParams.Add('Version',$Version) }
         foreach ($Option in $ChocoOptions.keys) {
-            if(!$TestParams.ContainsKey($Option) -and
+            if (!$TestParams.ContainsKey($Option) -and
                 $option -in (Get-Command Test-ChocolateyPackageIsInstalled).Parameters.keys) {
                 $null = $TestParams.Add($option,$ChocoOptions[$Option])
             }
@@ -97,17 +96,16 @@ function Set-TargetResource
         $testResult = Test-ChocolateyPackageIsInstalled @TestParams
         $ChocoCommand = switch ($Ensure) {
             'Present' {
-                if($testResult.PackagePresent -and !$testResult.VersionGreaterOrEqual) {
+                if ($testResult.PackagePresent -and !$testResult.VersionGreaterOrEqual) {
                     Get-Command Update-ChocolateyPackage 
                 }
-                elseif(!$UpdateOnly) {
+                elseif (!$UpdateOnly) {
                     Get-Command Install-ChocolateyPackage 
                 }
                 else {
                     Write-Verbose "Nothing to do: UpdateOnly : $UpdateOnly"
                     return
                 }
-                 
             }
             'Absent'  { Get-Command Uninstall-ChocolateyPackage }
         }
@@ -116,8 +114,8 @@ function Set-TargetResource
         Write-Verbose "`t -Confirm `$False)"
         Write-Verbose "`t -NoProgress `$true)"
         $ChocoCommandParams = @{
-            Name = $Name
-            Confirm = $False
+            Name       = $Name
+            Confirm    = $False
             NoProgress = $true
         }
         if ($Version -and $Version -ne 'latest') { $ChocoCommandParams.Add('Version',$Version) }
@@ -137,12 +135,12 @@ function Set-TargetResource
         &$ChocoCommand @ChocoCommandParams -verbose | Write-Verbose
 
         $PostActionResult = Test-ChocolateyPackageIsInstalled @TestParams
-        if($PostActionResult.PackagePresent -and 
+        if ($PostActionResult.PackagePresent -and 
             $PostActionResult.VersionGreaterOrEqual -and
             $Ensure -eq 'Present') {
             Write-Verbose -Message "--> Package Successfully Installed"
         }
-        elseif((!$PostActionResult.PackagePresent -or 
+        elseif ((!$PostActionResult.PackagePresent -or 
                 !$PostActionResult.VersionGreaterOrEqual) -and
                  $Ensure -eq 'Absent') {
             Write-Verbose -Message "--> Package Successfully Removed"
@@ -178,7 +176,7 @@ function Test-TargetResource
         [System.Boolean]
         $UpdateOnly
     )
-    
+
     Write-Verbose "Converting CIMInstance[] to hashtable"
     $ChocoOptions = Convert-CimInstancesToHashtable $ChocolateyOptions
 
@@ -189,23 +187,21 @@ function Test-TargetResource
         Name = $Name
     }
     #Not decided whether Version should be mandatory or not
-    if($Version) { $TestParams.Add('Version',$Version) }
+    if ($Version) { $TestParams.Add('Version',$Version) }
     foreach ($Option in $ChocoOptions.keys) {
-        if(!$TestParams.ContainsKey($Option) -and
+        if (!$TestParams.ContainsKey($Option) -and
             $option -in (Get-Command Test-ChocolateyPackageIsInstalled).Parameters.keys) {
             $null = $TestParams.Add($option,$ChocoOptions[$Option])
         }
     }
 
     $EnsureResultMap = @{
-        'Present'=$true
-        'Absent'=$false
+        'Present' = $true
+        'Absent'  = $false
     }
     Write-Verbose "Testing whether the Package $Name is Installed"
     return ($EnsureResultMap[$Ensure] -eq (Test-ChocolateyPackageIsInstalled @TestParams).VersionGreaterOrEqual)
-
 }
-
 
 Export-ModuleMember -Function *-TargetResource
 

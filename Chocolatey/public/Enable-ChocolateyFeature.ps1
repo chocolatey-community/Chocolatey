@@ -19,13 +19,13 @@
 #>
 function Enable-ChocolateyFeature {
     [CmdletBinding()]
-    Param(
+    param(
         [Parameter(
             Mandatory
             ,ValueFromPipelineByPropertyName
         )]
         [Alias('Feature')]
-        [String]
+        [System.String]
         $Name,
 
         [Parameter(

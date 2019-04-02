@@ -29,9 +29,9 @@
 function Get-RemoteFile {
     [CmdletBinding()]
     param (
-        [string]$url,
+        [System.String]$url,
 
-        [string]$file,
+        [System.String]$file,
 
         [uri]
         $ProxyLocation,

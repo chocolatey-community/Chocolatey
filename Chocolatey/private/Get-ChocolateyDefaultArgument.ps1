@@ -251,7 +251,7 @@ function Get-ChocolateyDefaultArgument {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [String]
+        [System.String]
         $Name,
 
         [Parameter(
@@ -321,7 +321,7 @@ function Get-ChocolateyDefaultArgument {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [String]
+        [System.String]
         $CacheLocation,
 
         [Parameter(
@@ -475,7 +475,7 @@ function Get-ChocolateyDefaultArgument {
             ,ValueFromPipelineByPropertyName
         )]
         [ValidateNotNullOrEmpty()]
-        [String]
+        [System.String]
         $Version,
 
         [Parameter(
@@ -612,7 +612,7 @@ function Get-ChocolateyDefaultArgument {
                 if ($Credential.Username) {
                     "--user=`"$($Credential.Username)`""
                 }
-                if($Credential.GetNetworkCredential().Password) {
+                if ($Credential.GetNetworkCredential().Password) {
                     "--password=`"$($Credential.GetNetworkCredential().Password)`""
                 }
             }
@@ -626,7 +626,7 @@ function Get-ChocolateyDefaultArgument {
                 if ($ProxyCredential.Username) {
                     "--proxy-user=`"$($ProxyCredential.Username)`""
                 }
-                if($ProxyCredential.GetNetworkCredential().Password) {
+                if ($ProxyCredential.GetNetworkCredential().Password) {
                     "--proxy-password=`"$($ProxyCredential.GetNetworkCredential().Password)`""
                 }
             }

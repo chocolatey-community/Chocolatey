@@ -70,7 +70,7 @@ function Register-ChocolateySource {
             Mandatory
             ,ValueFromPipelineByPropertyName
         )]
-        [String]
+        [System.String]
         $Name,
 
         [Parameter(
@@ -118,7 +118,7 @@ function Register-ChocolateySource {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [String]
+        [System.String]
         $CacheLocation,
 
         [Parameter(
@@ -130,7 +130,6 @@ function Register-ChocolateySource {
         #To be used when Password is too long (>240 char) like a key
         $KeyUser,
         $Key
-
     )
 
     Process {
@@ -138,13 +137,13 @@ function Register-ChocolateySource {
             Throw "Chocolatey Software not found"
         }
 
-        if(!$PSBoundParameters.containskey('Disabled')){
+        if (!$PSBoundParameters.containskey('Disabled')){
             $null = $PSBoundParameters.add('Disabled',$Disabled)
         }
-        if(!$PSBoundParameters.containskey('SelfService')){
+        if (!$PSBoundParameters.containskey('SelfService')){
             $null = $PSBoundParameters.add('SelfService',$SelfService)
         }
-        if(!$PSBoundParameters.containskey('BypassProxy')){
+        if (!$PSBoundParameters.containskey('BypassProxy')){
             $null = $PSBoundParameters.add('BypassProxy',$BypassProxy)
         }
 

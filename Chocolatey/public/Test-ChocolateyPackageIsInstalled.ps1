@@ -38,20 +38,20 @@ function Test-ChocolateyPackageIsInstalled {
     [CmdletBinding()]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseOutputTypeCorrectly', '')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", "")]
-    Param(
+    param(
         [Parameter(
             Mandatory
             , ValueFromPipelineByPropertyName
         )]
         [ValidateNotNullOrEmpty()]
-        [String]
+        [System.String]
         $Name,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
         [ValidateNotNullOrEmpty()]
-        [String]
+        [System.String]
         $Version,
 
         [Parameter(
@@ -68,7 +68,7 @@ function Test-ChocolateyPackageIsInstalled {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [String]
+        [System.String]
         $CacheLocation,
 
         [Parameter(

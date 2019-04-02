@@ -53,12 +53,12 @@
 function Test-ChocolateySource {
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseOutputTypeCorrectly', '')]
     [CmdletBinding()]
-    Param(
+    param(
         [Parameter(
             Mandatory
             ,ValueFromPipelineByPropertyName
         )]
-        [String]
+        [System.String]
         $Name,
 
         [Parameter(
@@ -99,7 +99,6 @@ function Test-ChocolateySource {
         #To be used when Password is too long (>240 char) like a key
         $KeyUser,
         $Key
-
     )
 
     Process {
@@ -117,7 +116,7 @@ function Test-ChocolateySource {
             $_ -notin ([System.Management.Automation.Cmdlet]::CommonParameters + [System.Management.Automation.Cmdlet]::OptionalCommonParameters)}
         )
         {
-            if($Property -notin @('Credential','Key','KeyUser')) {
+            if ($Property -notin @('Credential','Key','KeyUser')) {
                 $MemberParams = @{
                     MemberType = 'NoteProperty'
                     Name = $Property
@@ -126,7 +125,7 @@ function Test-ChocolateySource {
                 $ReferenceSource | Add-Member @MemberParams
             }
             else {
-                if($Credential) {
+                if ($Credential) {
                     $Username = $Credential.UserName
                 }
                 else {
@@ -134,13 +133,13 @@ function Test-ChocolateySource {
                 }
                 $PasswordParam = @{
                     MemberType = 'NoteProperty'
-                    Name = 'password'
-                    Value = 'Reference Object Password'
+                    Name       = 'password'
+                    Value      = 'Reference Object Password'
                 }
                 $UserNameParam = @{
                     MemberType = 'NoteProperty'
-                    Name = 'username'
-                    Value = $UserName
+                    Name       = 'username'
+                    Value      = $UserName
                 }
                 $ReferenceSource | Add-Member @PasswordParam -passthru | Add-Member @UserNameParam
 
@@ -150,14 +149,14 @@ function Test-ChocolateySource {
                 $PasswordBytes = [Security.Cryptography.ProtectedData]::Unprotect($SecureStr, $salt, [Security.Cryptography.DataProtectionScope]::LocalMachine)
                 $PasswordInFile = [system.text.encoding]::UTF8.GetString($PasswordBytes)
 
-                if($Credential) {
+                if ($Credential) {
                     $PasswordParameter = $Credential.GetNetworkCredential().Password
                 }
                 else {
                     $PasswordParameter = $Key
                 }
 
-                if($PasswordInFile -eq $PasswordParameter) {
+                if ($PasswordInFile -eq $PasswordParameter) {
                     Write-Verbose "The Passwords Match"
                     $Source.Password = 'Reference Object Password'
                 }
@@ -167,7 +166,6 @@ function Test-ChocolateySource {
                 }
             }
         }
-
         Compare-Object -ReferenceObject $ReferenceSource -DifferenceObject $Source -Property $ReferenceSource.PSObject.Properties.Name
     }
 }

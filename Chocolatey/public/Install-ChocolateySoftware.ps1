@@ -72,7 +72,7 @@ function Install-ChocolateySoftware {
     [CmdletBinding(
         DefaultParameterSetName = 'FromFeedUrl'
     )]
-    Param(
+    param(
         [Parameter(
             ParameterSetName = 'FromPackageUrl'
         )]
@@ -85,10 +85,10 @@ function Install-ChocolateySoftware {
         [uri]
         $PackageFeedUrl = 'https://chocolatey.org/api/v2',
 
-        [string]
+        [System.String]
         $Version,
 
-        [string]
+        [System.String]
         $ChocoTempDir,
 
         [uri]
@@ -100,11 +100,11 @@ function Install-ChocolateySoftware {
         [switch]
         $IgnoreProxy,
 
-        [string]
+        [System.String]
         $InstallationDirectory
     )
 
-    if($PSVersionTable.PSVersion.Major -lt 4) {
+    if ($PSVersionTable.PSVersion.Major -lt 4) {
         Repair-PowerShellOutputRedirectionBug
     }
 
@@ -130,7 +130,7 @@ function Install-ChocolateySoftware {
                 $url = "$PackageFeedUrl/package/chocolatey/$Version"
             }
             else {
-                if(![string]::IsNullOrEmpty($PackageFeedUrl)) {
+                if (![string]::IsNullOrEmpty($PackageFeedUrl)) {
                     $url = $PackageFeedUrl
                 }
                 else {
@@ -209,7 +209,7 @@ function Install-ChocolateySoftware {
     #   To be able to mock
     $chocInstallPS1 = Join-Path $TempTools 'chocolateyInstall.ps1'
 
-    if($InstallationDirectory) {
+    if ($InstallationDirectory) {
         [Environment]::SetEnvironmentVariable('ChocolateyInstall', $InstallationDirectory, 'Machine')
         [Environment]::SetEnvironmentVariable('ChocolateyInstall', $InstallationDirectory, 'Process')
     }

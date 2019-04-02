@@ -28,7 +28,7 @@
 function Get-RemoteString {
     [CmdletBinding()]
     param (
-        [string]$url,
+        [System.String]$url,
 
         [uri]
         $ProxyLocation,

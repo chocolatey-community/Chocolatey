@@ -26,13 +26,13 @@ function Test-ChocolateySetting {
         DefaultParameterSetName = 'Set'
     )]
     [OutputType([Bool])]
-    Param(
+    param(
         [Parameter(
             Mandatory
             ,ValueFromPipelineByPropertyName
         )]
         [Alias('Setting')]
-        [String]
+        [System.String]
         $Name,
 
         [Parameter(
@@ -42,7 +42,7 @@ function Test-ChocolateySetting {
         )]
         [AllowEmptyString()]
         [AllowNull()]
-        [String]
+        [System.String]
         $Value,
 
         [Parameter(
@@ -63,7 +63,7 @@ function Test-ChocolateySetting {
             return $false
         }
         $Setting | Write-Verbose
-        if($Unset) {
+        if ($Unset) {
             $Value = ''
         }
 

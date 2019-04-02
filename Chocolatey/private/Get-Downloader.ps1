@@ -28,7 +28,7 @@ function Get-Downloader {
         [parameter(
             Mandatory
         )]
-        [string]
+        [System.String]
         $url,
 
         [uri]

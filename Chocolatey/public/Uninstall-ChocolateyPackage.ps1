@@ -129,14 +129,14 @@ function Uninstall-ChocolateyPackage {
             ,ValueFromPipeline
             ,ValueFromPipelineByPropertyName
         )]
-        [String[]]
+        [System.String[]]
         $Name,
 
         [Parameter(
             ,ValueFromPipelineByPropertyName
         )]
         [ValidateNotNullOrEmpty()]
-        [String]
+        [System.String]
         $Version,
 
         [Parameter(
@@ -159,7 +159,7 @@ function Uninstall-ChocolateyPackage {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [String]
+        [System.String]
         $CacheLocation,
 
         [Parameter(
@@ -183,7 +183,7 @@ function Uninstall-ChocolateyPackage {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [String]
+        [System.String]
         $UninstallArguments,
 
         [Parameter(
@@ -277,7 +277,7 @@ function Uninstall-ChocolateyPackage {
             Throw "Chocolatey Software not found"
         }
         $CachePath = [io.path]::Combine($Env:ChocolateyInstall,'cache','GetChocolateyPackageCache.xml')
-        if( (Test-Path $CachePath)) {
+        if ( (Test-Path $CachePath)) {
             $null = Remove-Item $CachePath -ErrorAction SilentlyContinue
         }
     }

@@ -24,7 +24,7 @@ function Get-SemVerFromString {
     [OutputType([PSobject])]
 
     Param (
-        [String]
+        [System.String]
         $VersionString
     )
 
@@ -33,7 +33,7 @@ function Get-SemVerFromString {
         [System.Version]$version, $BuildMetadata = $VersionString -split '\+', 2
     }
     else {
-        [System.Version]$version, [String]$Tag = $VersionString -split '-', 2
+        [System.Version]$version, [System.String]$Tag = $VersionString -split '-', 2
         $PreRelease, $BuildMetadata = $Tag -split '\+', 2
     }
 

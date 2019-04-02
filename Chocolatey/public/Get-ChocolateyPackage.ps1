@@ -57,19 +57,19 @@
 #>
 function Get-ChocolateyPackage {
     [CmdletBinding()]
-    Param(
+    param(
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
         [ValidateNotNullOrEmpty()]
-        [String]
+        [System.String]
         $Name,
 
         [Parameter(
             , ValueFromPipelineByPropertyName
         )]
         [ValidateNotNullOrEmpty()]
-        [String]
+        [System.String]
         $Version,
 
         [Parameter(
@@ -134,7 +134,7 @@ function Get-ChocolateyPackage {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [String]
+        [System.String]
         $CacheLocation
     )
 

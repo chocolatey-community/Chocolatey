@@ -18,7 +18,7 @@
 #>
 function Get-ChocolateySetting {
     [CmdletBinding()]
-    Param(
+    param(
         [Parameter(
             ValueFromPipeline
             ,ValueFromPipelineByPropertyName

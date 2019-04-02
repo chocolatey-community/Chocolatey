@@ -161,20 +161,20 @@ function Install-ChocolateyPackage {
         SupportsShouldProcess=$true,
         ConfirmImpact='High'
     )]
-    Param(
+    param(
         [Parameter(
             Mandatory
             ,ValueFromPipeline
             ,ValueFromPipelineByPropertyName
         )]
-        [String[]]
+        [System.String[]]
         $Name,
 
         [Parameter(
             ,ValueFromPipelineByPropertyName
         )]
         [ValidateNotNullOrEmpty()]
-        [String]
+        [System.String]
         $Version,
 
         [Parameter(
@@ -197,7 +197,7 @@ function Install-ChocolateyPackage {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [String]
+        [System.String]
         $CacheLocation,
 
         [Parameter(
@@ -227,25 +227,25 @@ function Install-ChocolateyPackage {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [String]
+        [System.String]
         $InstallArguments,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [String]
+        [System.String]
         $InstallArgumentsSensitive,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [String]
+        [System.String]
         $PackageParameters,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [String]
+        [System.String]
         $PackageParametersSensitive,
 
         [Parameter(
@@ -365,7 +365,7 @@ function Install-ChocolateyPackage {
             Throw "Chocolatey Software not found"
         }
         $CachePath = [io.path]::Combine($Env:ChocolateyInstall,'cache','GetChocolateyPackageCache.xml')
-        if( (Test-Path $CachePath)) {
+        if ( (Test-Path $CachePath)) {
             $null = Remove-Item $CachePath -ErrorAction SilentlyContinue
         }
     }
@@ -379,7 +379,7 @@ function Install-ChocolateyPackage {
                 #Impact confirmed, go choco go!
                 $ChocoArguments += '-y'
                 $ChocoOut = &$chocoCmd $ChocoArguments
-                if($ChocoOut) {
+                if ($ChocoOut) {
                     Write-Output $ChocoOut
                 }
             }

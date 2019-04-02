@@ -1,31 +1,31 @@
 <#
 .SYNOPSIS
-Enable a Source set in the Chocolatey Config
+    Enable a Source set in the Chocolatey Config
 
 .DESCRIPTION
-Lets you Enable an existing source from the Chocolatey Config.
-The equivalent Choco command is Choco source enable -n=sourcename
+    Lets you Enable an existing source from the Chocolatey Config.
+    The equivalent Choco command is Choco source enable -n=sourcename
 
 .PARAMETER Name
-Name of the Chocolatey source to Disable
+    Name of the Chocolatey source to Disable
 
 .PARAMETER NoProgress
-This allows to reduce the output created by the Chocolatey Command.
+    This allows to reduce the output created by the Chocolatey Command.
 
 .EXAMPLE
-Enable-ChocolateySource -Name 'chocolatey'
+    Enable-ChocolateySource -Name 'chocolatey'
 
 .NOTES
-https://github.com/chocolatey/choco/wiki/CommandsSource
+    https://github.com/chocolatey/choco/wiki/CommandsSource
 #>
 function Enable-ChocolateySource {
     [CmdletBinding()]
-    Param(
+    param(
         [Parameter(
             Mandatory
             ,ValueFromPipelineByPropertyName
         )]
-        [String]
+        [System.String]
         $Name,
 
         [Parameter(
