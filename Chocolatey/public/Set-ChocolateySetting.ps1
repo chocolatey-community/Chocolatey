@@ -1,24 +1,24 @@
 <#
 .SYNOPSIS
-Set or unset a Chocolatey Setting
+    Set or unset a Chocolatey Setting
 
 .DESCRIPTION
-Allows you to set or unset the value of a Chocolatey setting usually accessed by choco config set -n=bob value
+    Allows you to set or unset the value of a Chocolatey setting usually accessed by choco config set -n=bob value
 
 .PARAMETER Name
-Name (or setting) of the Chocolatey setting to modify
+    Name (or setting) of the Chocolatey setting to modify
 
 .PARAMETER Value
-Value to be given on the setting. This is not available when the switch -Unset is used.
+    Value to be given on the setting. This is not available when the switch -Unset is used.
 
 .PARAMETER Unset
-Unset the setting, returning to the Chocolatey defaults.
+    Unset the setting, returning to the Chocolatey defaults.
 
 .EXAMPLE
-Set-ChocolateySetting -Name 'cacheLocation' -value 'C:\Temp\Choco'
+    Set-ChocolateySetting -Name 'cacheLocation' -value 'C:\Temp\Choco'
 
 .NOTES
-https://github.com/chocolatey/choco/wiki/CommandsConfig
+    https://github.com/chocolatey/choco/wiki/CommandsConfig
 #>
 function Set-ChocolateySetting {
     [CmdletBinding(

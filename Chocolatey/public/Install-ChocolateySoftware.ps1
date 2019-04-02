@@ -18,56 +18,55 @@
 # limitations under the License.
 # =====================================================================
 
-
 <#
 .SYNOPSIS
-Install the Chocolatey Software from a URL to download the binary from.
+    Install the Chocolatey Software from a URL to download the binary from.
 
 .DESCRIPTION
-Install Chocolatey Software either from a fixed URL where the chocolatey nupkg is stored,
-or from the url of a NuGet feed containing the Chocolatey Package.
-A version can be specified to lookup the Package feed for a specific version, and install it.
-A proxy URL and credential can be specified to fetch the Chocolatey package, or the proxy configuration
-can be ignored.
+    Install Chocolatey Software either from a fixed URL where the chocolatey nupkg is stored,
+    or from the url of a NuGet feed containing the Chocolatey Package.
+    A version can be specified to lookup the Package feed for a specific version, and install it.
+    A proxy URL and credential can be specified to fetch the Chocolatey package, or the proxy configuration
+    can be ignored.
 
 .PARAMETER ChocolateyPackageUrl
-Exact URL of the chocolatey package. This can be an HTTP server, a network or local path.
-This must be the .nupkg package as downloadable from here: https://chocolatey.org/packages/chocolatey
+    Exact URL of the chocolatey package. This can be an HTTP server, a network or local path.
+    This must be the .nupkg package as downloadable from here: https://chocolatey.org/packages/chocolatey
 
 .PARAMETER PackageFeedUrl
-Url of the NuGet Feed API to use for looking up the latest version of Chocolatey (available on that feed).
-This is also used when searching for a specific version, doing a lookup via an Odata filter.
+    Url of the NuGet Feed API to use for looking up the latest version of Chocolatey (available on that feed).
+    This is also used when searching for a specific version, doing a lookup via an Odata filter.
 
 .PARAMETER Version
-Version to install if you want to be specific, this is the way to Install a pre-release version, as when not specified,
-the latest non-prerelease version is looked up from the feed defined in PackageFeedUrl.
+    Version to install if you want to be specific, this is the way to Install a pre-release version, as when not specified,
+    the latest non-prerelease version is looked up from the feed defined in PackageFeedUrl.
 
 .PARAMETER ChocoTempDir
-The temporary folder to extract the Chocolatey Binaries during install. This does not set the Chocolatey Cache dir.
+    The temporary folder to extract the Chocolatey Binaries during install. This does not set the Chocolatey Cache dir.
 
 .PARAMETER ProxyLocation
-Proxy url to use when downloading the Chocolatey Package for installation.
+    Proxy url to use when downloading the Chocolatey Package for installation.
 
 .PARAMETER ProxyCredential
-Credential to authenticate to the proxy, if not specified but the ProxyLocation is set, an attempt
-to use the Cached credential will be made.
+    Credential to authenticate to the proxy, if not specified but the ProxyLocation is set, an attempt
+    to use the Cached credential will be made.
 
 .PARAMETER IgnoreProxy
-Ensure the proxy is bypassed when downloading the Chocolatey Package from the URL.
+    Ensure the proxy is bypassed when downloading the Chocolatey Package from the URL.
 
 .PARAMETER InstallationDirectory
-Set the Installation Directory for Chocolatey, by creating the Environment Variable. This will persist after the installation.
+    Set the Installation Directory for Chocolatey, by creating the Environment Variable. This will persist after the installation.
 
 .EXAMPLE
-# Install latest chocolatey software from the Community repository (non pre-release version)
-Install-ChocolateySoftware
+    Install latest chocolatey software from the Community repository (non pre-release version)
+    Install-ChocolateySoftware
 
 .EXAMPLE
-# Install latest chocolatey software from a custom internal feed
-Install-ChocolateySoftware -PackageFeedUrl https://proget.mycorp.local/nuget/Choco
+    Install latest chocolatey software from a custom internal feed
+    Install-ChocolateySoftware -PackageFeedUrl https://proget.mycorp.local/nuget/Choco
 
 .NOTES
-Please raise issues at https://github.com/gaelcolas/Chocolatey/issues
+    Please raise issues at https://github.com/gaelcolas/Chocolatey/issues
 #>
 function Install-ChocolateySoftware {
     [CmdletBinding(

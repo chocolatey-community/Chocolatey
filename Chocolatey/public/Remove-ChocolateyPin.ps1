@@ -8,11 +8,8 @@
 .PARAMETER Name
     Name of the Chocolatey Package to remove the pin.
 
-.PARAMETER Version
-    This allows to unpin a Chocolatey Package.
-
 .EXAMPLE
-    Remove-ChocolateyPin -Name 'PackageName' -Version '1.0.0'
+    Remove-ChocolateyPin -Name 'PackageName'
 
 .NOTES
     https://chocolatey.org/docs/commands-pin
@@ -29,13 +26,7 @@ function Remove-ChocolateyPin {
         )]
         [Alias('Package')]
         [System.String]
-        $Name,
-
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
-        [System.String]
-        $Version
+        $Name
     )
 
     Process {
@@ -47,12 +38,12 @@ function Remove-ChocolateyPin {
         $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
         Write-Verbose "choco $($ChocoArguments -join ' ')"
 
-        if ($PSCmdlet.ShouldProcess("$Name $Version", "Remove Pin")) {
-            &$chocoCmd $ChocoArguments | Write-Verbose
+        if ($PSCmdlet.ShouldProcess("$Name", "Remove Pin")) {
+            $Output = &$chocoCmd $ChocoArguments
 
             # LASTEXITCODE is always 0 unless point an existing version (0 when remove but already removed)
             if ($LASTEXITCODE -ne 0) {
-                Throw ("Error when trying to Remove Pin for {0}.`r`n {1}" -f "$Name $Version", ($output -join "`r`n"))
+                Throw ("Error when trying to Remove Pin for {0}.`r`n {1}" -f "$Name", ($output -join "`r`n"))
             }
             else {
                 $output | Write-Verbose

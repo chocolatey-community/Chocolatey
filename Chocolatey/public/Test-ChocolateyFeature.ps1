@@ -1,22 +1,22 @@
 <#
 .SYNOPSIS
-Test Whether a feature is disabled, enabled or not found
+    Test Whether a feature is disabled, enabled or not found
 
 .DESCRIPTION
-Some feature might not be available in your version or SKU.
-This command allows you to test the state of that feature.
+    Some feature might not be available in your version or SKU.
+    This command allows you to test the state of that feature.
 
 .PARAMETER Name
-Name of the feature to verify
+    Name of the feature to verify
 
 .PARAMETER Disabled
-Test if the feature is disabled, the default is to test if the feature is enabled.
+    Test if the feature is disabled, the default is to test if the feature is enabled.
 
 .EXAMPLE
-Test-ChocolateyFeature -Name FeatureName -Disabled
+    Test-ChocolateyFeature -Name FeatureName -Disabled
 
 .NOTES
-https://github.com/chocolatey/choco/wiki/CommandsFeature
+    https://github.com/chocolatey/choco/wiki/CommandsFeature
 #>
 function Test-ChocolateyFeature {
     [CmdletBinding()]

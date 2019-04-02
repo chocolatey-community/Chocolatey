@@ -1,25 +1,25 @@
 <#
 .SYNOPSIS
-Test Whether a setting is set, enabled or not found
+    Test Whether a setting is set, enabled or not found
 
 .DESCRIPTION
-Some settings might not be available in your version or SKU.
-This command allows you to test the values of a named setting.
+    Some settings might not be available in your version or SKU.
+    This command allows you to test the values of a named setting.
 
 .PARAMETER Name
-Name of the Setting to verify
+    Name of the Setting to verify
 
 .PARAMETER Value
-Test if the Setting value provided matches with the one set on the config file.
+    Test if the Setting value provided matches with the one set on the config file.
 
 .PARAMETER Unset
-Test if the Setting is disabled, the default is to test if the feature is enabled.
+    Test if the Setting is disabled, the default is to test if the feature is enabled.
 
 .EXAMPLE
-Test-ChocolateySetting -Name SettingName -value ''
+    Test-ChocolateySetting -Name SettingName -value ''
 
 .NOTES
-https://github.com/chocolatey/choco/wiki/CommandsConfig
+    https://github.com/chocolatey/choco/wiki/CommandsConfig
 #>
 function Test-ChocolateySetting {
     [CmdletBinding(

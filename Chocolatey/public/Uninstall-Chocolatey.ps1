@@ -1,23 +1,22 @@
 <#
 .SYNOPSIS
-Attempts to remove the Chocolatey Software form the system.
+    Attempts to remove the Chocolatey Software form the system.
 
 .DESCRIPTION
-This command attempts to clean the system from the Chocolatey Software files.
-It first look into the provided $InstallDir, or in the $Env:ChocolateyInstall if not provided.
-If the $InstallDir provided is $null or empty, it will attempts to find the Chocolatey folder
-from the choco.exe command path.
-If no choco.exe is found under the $InstallDir, it will fail to uninstall.
-This command also remove the $InstallDir from the Path.
+    This command attempts to clean the system from the Chocolatey Software files.
+    It first look into the provided $InstallDir, or in the $Env:ChocolateyInstall if not provided.
+    If the $InstallDir provided is $null or empty, it will attempts to find the Chocolatey folder
+    from the choco.exe command path.
+    If no choco.exe is found under the $InstallDir, it will fail to uninstall.
+    This command also remove the $InstallDir from the Path.
 
 .PARAMETER InstallDir
-Installation Directory to remove Chocolatey from. Default looks up in $Env:ChocolateyInstall
-Or, if specified with an empty/$null value, tries to find from the choco.exe path.
+    Installation Directory to remove Chocolatey from. Default looks up in $Env:ChocolateyInstall
+    Or, if specified with an empty/$null value, tries to find from the choco.exe path.
 
 .EXAMPLE
-Uninstall-Chocolatey -InstallDir ''
-#Will uninstall Chocolatey from the location of Choco.exe if found from $Env:PATH
-
+    Uninstall-Chocolatey -InstallDir ''
+    Will uninstall Chocolatey from the location of Choco.exe if found from $Env:PATH
 #>
 function Uninstall-Chocolatey {
     [CmdletBinding(

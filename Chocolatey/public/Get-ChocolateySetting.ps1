@@ -1,20 +1,20 @@
 <#
 .SYNOPSIS
-Gets the Settings set in the Configuration file.
+    Gets the Settings set in the Configuration file.
 
 .DESCRIPTION
-This command looks up in the Chocolatey Config file, and returns
-the Settings available from there.
+    This command looks up in the Chocolatey Config file, and returns
+    the Settings available from there.
 
 .PARAMETER Setting
-Name of the Setting when retrieving a single one or a specific list.
-It defaults to returning all Settings available in the config file.
+    Name of the Setting when retrieving a single one or a specific list.
+    It defaults to returning all Settings available in the config file.
 
 .EXAMPLE
-Get-ChocolateySetting -Name CacheLocation
+    Get-ChocolateySetting -Name CacheLocation
 
 .NOTES
-https://github.com/chocolatey/choco/wiki/CommandsConfig
+    https://github.com/chocolatey/choco/wiki/CommandsConfig
 #>
 function Get-ChocolateySetting {
     [CmdletBinding()]

@@ -12,6 +12,9 @@
     This allows to pin a specific Version of a Chocolatey Package.
 
 .EXAMPLE
+    Add-ChocolateyPin -Name 'PackageName'
+
+.EXAMPLE
     Add-ChocolateyPin -Name 'PackageName' -Version '1.0.0'
 
 .NOTES

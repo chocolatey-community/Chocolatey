@@ -1,15 +1,15 @@
 <#
 .SYNOPSIS
-Retrieve the version of the Chocolatey available in $Env:Path
+    Retrieve the version of the Chocolatey available in $Env:Path
 
 .DESCRIPTION
-Get the version of the Chocolatey currently installed.
+    Get the version of the Chocolatey currently installed.
 
 .EXAMPLE
-Get-ChocolateyVersion #This command does not accept parameter
+    Get-ChocolateyVersion #This command does not accept parameter
 
 .NOTES
-This does not specify the SKU (C4B or Community)
+    This does not specify the SKU (C4B or Community)
 #>
 function Get-ChocolateyVersion {
     [CmdletBinding()]

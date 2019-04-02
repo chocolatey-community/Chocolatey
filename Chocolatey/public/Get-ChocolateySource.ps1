@@ -1,23 +1,23 @@
 <#
 .SYNOPSIS
-List the source from Configuration file.
+    List the source from Configuration file.
 
 .DESCRIPTION
-Allows you to list the configured source from the Chocolatey Configuration file.
-When it comes to the source location, this can be a folder/file share
- or an http location. If it is a url, it will be a location you can go
- to in a browser and it returns OData with something that says Packages
- in the browser, similar to what you see when you go
- to https://chocolatey.org/api/v2/.
+    Allows you to list the configured source from the Chocolatey Configuration file.
+    When it comes to the source location, this can be a folder/file share
+    or an http location. If it is a url, it will be a location you can go
+    to in a browser and it returns OData with something that says Packages
+    in the browser, similar to what you see when you go
+    to https://chocolatey.org/api/v2/.
 
 .PARAMETER Name
-Retrieve specific source details from configuration file.
+    Retrieve specific source details from configuration file.
 
 .EXAMPLE
-Get-ChocolateySource -Name Chocolatey
+    Get-ChocolateySource -Name Chocolatey
 
 .NOTES
-https://github.com/chocolatey/choco/wiki/CommandsSource
+    https://github.com/chocolatey/choco/wiki/CommandsSource
 #>
 function Get-ChocolateySource {
     [CmdletBinding()]
