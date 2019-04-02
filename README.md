@@ -29,10 +29,18 @@ CHOCOLATEY\CHOCOLATEY
 │   │       ChocolateyPackage.psm1
 │   │       ChocolateyPackage.schema.mof
 │   │
-│   ├───ChocolateySoftware
+│   ├───ChocolateyPin
+│   │       ChocolateyPin.psm1
+│   │       ChocolateyPin.schema.mof
+│   │
+│   ├───ChocolateySetting
+│   │       ChocolateySetting.psm1
+│   │       ChocolateySetting.schema.mof
+│   │
+│   |───ChocolateySoftware
 │   │       ChocolateySoftware.psm1
 │   │       ChocolateySoftware.schema.mof
-│   │
+|   |
 │   └───ChocolateySource
 │           ChocolateySource.psm1
 │           ChocolateySource.schema.mof
@@ -57,6 +65,7 @@ CHOCOLATEY\CHOCOLATEY
 │       Enable-ChocolateySource.ps1
 │       Get-ChocolateyFeature.ps1
 │       Get-ChocolateyPackage.ps1
+|       Get-ChocolateyPin.ps1
 │       Get-ChocolateySource.ps1
 │       Get-ChocolateyVersion.ps1
 │       Install-Chocolatey.ps1

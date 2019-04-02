@@ -1,32 +1,32 @@
 <#
 .SYNOPSIS
-Compares two versions and find whether they're equal, or one is newer than the other.
+    Compares two versions and find whether they're equal, or one is newer than the other.
 
 .DESCRIPTION
-The Compare-SemVerVersion allows the comparison of SemVer 2.0 versions (including prerelease identifiers)
-as documented on semver.org
-The result will be = if the versions are equivalent, > if the reference version takes precedence, or < if the
-difference version wins.
+    The Compare-SemVerVersion allows the comparison of SemVer 2.0 versions (including prerelease identifiers)
+    as documented on semver.org
+    The result will be = if the versions are equivalent, > if the reference version takes precedence, or < if the
+    difference version wins.
 
 .PARAMETER ReferenceVersion
-The string version you would like to test.
+    The string version you would like to test.
 
 .PARAMETER DifferenceVersion
-The other string version you would like to compare agains the reference.
+    The other string version you would like to compare agains the reference.
 
 .EXAMPLE
-Compare-SemVerVersion -ReferenceVersion '0.2.3.546-alpha.201+01012018' -DifferenceVersion '0.2.3.546-alpha.200'
-# >
-Compare-SemVerVersion -ReferenceVersion '0.2.3.546-alpha.201+01012018' -DifferenceVersion '0.2.3.546-alpha.202'
-# <
+    Compare-SemVerVersion -ReferenceVersion '0.2.3.546-alpha.201+01012018' -DifferenceVersion '0.2.3.546-alpha.200'
+    # >
+    Compare-SemVerVersion -ReferenceVersion '0.2.3.546-alpha.201+01012018' -DifferenceVersion '0.2.3.546-alpha.202'
+    # <
 
 .EXAMPLE
-Compare-SemVerVersion -ReferenceVersion '0.2.3.546-alpha.201+01012018' -DifferenceVersion '0.2.3.546-alpha.201+01012015'
-# =
+    Compare-SemVerVersion -ReferenceVersion '0.2.3.546-alpha.201+01012018' -DifferenceVersion '0.2.3.546-alpha.201+01012015'
+    # =
 
 .NOTES
-Worth noting that the documentaion of SemVer versions should follow this logic (from semver.org)
-1.0.0-alpha < 1.0.0-alpha.1 < 1.0.0-alpha.beta < 1.0.0-beta < 1.0.0-beta.2 < 1.0.0-beta.11 < 1.0.0-rc.1 < 1.0.0.
+    Worth noting that the documentaion of SemVer versions should follow this logic (from semver.org)
+    1.0.0-alpha < 1.0.0-alpha.1 < 1.0.0-alpha.beta < 1.0.0-beta < 1.0.0-beta.2 < 1.0.0-beta.11 < 1.0.0-rc.1 < 1.0.0.
 #>
 function Compare-SemVerVersion {
     [CmdletBinding()]

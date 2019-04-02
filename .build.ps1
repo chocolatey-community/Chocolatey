@@ -100,7 +100,7 @@ begin {
 
         $PSDependParams = @{
             Force = $true
-            Path = "$PSScriptRoot\Dependencies.psd1"
+            Path  = "$PSScriptRoot\Dependencies.psd1"
         }
         if ($PSBoundParameters.ContainsKey('verbose')) { $PSDependParams.add('verbose',$verbose)}
         Invoke-PSDepend @PSDependParams
