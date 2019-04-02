@@ -45,7 +45,7 @@ function Get-ChocolateySetting {
 
         foreach ($Name in $Setting) {
             if ($Name -ne '*') {
-                Write-Verbose ('Searching for Setting named ${0}' -f [Security.SecurityElement]::Escape($Name))
+                Write-Verbose ("Searching for Setting named {0}" -f [Security.SecurityElement]::Escape($Name))
                 $SettingNodes = $ChocoXml.SelectNodes("//add[translate(@key,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='$([Security.SecurityElement]::Escape($Name.ToLower()))']")
             }
             else {
@@ -60,8 +60,8 @@ function Get-ChocolateySetting {
                 foreach ($property in $SettingNode.Attributes.name) {
                     $SettingPropertyParam = @{
                         MemberType = 'NoteProperty'
-                        Name = $property
-                        Value = $SettingNode.($property).ToString()
+                        Name       = $property
+                        Value      = $SettingNode.($property).ToString()
                     }
                     $SettingObject | Add-Member @SettingPropertyParam
                 }

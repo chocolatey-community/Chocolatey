@@ -262,7 +262,7 @@ function Get-ChocolateyDefaultArgument {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $Disabled,
 
         [Parameter(
@@ -273,25 +273,25 @@ function Get-ChocolateyDefaultArgument {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $BypassProxy,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $SelfService,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $NotBroken,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $AllVersions,
 
         [Parameter(
@@ -315,7 +315,7 @@ function Get-ChocolateyDefaultArgument {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $Force,
 
         [Parameter(
@@ -351,110 +351,110 @@ function Get-ChocolateyDefaultArgument {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $OverrideArguments,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $NotSilent,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $ApplyArgsToDependencies,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $AllowDowngrade,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $SideBySide,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $IgnoreDependencies,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $NoProgress,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $ForceDependencies,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $SkipPowerShell,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $IgnoreChecksum,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $AllowEmptyChecksum,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $ignorePackageCodes,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $UsePackageCodes,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $StopOnFirstFailure,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $SkipCache,
 
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $UseDownloadCache,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $SkipVirusCheck,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $VirusCheck,
 
         [Parameter(
@@ -481,19 +481,19 @@ function Get-ChocolateyDefaultArgument {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $LocalOnly,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $IdOnly,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $Prerelease,
 
         [Parameter(
@@ -505,13 +505,13 @@ function Get-ChocolateyDefaultArgument {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $IncludePrograms,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $ByIdOnly,
 
         [Parameter(
@@ -523,19 +523,19 @@ function Get-ChocolateyDefaultArgument {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $Exact,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $x86,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $AcceptLicense,
 
         [Parameter(
@@ -547,43 +547,43 @@ function Get-ChocolateyDefaultArgument {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $UseRememberedArguments,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $IgnoreRememberedArguments,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $ExcludePrerelease,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $AutoUninstaller,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $SkipAutoUninstaller,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $FailOnAutouninstaller,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $IgnoreAutoUninstallerFailure,
 
         #To be used when Password is too long (>240 char) like a key
@@ -687,11 +687,7 @@ function Get-ChocolateyDefaultArgument {
             'SkipAutoUninstaller' { '--skip-autouninstaller' }
             'FailOnAutouninstaller' { '--fail-on-autouninstaller' }
             'IgnoreAutoUninstallerFailure' { '--ignore-autouninstaller-failure' }
-
-            #pin package params
-            '' { '' }
         }
-
         return $ChocoArguments
     }
 }

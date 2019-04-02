@@ -7,9 +7,11 @@
 
 .PARAMETER Name
     Name of the Chocolatey Package to pin.
+    The Package must be installed beforehand.
 
 .PARAMETER Version
     This allows to pin a specific Version of a Chocolatey Package.
+    The Package with the Version to pin must be installed beforehand.
 
 .EXAMPLE
     Add-ChocolateyPin -Name 'PackageName'

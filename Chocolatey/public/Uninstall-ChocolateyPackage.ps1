@@ -4,7 +4,7 @@
 
 .DESCRIPTION
     Once the Chocolatey Software has been installed (see Install-ChocolateySoftware) this command
-    allows you to uninstall Software installed by Chocolatey, 
+    allows you to uninstall Software installed by Chocolatey,
     or synced from Add-remove program (Business edition).
 
 .PARAMETER Name

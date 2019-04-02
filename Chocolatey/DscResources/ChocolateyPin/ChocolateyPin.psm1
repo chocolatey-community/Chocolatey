@@ -54,17 +54,22 @@ function Set-TargetResource
     $null = $PSBoundParameters.remove('Ensure')
 
     switch ($Ensure) {
-        #'Present' {  }
-        'Absent'  {
+        #'Present' { }
+        'Absent' {
             if ( $PSBoundParameters.ContainsKey('Value') ) {
                 $PSBoundParameters.remove('Value')
             }
 
-            $null = $PSBoundParameters.add('Unset',$true) 
+            $null = $PSBoundParameters.add('Unset',$true)
+
+            Write-Verbose "Remove Pin to the Chocolatey Package $Name."
+            Remove-ChocolateyPin @PSBoundParameters
+        }
+        'Present' {
+            Write-Verbose "Add Pin to the Chocolatey Package $Name."
+            Add-ChocolateyPin @PSBoundParameters
         }
     }
-    Write-Verbose "Setting the Chocolatey Package $Name."
-    Set-ChocolateySetting @PSBoundParameters
 }
 
 

@@ -52,11 +52,11 @@
 .PARAMETER InstallArgumentsSensitive
     InstallArgumentsSensitive - Install Arguments to pass to the native
     installer in the package that are sensitive and you do not want logged.
-    Defaults to unspecified. 
+    Defaults to unspecified.
     Available in 0.10.1+. [Licensed editions](https://chocolatey.org/compare) only.
 
 .PARAMETER PackageParameters
-    PackageParameters - Parameters to pass to the package, 
+    PackageParameters - Parameters to pass to the package,
     that should be handled by the ChocolateyInstall.ps1
 
 .PARAMETER PackageParametersSensitive
@@ -120,7 +120,7 @@
 .PARAMETER StopOnFirstFailure
     Stop On First Package Failure - stop running install, upgrade or
     uninstall on first package failure instead of continuing with others.
-    Overrides the default feature 'stopOnFirstPackageFailure' set to 'False'. 
+    Overrides the default feature 'stopOnFirstPackageFailure' set to 'False'.
     Available in 0.10.4+.
 
 .PARAMETER UseRememberedArguments
@@ -179,7 +179,7 @@ function Update-ChocolateyPackage {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $Force,
 
         [Parameter(
@@ -191,13 +191,13 @@ function Update-ChocolateyPackage {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $NoProgress,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $AcceptLicense,
 
         [Parameter(
@@ -209,7 +209,7 @@ function Update-ChocolateyPackage {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $x86,
 
         [Parameter(
@@ -239,97 +239,97 @@ function Update-ChocolateyPackage {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $OverrideArguments,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $NotSilent,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $ApplyArgsToDependencies,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $AllowDowngrade,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $SideBySide,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $IgnoreDependencies,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $ForceDependencies,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $SkipPowerShell,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $IgnoreChecksum,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $AllowEmptyChecksum,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $ignorePackageCodes,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $UsePackageCodes,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $StopOnFirstFailure,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $UseRememberedArguments,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $IgnoreRememberedArguments,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $ExcludePrerelease
     )
 
