@@ -32,6 +32,10 @@ function Get-ChocolateyPin {
         Throw "Chocolatey Software not found."
     }
 
+    if (!(Get-ChocolateyPackage -Name $Name)) {
+        Throw "Chocolatey Package $Name cannot be found."
+    }
+
     # Prepare the arguments for `choco pin list -r`
     $ChocoArguments = @('pin', 'list', '-r')
 

@@ -1,28 +1,28 @@
 InModuleScope Chocolatey {
-    Describe Add-ChocolateyPin {
 
-        Mock Get-Command -MockWith { Get-Command Write-Output } -ParameterFilter {$Name -eq 'choco.exe'}
-        Mock Get-ChocolateyFeature -MockWith {
-            'TestPackage'
+    Describe "Add-ChocolateyPin" {
+
+        Mock -CommandName Add-ChocolateyPin -MockWith {
+            $properties = @{
+                Name    = 'TestPackage'
+                Version = '1.0.0'
+            }
+
+            return (New-Object -TypeName PSObject -Property $properties)
         }
-        Mock Get-ChocolateyDefaultArgument -MockWith { 'TestArgument' }
-        
-        Context 'Default' {
 
-            It 'Should call Get-Command' {
-                $null = Add-ChocolateyPin -Name 'TestPackage'
-                {Assert-MockCalled Get-Command} | Should -Not Throw
-            }
+        $results = Add-ChocolateyPin -Name 'TestPackage'
 
-            It 'Should call Get-ChocolateyFeature' {
-                $null = Add-ChocolateyPin -Name 'TestPackage'
-                {Assert-MockCalled Get-ChocolateyFeature} | Should -Not Throw
-            }
-            
-            It 'Should not return value' {
-                $return = Add-ChocolateyPin -Name 'TestPackage'
-                $return | Should -BeNullOrEmpty
-            }
+        It 'Should return an PSCustomObject' {
+            $results.GetType().Name | Should -Be 'PSCustomObject'
+        }
+
+        It 'Should return a Package with name TestPackage' {
+            $results.Name | Should -Be 'TestPackage'
+        }
+
+        It 'Should return a Version' {
+            $results.Version | Should -Be '1.0.0'
         }
     }
 }

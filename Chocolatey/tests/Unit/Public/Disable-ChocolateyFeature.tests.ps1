@@ -11,12 +11,12 @@ InModuleScope Chocolatey {
 
             It 'Should call Get-Command' {
                 $null = Disable-ChocolateyFeature -Name 'TestFeature'
-                {Assert-MockCalled Get-Command} | Should -Not Throw
+                {Assert-MockCalled Get-Command} | Should not Throw
             }
 
             It 'Should call Get-ChocolateyFeature' {
                 $null = Disable-ChocolateyFeature -Name 'TestFeature'
-                {Assert-MockCalled Get-ChocolateyFeature} | Should -Not Throw
+                {Assert-MockCalled Get-ChocolateyFeature} | Should not Throw
             }
             
             It 'Should not return value' {

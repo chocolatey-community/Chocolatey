@@ -20,18 +20,18 @@ InModuleScope Chocolatey {
 
             It 'Ensure Get-RemoteString is called when install from Feed without version' {
                 $null = Install-ChocolateySoftware
-                { Assert-MockCalled Get-RemoteString } | Should -Not Throw
+                { Assert-MockCalled Get-RemoteString } | Should not Throw
             }
 
             It 'Ensure Get-RemoteFile is called' {
                 $null = Install-ChocolateySoftware
-                { Assert-MockCalled Get-RemoteFile } | Should -Not Throw
+                { Assert-MockCalled Get-RemoteFile } | Should not Throw
             }
 
             if($PSVersionTable.PSVersion.Major -ge 5) {
                 It 'Ensure Expand-Archive is called' {
                     $null = Install-ChocolateySoftware
-                    { Assert-MockCalled Expand-Archive } | Should -Not Throw
+                    { Assert-MockCalled Expand-Archive } | Should not Throw
                 }
             }
         }
