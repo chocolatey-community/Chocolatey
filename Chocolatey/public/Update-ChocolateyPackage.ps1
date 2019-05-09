@@ -1,165 +1,168 @@
 <#
 .SYNOPSIS
-Updates the Chocolatey package to the latest version.
+    Updates the Chocolatey package to the latest version.
 
 .DESCRIPTION
-Upgrades a package or a list of packages to the latest version available on the source(s).
-If you do not have a package installed, upgrade will install it.
+    Upgrades a package or a list of packages to the latest version available on the source(s).
+    If you do not have a package installed, upgrade will install it.
 
 .PARAMETER Name
-Package Name to install, either from a configured source, a specified one such as a folder,
-or the current directory '.'
+    Package Name to install, either from a configured source, a specified one such as a folder,
+    or the current directory '.'
 
 .PARAMETER Version
-Version - A specific version to install. Defaults to unspecified.
+    Version - A specific version to install. Defaults to unspecified.
 
 .PARAMETER Source
-Source - The source to find the package(s) to install. Special sources
-include: ruby, webpi, cygwin, windowsfeatures, and python. To specify
-more than one source, pass it with a semi-colon separating the values (-
-e.g. "'source1;source2'"). Defaults to default feeds.
+    Source - The source to find the package(s) to install. Special sources
+    include: ruby, webpi, cygwin, windowsfeatures, and python. To specify
+    more than one source, pass it with a semi-colon separating the values (-
+    e.g. "'source1;source2'"). Defaults to default feeds.
 
 .PARAMETER Credential
-Credential used with authenticated feeds. Defaults to empty.
+    Credential used with authenticated feeds. Defaults to empty.
 
 .PARAMETER Force
-Force - force the behavior. Do not use force during normal operation -
-it subverts some of the smart behavior for commands.
+    Force - force the behavior. Do not use force during normal operation -
+    it subverts some of the smart behavior for commands.
 
 .PARAMETER CacheLocation
-CacheLocation - Location for download cache, defaults to %TEMP% or value
-in chocolatey.config file.
+    CacheLocation - Location for download cache, defaults to %TEMP% or value
+    in chocolatey.config file.
 
 .PARAMETER NoProgress
-Do Not Show Progress - Do not show download progress percentages.
-Available in 0.10.4+.
+    Do Not Show Progress - Do not show download progress percentages.
+    Available in 0.10.4+.
 
 .PARAMETER AcceptLicense
-AcceptLicense - Accept license dialogs automatically. Reserved for future use.
+    AcceptLicense - Accept license dialogs automatically. Reserved for future use.
 
 .PARAMETER Timeout
-CommandExecutionTimeout (in seconds) - The time to allow a command to
-finish before timing out. Overrides the default execution timeout in the
-configuration of 2700 seconds. '0' for infinite starting in 0.10.4.
+    CommandExecutionTimeout (in seconds) - The time to allow a command to
+    finish before timing out. Overrides the default execution timeout in the
+    configuration of 2700 seconds. '0' for infinite starting in 0.10.4.
 
 .PARAMETER x86
-ForceX86 - Force x86 (32bit) installation on 64 bit systems. Defaults to false.
+    ForceX86 - Force x86 (32bit) installation on 64 bit systems. Defaults to false.
 
 .PARAMETER InstallArguments
-InstallArguments - Install Arguments to pass to the native installer in
-the package. Defaults to unspecified.
+    InstallArguments - Install Arguments to pass to the native installer in
+    the package. Defaults to unspecified.
 
 .PARAMETER InstallArgumentsSensitive
-InstallArgumentsSensitive - Install Arguments to pass to the native
-installer in the package that are sensitive and you do not want logged.
-Defaults to unspecified. Available in 0.10.1+. [Licensed editions](https://chocolatey.org/compare) only.
+    InstallArgumentsSensitive - Install Arguments to pass to the native
+    installer in the package that are sensitive and you do not want logged.
+    Defaults to unspecified.
+    Available in 0.10.1+. [Licensed editions](https://chocolatey.org/compare) only.
 
 .PARAMETER PackageParameters
-PackageParameters - Parameters to pass to the package, that should be handled by the ChocolateyInstall.ps1
+    PackageParameters - Parameters to pass to the package,
+    that should be handled by the ChocolateyInstall.ps1
 
 .PARAMETER PackageParametersSensitive
-PackageParametersSensitive - Package Parameters to pass the package that
-are sensitive and you do not want logged. Defaults to unspecified.
-Available in 0.10.1+. [Licensed editions](https://chocolatey.org/compare) only.
+    PackageParametersSensitive - Package Parameters to pass the package that
+    are sensitive and you do not want logged. Defaults to unspecified.
+    Available in 0.10.1+. [Licensed editions](https://chocolatey.org/compare) only.
 
 .PARAMETER OverrideArguments
-OverrideArguments - Should install arguments be used exclusively without
-appending to current package passed arguments? Defaults to false.
+    OverrideArguments - Should install arguments be used exclusively without
+    appending to current package passed arguments? Defaults to false.
 
 .PARAMETER NotSilent
-NotSilent - Do not install this silently. Defaults to false.
+    NotSilent - Do not install this silently. Defaults to false.
 
 .PARAMETER ApplyArgsToDependencies
-Apply Install Arguments To Dependencies  - Should install arguments be
-applied to dependent packages? Defaults to false.
+    Apply Install Arguments To Dependencies  - Should install arguments be
+    applied to dependent packages? Defaults to false.
 
 .PARAMETER AllowDowngrade
-AllowDowngrade - Should an attempt at downgrading be allowed? Defaults to false.
+    AllowDowngrade - Should an attempt at downgrading be allowed? Defaults to false.
 
 .PARAMETER SideBySide
-AllowMultipleVersions - Should multiple versions of a package be
-installed? Defaults to false.
+    AllowMultipleVersions - Should multiple versions of a package be
+    installed? Defaults to false.
 
 .PARAMETER IgnoreDependencies
-IgnoreDependencies - Ignore dependencies when installing package(s).
-Defaults to false.
+    IgnoreDependencies - Ignore dependencies when installing package(s).
+    Defaults to false.
 
 .PARAMETER ForceDependencies
-ForceDependencies - Force dependencies to be reinstalled when force
-installing package(s). Must be used in conjunction with --force.
-Defaults to false.
+    ForceDependencies - Force dependencies to be reinstalled when force
+    installing package(s). Must be used in conjunction with --force.
+    Defaults to false.
 
 .PARAMETER SkipPowerShell
-Skip Powershell - Do not run chocolateyInstall.ps1. Defaults to false.
+    Skip Powershell - Do not run chocolateyInstall.ps1. Defaults to false.
 
 .PARAMETER IgnoreChecksum
-IgnoreChecksums - Ignore checksums provided by the package. Overrides
-the default feature 'checksumFiles' set to 'True'. Available in 0.9.9.9+.
+    IgnoreChecksums - Ignore checksums provided by the package. Overrides
+    the default feature 'checksumFiles' set to 'True'. Available in 0.9.9.9+.
 
 .PARAMETER AllowEmptyChecksum
-Allow Empty Checksums - Allow packages to have empty/missing checksums
-for downloaded resources from non-secure locations (HTTP, FTP). Use this
-switch is not recommended if using sources that download resources from
-the internet. Overrides the default feature 'allowEmptyChecksums' set to
-'False'. Available in 0.10.0+.
+    Allow Empty Checksums - Allow packages to have empty/missing checksums
+    for downloaded resources from non-secure locations (HTTP, FTP). Use this
+    switch is not recommended if using sources that download resources from
+    the internet. Overrides the default feature 'allowEmptyChecksums' set to
+    'False'. Available in 0.10.0+.
 
 .PARAMETER ignorePackageCodes
-IgnorePackageExitCodes - Exit with a 0 for success and 1 for non-success,
-no matter what package scripts provide for exit codes. Overrides the
-default feature 'usePackageExitCodes' set to 'True'. Available in 0.-9.10+.
+    IgnorePackageExitCodes - Exit with a 0 for success and 1 for non-success,
+    no matter what package scripts provide for exit codes. Overrides the
+    default feature 'usePackageExitCodes' set to 'True'. Available in 0.-9.10+.
 
 .PARAMETER UsePackageCodes
-UsePackageExitCodes - Package scripts can provide exit codes. Use those
-for choco's exit code when non-zero (this value can come from a
-dependency package). Chocolatey defines valid exit codes as 0, 1605,
-1614, 1641, 3010.  Overrides the default feature 'usePackageExitCodes'
-set to 'True'. Available in 0.9.10+.
+    UsePackageExitCodes - Package scripts can provide exit codes. Use those
+    for choco's exit code when non-zero (this value can come from a
+    dependency package). Chocolatey defines valid exit codes as 0, 1605,
+    1614, 1641, 3010.  Overrides the default feature 'usePackageExitCodes'
+    set to 'True'. Available in 0.9.10+.
 
 .PARAMETER StopOnFirstFailure
-Stop On First Package Failure - stop running install, upgrade or
-uninstall on first package failure instead of continuing with others.
-Overrides the default feature 'stopOnFirstPackageFailure' set to 'False'. Available in 0.10.4+.
+    Stop On First Package Failure - stop running install, upgrade or
+    uninstall on first package failure instead of continuing with others.
+    Overrides the default feature 'stopOnFirstPackageFailure' set to 'False'.
+    Available in 0.10.4+.
 
 .PARAMETER UseRememberedArguments
-Use Remembered Options for Upgrade - use the arguments and options used
-during install for upgrade. Does not override arguments being passed at
-runtime. Overrides the default feature
-'useRememberedArgumentsForUpgrades' set to 'False'. Available in 0.10.4+.
+    Use Remembered Options for Upgrade - use the arguments and options used
+    during install for upgrade. Does not override arguments being passed at
+    runtime. Overrides the default feature
+    'useRememberedArgumentsForUpgrades' set to 'False'. Available in 0.10.4+.
 
 .PARAMETER IgnoreRememberedArguments
-Ignore Remembered Options for Upgrade - ignore the arguments and options
-used during install for upgrade. Overrides the default feature
-'useRememberedArgumentsForUpgrades' set to 'False'. Available in 0.10.4+.
+    Ignore Remembered Options for Upgrade - ignore the arguments and options
+    used during install for upgrade. Overrides the default feature
+    'useRememberedArgumentsForUpgrades' set to 'False'. Available in 0.10.4+.
 
 .PARAMETER ExcludePrerelease
-Exclude Prerelease - Should prerelease be ignored for upgrades? Will be
-ignored if you pass `--pre`. Available in 0.10.4+.
+    Exclude Prerelease - Should prerelease be ignored for upgrades? Will be
+    ignored if you pass `--pre`. Available in 0.10.4+.
 
 .EXAMPLE
-Update-ChocolateyPackage -Name All
+    Update-ChocolateyPackage -Name All
 
 .NOTES
-https://github.com/chocolatey/choco/wiki/CommandsUpgrade
+    https://github.com/chocolatey/choco/wiki/CommandsUpgrade
 #>
 function Update-ChocolateyPackage {
     [CmdletBinding(
         SupportsShouldProcess=$true,
         ConfirmImpact='High'
     )]
-    Param(
+    param(
         [Parameter(
             Mandatory
             ,ValueFromPipeline
             ,ValueFromPipelineByPropertyName
         )]
-        [String[]]
+        [System.String[]]
         $Name,
 
         [Parameter(
             ,ValueFromPipelineByPropertyName
         )]
         [ValidateNotNullOrEmpty()]
-        [String]
+        [System.String]
         $Version,
 
         [Parameter(
@@ -176,25 +179,25 @@ function Update-ChocolateyPackage {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $Force,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [String]
+        [System.String]
         $CacheLocation,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $NoProgress,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $AcceptLicense,
 
         [Parameter(
@@ -206,137 +209,137 @@ function Update-ChocolateyPackage {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $x86,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [String]
+        [System.String]
         $InstallArguments,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [String]
+        [System.String]
         $InstallArgumentsSensitive,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [String]
+        [System.String]
         $PackageParameters,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [String]
+        [System.String]
         $PackageParametersSensitive,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $OverrideArguments,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $NotSilent,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $ApplyArgsToDependencies,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $AllowDowngrade,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $SideBySide,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $IgnoreDependencies,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $ForceDependencies,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $SkipPowerShell,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $IgnoreChecksum,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $AllowEmptyChecksum,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $ignorePackageCodes,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $UsePackageCodes,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $StopOnFirstFailure,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $UseRememberedArguments,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $IgnoreRememberedArguments,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $ExcludePrerelease
     )
 
     begin {
         $null = $PSboundParameters.remove('Name')
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
-            Throw "Chocolatey Software not found"
+            Throw "Chocolatey Software not found."
         }
         $CachePath = [io.path]::Combine($Env:ChocolateyInstall,'cache','GetChocolateyPackageCache.xml')
-        if( (Test-Path $CachePath)) {
+        if ( (Test-Path $CachePath)) {
             $null = Remove-Item $CachePath -ErrorAction SilentlyContinue
         }
     }

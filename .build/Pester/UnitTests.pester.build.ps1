@@ -3,29 +3,29 @@ Param (
     [io.DirectoryInfo]
     $ProjectPath = (property ProjectPath (Join-Path $PSScriptRoot '../..' -Resolve -ErrorAction SilentlyContinue)),
 
-    [string]
+    [System.String]
     $BuildOutput = (property BuildOutput 'C:\BuildOutput'),
 
-    [bool]
+    [System.Boolean]
     $TestFromBuildOutput = $true,
 
-    [string]
+    [System.String]
     $ProjectName = (property ProjectName (Split-Path -Leaf (Join-Path $PSScriptRoot '../..')) ),
 
-    [string]
+    [System.String]
     $PesterOutputFormat = (property PesterOutputFormat 'NUnitXml'),
 
-    [string]
+    [System.String]
     $PathToUnitTests = (property PathToUnitTests 'tests/Unit'),
 
-    [string]
+    [System.String]
     $PesterOutputSubFolder = (property PesterOutputSubFolder 'PesterOut'),
 
     [Int]
     [ValidateRange(0,100)]
     $CodeCoverageThreshold = (property CodeCoverageThreshold 90),
 
-    [string]
+    [System.String]
     $LineSeparation = (property LineSeparation ('-' * 78))
 )
 
@@ -37,7 +37,7 @@ task UnitTests {
     "`tProject Name = $ProjectName"
     "`tUnit Tests   = $PathToUnitTests"
     "`tResult Folder= $BuildOutput\Unit\"
-    if($TestFromBuildOutput) {
+    if ($TestFromBuildOutput) {
         "`tTesting against compiled Module: $BuildOutput\$ProjectName"
     }
     else {
@@ -86,7 +86,7 @@ task UnitTests {
     }
     
     Push-Location $UnitTestPath
-    if($TestFromBuildOutput) {
+    if ($TestFromBuildOutput) {
         $ListOfTestedFile = Get-ChildItem -Recurse "$BuildOutput\$ProjectName" -include *.ps1,*.psm1 -Exclude *.tests.ps1
     }
     else {
@@ -106,7 +106,7 @@ task UnitTests {
         PassThru     = $true
     }
     Import-module Pester
-    if($TestFromBuildOutput) {
+    if ($TestFromBuildOutput) {
         Import-Module -Force ("$BuildOutput\$ProjectName" -replace '\\$')
     }
     else {

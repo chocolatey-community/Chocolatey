@@ -1,27 +1,26 @@
 <#
 .SYNOPSIS
-Returns a Downloader object (System.Net.WebClient) set up.
+    Returns a Downloader object (System.Net.WebClient) set up.
 
 .DESCRIPTION
-Returns a Downloader object configured with Proxy and Credential.
-This is used during the Chocolatey software Install Process,
-to retrieve metadata and to download the file.
+    Returns a Downloader object configured with Proxy and Credential.
+    This is used during the Chocolatey software Install Process,
+    to retrieve metadata and to download the file.
 
 .PARAMETER url
-Url to execute the request against.
+    Url to execute the request against.
 
 .PARAMETER ProxyLocation
-Url of the Proxy to use for executing request.
+    Url of the Proxy to use for executing request.
 
 .PARAMETER ProxyCredential
-Credential to be used by the proxy. By default it will try to use the cached credential.
+    Credential to be used by the proxy. By default it will try to use the cached credential.
 
 .PARAMETER IgnoreProxy
-Bypass the proxy for this request.
+    Bypass the proxy for this request.
 
 .EXAMPLE
-Get-Downloader -Url https://chocolatey.org/api/v2
-
+    Get-Downloader -Url https://chocolatey.org/api/v2
 #>
 function Get-Downloader {
     [CmdletBinding()]
@@ -29,7 +28,7 @@ function Get-Downloader {
         [parameter(
             Mandatory
         )]
-        [string]
+        [System.String]
         $url,
 
         [uri]

@@ -12,7 +12,7 @@ For more information see the Code of Conduct FAQ or contact opencode@microsoft.c
 
 This is the current content of the module, besides the file used for managing the project.
 
-```
+```txt
 CHOCOLATEY\CHOCOLATEY
 │   Chocolatey.psd1
 │   Chocolatey.psm1
@@ -29,10 +29,18 @@ CHOCOLATEY\CHOCOLATEY
 │   │       ChocolateyPackage.psm1
 │   │       ChocolateyPackage.schema.mof
 │   │
-│   ├───ChocolateySoftware
+│   ├───ChocolateyPin
+│   │       ChocolateyPin.psm1
+│   │       ChocolateyPin.schema.mof
+│   │
+│   ├───ChocolateySetting
+│   │       ChocolateySetting.psm1
+│   │       ChocolateySetting.schema.mof
+│   │
+│   |───ChocolateySoftware
 │   │       ChocolateySoftware.psm1
 │   │       ChocolateySoftware.schema.mof
-│   │
+|   |
 │   └───ChocolateySource
 │           ChocolateySource.psm1
 │           ChocolateySource.schema.mof
@@ -50,21 +58,25 @@ CHOCOLATEY\CHOCOLATEY
 │       Write-Host.ps1
 │
 ├───public
-│       Disable-ChocolateyFeature.ps1
+│       Add-ChocolateyPin.ps1
+|       Disable-ChocolateyFeature.ps1
 │       Disable-ChocolateySource.ps1
 │       Enable-ChocolateyFeature.ps1
 │       Enable-ChocolateySource.ps1
 │       Get-ChocolateyFeature.ps1
 │       Get-ChocolateyPackage.ps1
+|       Get-ChocolateyPin.ps1
 │       Get-ChocolateySource.ps1
 │       Get-ChocolateyVersion.ps1
 │       Install-Chocolatey.ps1
 │       Install-ChocolateyPackage.ps1
 │       Install-ChocolateySoftware.ps1
 │       Register-ChocolateySource.ps1
+|       Remove-ChocolateyPin.ps1
 │       Test-ChocolateyFeature.ps1
 │       Test-ChocolateyInstall.ps1
 │       Test-ChocolateyPackageIsInstalled.ps1
+|       Test-ChocolateyPin.ps1
 │       Test-ChocolateySource.ps1
 │       Uninstall-Chocolatey.ps1
 │       Uninstall-ChocolateyPackage.ps1
@@ -72,4 +84,12 @@ CHOCOLATEY\CHOCOLATEY
 │       Update-ChocolateyPackage.ps1
 │
 └───tests
+    │
+    ├───QA
+    │
+    └───Unit
+        |
+        |───Private
+        |
+        └───Public
 ```

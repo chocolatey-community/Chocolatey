@@ -1,121 +1,122 @@
 <#
 .SYNOPSIS
-Uninstalls a Chocolatey package or a list of packages.
+    Uninstalls a Chocolatey package or a list of packages.
 
 .DESCRIPTION
-Once the Chocolatey Software has been installed (see Install-ChocolateySoftware) this command
-allows you to uninstall Software installed by Chocolatey, or synced from Add-remove program (Business edition).
+    Once the Chocolatey Software has been installed (see Install-ChocolateySoftware) this command
+    allows you to uninstall Software installed by Chocolatey,
+    or synced from Add-remove program (Business edition).
 
 .PARAMETER Name
-Package Name to uninstall, either from a configured source, a specified one such as a folder,
-or the current directory '.'
+    Package Name to uninstall, either from a configured source, a specified one such as a folder,
+    or the current directory '.'
 
 .PARAMETER Version
-Version - A specific version to install.
+    Version - A specific version to install.
 
 .PARAMETER Source
-Source - The source to find the package(s) to install. Special sources
-include: ruby, webpi, cygwin, windowsfeatures, and python. To specify
-more than one source, pass it with a semi-colon separating the values (-
-e.g. "'source1;source2'"). Defaults to default feeds.
+    Source - The source to find the package(s) to install. Special sources
+    include: ruby, webpi, cygwin, windowsfeatures, and python. To specify
+    more than one source, pass it with a semi-colon separating the values (-
+    e.g. "'source1;source2'"). Defaults to default feeds.
 
 .PARAMETER Credential
-Credential used with authenticated feeds. Defaults to empty.
+    Credential used with authenticated feeds. Defaults to empty.
 
 .PARAMETER Force
-Force - force the behavior. Do not use force during normal operation -
-it subverts some of the smart behavior for commands.
+    Force - force the behavior. Do not use force during normal operation -
+    it subverts some of the smart behavior for commands.
 
 .PARAMETER CacheLocation
-CacheLocation - Location for download cache, defaults to %TEMP% or value
-in chocolatey.config file.
+    CacheLocation - Location for download cache, defaults to %TEMP% or value
+    in chocolatey.config file.
 
 .PARAMETER NoProgress
-Do Not Show Progress - Do not show download progress percentages.
-Available in 0.10.4+.
+    Do Not Show Progress - Do not show download progress percentages.
+    Available in 0.10.4+.
 
 .PARAMETER AcceptLicense
-AcceptLicense - Accept license dialogs automatically. Reserved for future use.
+    AcceptLicense - Accept license dialogs automatically. Reserved for future use.
 
 .PARAMETER Timeout
-CommandExecutionTimeout (in seconds) - The time to allow a command to
-finish before timing out. Overrides the default execution timeout in the
-configuration of 2700 seconds. '0' for infinite starting in 0.10.4.
+    CommandExecutionTimeout (in seconds) - The time to allow a command to
+    finish before timing out. Overrides the default execution timeout in the
+    configuration of 2700 seconds. '0' for infinite starting in 0.10.4.
 
 .PARAMETER UninstallArguments
-UninstallArguments - Uninstall Arguments to pass to the native installer
-in the package. Defaults to unspecified.
+    UninstallArguments - Uninstall Arguments to pass to the native installer
+    in the package. Defaults to unspecified.
 
 .PARAMETER OverrideArguments
-OverrideArguments - Should uninstall arguments be used exclusively
-without appending to current package passed arguments? Defaults to false.
+    OverrideArguments - Should uninstall arguments be used exclusively
+    without appending to current package passed arguments? Defaults to false.
 
 .PARAMETER NotSilent
-NotSilent - Do not uninstall this silently. Defaults to false.
+    NotSilent - Do not uninstall this silently. Defaults to false.
 
 .PARAMETER ApplyArgsToDependencies
-Apply Install Arguments To Dependencies  - Should install arguments be
-applied to dependent packages? Defaults to false.
+    Apply Install Arguments To Dependencies  - Should install arguments be
+    applied to dependent packages? Defaults to false.
 
 .PARAMETER SideBySide
-AllowMultipleVersions - Should multiple versions of a package be
-installed? Defaults to false.
+    AllowMultipleVersions - Should multiple versions of a package be
+    installed? Defaults to false.
 
 .PARAMETER IgnoreDependencies
-IgnoreDependencies - Ignore dependencies when installing package(s).
-Defaults to false.
+    IgnoreDependencies - Ignore dependencies when installing package(s).
+    Defaults to false.
 
 .PARAMETER ForceDependencies
-RemoveDependencies - Uninstall dependencies when uninstalling package(s).
-Defaults to false.
+    RemoveDependencies - Uninstall dependencies when uninstalling package(s).
+    Defaults to false.
 
 .PARAMETER SkipPowerShell
-Skip Powershell - Do not run chocolateyUninstall.ps1. Defaults to false.
+    Skip Powershell - Do not run chocolateyUninstall.ps1. Defaults to false.
 
 .PARAMETER ignorePackageCodes
-IgnorePackageExitCodes - Exit with a 0 for success and 1 for non-succes-s,
-no matter what package scripts provide for exit codes. Overrides the
-default feature 'usePackageExitCodes' set to 'True'. Available in 0.9.10+.
+    IgnorePackageExitCodes - Exit with a 0 for success and 1 for non-succes-s,
+    no matter what package scripts provide for exit codes. Overrides the
+    default feature 'usePackageExitCodes' set to 'True'. Available in 0.9.10+.
 
 .PARAMETER UsePackageCodes
-UsePackageExitCodes - Package scripts can provide exit codes. Use those
-for choco's exit code when non-zero (this value can come from a
-dependency package). Chocolatey defines valid exit codes as 0, 1605,
-1614, 1641, 3010. Overrides the default feature 'usePackageExitCodes'
-set to 'True'.
-Available in 0.9.10+.
+    UsePackageExitCodes - Package scripts can provide exit codes. Use those
+    for choco's exit code when non-zero (this value can come from a
+    dependency package). Chocolatey defines valid exit codes as 0, 1605,
+    1614, 1641, 3010. Overrides the default feature 'usePackageExitCodes'
+    set to 'True'.
+    Available in 0.9.10+.
 
 .PARAMETER StopOnFirstFailure
-Stop On First Package Failure - stop running install, upgrade or
-uninstall on first package failure instead of continuing with others.
-Overrides the default feature 'stopOnFirstPackageFailure' set to 'False'.
-Available in 0.10.4+.
+    Stop On First Package Failure - stop running install, upgrade or
+    uninstall on first package failure instead of continuing with others.
+    Overrides the default feature 'stopOnFirstPackageFailure' set to 'False'.
+    Available in 0.10.4+.
 
 .PARAMETER AutoUninstaller
-UseAutoUninstaller - Use auto uninstaller service when uninstalling.
-Overrides the default feature 'autoUninstaller' set to 'True'.
-Available in 0.9.10+.
+    UseAutoUninstaller - Use auto uninstaller service when uninstalling.
+    Overrides the default feature 'autoUninstaller' set to 'True'.
+    Available in 0.9.10+.
 
 .PARAMETER SkipAutoUninstaller
-SkipAutoUninstaller - Skip auto uninstaller service when uninstalling.
-Overrides the default feature 'autoUninstaller' set to 'True'. Available
-in 0.9.10+.
+    SkipAutoUninstaller - Skip auto uninstaller service when uninstalling.
+    Overrides the default feature 'autoUninstaller' set to 'True'. Available
+    in 0.9.10+.
 
 .PARAMETER FailOnAutouninstaller
-FailOnAutoUninstaller - Fail the package uninstall if the auto
-uninstaller reports and error. Overrides the default feature
-'failOnAutoUninstaller' set to 'False'. Available in 0.9.10+.
+    FailOnAutoUninstaller - Fail the package uninstall if the auto
+    uninstaller reports and error. Overrides the default feature
+    'failOnAutoUninstaller' set to 'False'. Available in 0.9.10+.
 
 .PARAMETER IgnoreAutoUninstallerFailure
-Ignore Auto Uninstaller Failure - Do not fail the package if auto
-uninstaller reports an error. Overrides the default feature
-'failOnAutoUninstaller' set to 'False'. Available in 0.9.10+.
+    Ignore Auto Uninstaller Failure - Do not fail the package if auto
+    uninstaller reports an error. Overrides the default feature
+    'failOnAutoUninstaller' set to 'False'. Available in 0.9.10+.
 
 .EXAMPLE
-Uninstall-ChocolateyPackage -Name Putty
+    Uninstall-ChocolateyPackage -Name Putty
 
 .NOTES
-https://github.com/chocolatey/choco/wiki/Commandsuninstall
+    https://github.com/chocolatey/choco/wiki/Commandsuninstall
 #>
 function Uninstall-ChocolateyPackage {
     [CmdletBinding(
@@ -128,14 +129,14 @@ function Uninstall-ChocolateyPackage {
             ,ValueFromPipeline
             ,ValueFromPipelineByPropertyName
         )]
-        [String[]]
+        [System.String[]]
         $Name,
 
         [Parameter(
             ,ValueFromPipelineByPropertyName
         )]
         [ValidateNotNullOrEmpty()]
-        [String]
+        [System.String]
         $Version,
 
         [Parameter(
@@ -152,25 +153,25 @@ function Uninstall-ChocolateyPackage {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $Force,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [String]
+        [System.String]
         $CacheLocation,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $NoProgress,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $AcceptLicense,
 
         [Parameter(
@@ -182,101 +183,101 @@ function Uninstall-ChocolateyPackage {
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [String]
+        [System.String]
         $UninstallArguments,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $OverrideArguments,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $NotSilent,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $ApplyArgsToDependencies,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $SideBySide,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $IgnoreDependencies,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $ForceDependencies,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $SkipPowerShell,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $ignorePackageCodes,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $UsePackageCodes,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $StopOnFirstFailure,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $AutoUninstaller,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $SkipAutoUninstaller,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $FailOnAutouninstaller,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $IgnoreAutoUninstallerFailure
     )
 
     begin {
         $null = $PSboundParameters.remove('Name')
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
-            Throw "Chocolatey Software not found"
+            Throw "Chocolatey Software not found."
         }
         $CachePath = [io.path]::Combine($Env:ChocolateyInstall,'cache','GetChocolateyPackageCache.xml')
-        if( (Test-Path $CachePath)) {
+        if ( (Test-Path $CachePath)) {
             $null = Remove-Item $CachePath -ErrorAction SilentlyContinue
         }
     }

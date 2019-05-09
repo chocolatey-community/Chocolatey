@@ -1,43 +1,43 @@
 <#
 .SYNOPSIS
-Disable a Source set in the Chocolatey Config
+    Disable a Source set in the Chocolatey Config
 
 .DESCRIPTION
-Lets you disable an existing source.
-The equivalent Choco command is Choco source disable -n=sourcename
+    Lets you disable an existing source.
+    The equivalent Choco command is Choco source disable -n=sourcename
 
 .PARAMETER Name
-Name of the Chocolatey source to Disable
+    Name of the Chocolatey source to Disable
 
 .PARAMETER NoProgress
-This allows to reduce the output created by the Chocolatey Command.
+    This allows to reduce the output created by the Chocolatey Command.
 
 .EXAMPLE
-Disable-ChocolateySource -Name chocolatey
+    Disable-ChocolateySource -Name chocolatey
 
 .NOTES
-https://github.com/chocolatey/choco/wiki/CommandsSource
+    https://github.com/chocolatey/choco/wiki/CommandsSource
 #>
 function Disable-ChocolateySource {
     [CmdletBinding()]
-    Param(
+    param(
         [Parameter(
             Mandatory
             ,ValueFromPipelineByPropertyName
         )]
-        [String]
+        [System.String]
         $Name,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $NoProgress
     )
 
     Process {
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
-            Throw "Chocolatey Software not found"
+            Throw "Chocolatey Software not found."
         }
 
         if (!(Get-ChocolateySource -Name $Name)) {

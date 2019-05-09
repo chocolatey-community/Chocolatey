@@ -14,12 +14,8 @@ function Get-TargetResource
         $Name
     )
 
-    <#
-
-    #>
-
     $Env:Path = [Environment]::GetEnvironmentVariable('Path','Machine')
-    
+
     Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -verbose:$False
 
     $FeatureConfig = Get-ChocolateyFeature -Name $Name
@@ -29,7 +25,6 @@ function Get-TargetResource
         Name = $FeatureConfig.Name
     }
 }
-
 
 function Set-TargetResource
 {
@@ -47,15 +42,14 @@ function Set-TargetResource
     )
 
     $Env:Path = [Environment]::GetEnvironmentVariable('Path','Machine')
-    
+
     Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -verbose:$False
 
-    Switch ($Ensure) {
-        'Present' { Enable-ChocolateyFeature -name $Name}
-        'Absent'  { Disable-ChocolateyFeature -name $Name}
+    switch ($Ensure) {
+        'Present' { Enable-ChocolateyFeature -Name $Name}
+        'Absent'  { Disable-ChocolateyFeature -Name $Name}
     }
 }
-
 
 function Test-TargetResource
 {
@@ -77,13 +71,10 @@ function Test-TargetResource
     Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -verbose:$False
 
     $EnsureResultMap = @{
-        'Present'=$false
-        'Absent'=$true
+        'Present' = $false
+        'Absent'  = $true
     }
-    
     return (Test-ChocolateyFeature -Name $Name -Disabled:($EnsureResultMap[$Ensure]))
 }
 
-
 Export-ModuleMember -Function *-TargetResource
-

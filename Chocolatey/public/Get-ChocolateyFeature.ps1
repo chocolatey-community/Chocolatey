@@ -1,25 +1,25 @@
 <#
 .SYNOPSIS
-Gets the Features set in the Configuration file.
+    Gets the Features set in the Configuration file.
 
 .DESCRIPTION
-This command looks up in the Chocolatey Config file, and returns
-the Features available from there.
-Some feature may be available but now show up with this command.
+    This command looks up in the Chocolatey Config file, and returns
+    the Features available from there.
+    Some feature may be available but now show up with this command.
 
 .PARAMETER Feature
-Name of the Feature when retrieving a single Feature. It defaults to returning
-all feature available in the config file.
+    Name of the Feature when retrieving a single Feature. It defaults to returning
+    all feature available in the config file.
 
 .EXAMPLE
-Get-ChocolateyFeature -Name MyFeatureName
+    Get-ChocolateyFeature -Name MyFeatureName
 
 .NOTES
-https://github.com/chocolatey/choco/wiki/CommandsFeature
+    https://github.com/chocolatey/choco/wiki/CommandsFeature
 #>
 function Get-ChocolateyFeature {
     [CmdletBinding()]
-    Param(
+    param(
         [Parameter(
             ValueFromPipeline
             ,ValueFromPipelineByPropertyName
@@ -31,7 +31,7 @@ function Get-ChocolateyFeature {
     )
     Begin {
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
-            Throw "Chocolatey Software not found"
+            Throw "Chocolatey Software not found."
         }
 
         $ChocoConfigPath = join-path $chocoCmd.Path ..\..\config\chocolatey.config -Resolve
@@ -41,7 +41,7 @@ function Get-ChocolateyFeature {
 
     Process {
         if (!$ChocoXml) {
-            Throw "Error with Chocolatey config"
+            Throw "Error with Chocolatey config."
         }
 
         foreach ($Name in $Feature) {
@@ -50,7 +50,7 @@ function Get-ChocolateyFeature {
                 $FeatureNodes = $ChocoXml.SelectNodes("//feature[translate(@name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='$([Security.SecurityElement]::Escape($Name.ToLower()))']")
             }
             else {
-                Write-Verbose 'Returning all Sources configured'
+                Write-Verbose 'Returning all Sources configured.'
                 $FeatureNodes = $ChocoXml.chocolatey.features.childNodes
             }
 

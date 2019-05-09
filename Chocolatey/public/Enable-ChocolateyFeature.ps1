@@ -1,43 +1,43 @@
 <#
 .SYNOPSIS
-Disable a Chocolatey Feature
+    Disable a Chocolatey Feature
 
 .DESCRIPTION
-Allows you to enable a Chocolatey Feature usually accessed by choco feature enable -n=bob
+    Allows you to enable a Chocolatey Feature usually accessed by choco feature enable -n=bob
 
 .PARAMETER Name
-Name of the Chocolatey Feature to disable
+    Name of the Chocolatey Feature to disable
 
 .PARAMETER NoProgress
-This allows to reduce the output created by the Chocolatey Command.
+    This allows to reduce the output created by the Chocolatey Command.
 
 .EXAMPLE
-Enable-ChocolateyFeature -Name 'MyChocoFeatureName'
+    Enable-ChocolateyFeature -Name 'MyChocoFeatureName'
 
 .NOTES
-https://github.com/chocolatey/choco/wiki/CommandsFeature
+    https://github.com/chocolatey/choco/wiki/CommandsFeature
 #>
 function Enable-ChocolateyFeature {
     [CmdletBinding()]
-    Param(
+    param(
         [Parameter(
             Mandatory
             ,ValueFromPipelineByPropertyName
         )]
         [Alias('Feature')]
-        [String]
+        [System.String]
         $Name,
 
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
-        [switch]
+        [Switch]
         $NoProgress
     )
 
     Process {
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
-            Throw "Chocolatey Software not found"
+            Throw "Chocolatey Software not found."
         }
 
         if (!(Get-ChocolateyFeature -Name $Name)) {

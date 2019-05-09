@@ -6,7 +6,7 @@ Param (
     [switch]
     $ResolveDependency,
 
-    [String]
+    [System.String]
     $BuildOutput = "BuildOutput",
 
     $ModuleVersion = $(if($Env:APPVEYOR_BUILD_VERSION) {$ENV:APPVEYOR_BUILD_VERSION} else { try { Get-NextNugetPackageVersion -Name 'Chocolatey' -EA Stop} catch { '0.0.1' }} ),
@@ -21,8 +21,8 @@ Param (
     $ForceEnvironmentVariables = [switch]$true,
 
     $MergeList = @('enum*',[PSCustomObject]@{Name='class*';order={(Import-PowerShellDataFile .\SampleModule\Classes\classes.psd1).order.indexOf($_.BaseName)}},'priv*','pub*')
-    
-    ,$CodeCoverageThreshold = 15
+
+    ,$CodeCoverageThreshold = 6
 )
 
 Process {
@@ -35,14 +35,14 @@ Process {
         $BuildOutput = Join-Path -Path $PSScriptRoot -ChildPath $BuildOutput
     }
 
-    if(($Env:PSModulePath -split ';') -notcontains (Join-Path $BuildOutput 'modules') ) {
+    if (($Env:PSModulePath -split ';') -notcontains (Join-Path $BuildOutput 'modules') ) {
         $Env:PSModulePath += ';' + (Join-Path $BuildOutput 'modules')
     }
-    
+
     Get-ChildItem -Path "$PSScriptRoot/.build/" -Recurse -Include *.ps1 -Verbose |
         Foreach-Object {
             "Importing file $($_.BaseName)" | Write-Verbose
-            . $_.FullName 
+            . $_.FullName
         }
 
     task none {}
@@ -55,14 +55,13 @@ Process {
             UpdateModuleManifest,
             UnitTests,
             UploadUnitTestResultsToAppVeyor,
-            FailBuildIfFailedUnitTest, 
+            FailBuildIfFailedUnitTest,
             FailIfLastCodeConverageUnderThreshold,
             IntegrationTests,
             DeployAll
 
     task testAll UnitTests, IntegrationTests, QualityTestsStopOnFail
 }
-
 
 begin {
     Push-Location $PSScriptRoot
@@ -76,7 +75,7 @@ begin {
                 force = $true
                 ForceBootstrap = $true
             }
-            if($PSBoundParameters.ContainsKey('verbose')) { $providerBootstrapParams.add('verbose',$verbose)}
+            if ($PSBoundParameters.ContainsKey('verbose')) { $providerBootstrapParams.add('verbose',$verbose)}
             if ($GalleryProxy) { $providerBootstrapParams.Add('Proxy',$GalleryProxy) }
             $null = Install-PackageProvider @providerBootstrapParams
             Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
@@ -92,7 +91,7 @@ begin {
                 Force = $true
                 Scope = 'CurrentUser'
             }
-            if($PSBoundParameters.ContainsKey('verbose')) { $InstallPSDependParams.add('verbose',$verbose)}
+            if ($PSBoundParameters.ContainsKey('verbose')) { $InstallPSDependParams.add('verbose',$verbose)}
             if ($GalleryRepository) { $InstallPSDependParams.Add('Repository',$GalleryRepository) }
             if ($GalleryProxy)      { $InstallPSDependParams.Add('Proxy',$GalleryProxy) }
             if ($GalleryCredential) { $InstallPSDependParams.Add('ProxyCredential',$GalleryCredential) }
@@ -101,9 +100,9 @@ begin {
 
         $PSDependParams = @{
             Force = $true
-            Path = "$PSScriptRoot\Dependencies.psd1"
+            Path  = "$PSScriptRoot\Dependencies.psd1"
         }
-        if($PSBoundParameters.ContainsKey('verbose')) { $PSDependParams.add('verbose',$verbose)}
+        if ($PSBoundParameters.ContainsKey('verbose')) { $PSDependParams.add('verbose',$verbose)}
         Invoke-PSDepend @PSDependParams
         Write-Verbose "Project Bootstrapped, returning to Invoke-Build"
     }

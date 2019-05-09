@@ -21,8 +21,8 @@ function Get-TargetResource
 
     $returnValue = @{
         Ensure = $Ensure
-        Name = $Name
-        value = $Setting.Value
+        Name   = $Name
+        value  = $Setting.Value
     }
 
     $returnValue
@@ -54,7 +54,7 @@ function Set-TargetResource
     switch ($Ensure) {
         #'Present' {  }
         'Absent'  {
-            if( $PSBoundParameters.ContainsKey('Value') ) {
+            if ( $PSBoundParameters.ContainsKey('Value') ) {
                 $PSBoundParameters.remove('Value')
             }
             $null = $PSBoundParameters.add('Unset',$true) 
@@ -62,7 +62,6 @@ function Set-TargetResource
     }
     Write-Verbose "Setting the Chocolatey Setting $Name."
     Set-ChocolateySetting @PSBoundParameters
-
 }
 
 
@@ -85,7 +84,7 @@ function Test-TargetResource
         $value
     )
     $Env:Path = [Environment]::GetEnvironmentVariable('Path','Machine')
-    Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -verbose:$False
+    Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -Verbose:$False
 
     $null = $PSBoundParameters.remove('Ensure')
     
@@ -95,8 +94,6 @@ function Test-TargetResource
     }
 
     return (Test-ChocolateySetting @PSBoundParameters)
-
 }
 
 Export-ModuleMember -Function *-TargetResource
-

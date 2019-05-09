@@ -1,17 +1,16 @@
 <#
 .SYNOPSIS
-Fix for PS2/3
+    Fix for PS2/3
 
 .DESCRIPTION
-PowerShell v2/3 caches the output stream. Then it throws errors due
-to the FileStream not being what is expected. Fixes "The OS handle's
-position is not what FileStream expected. Do not use a handle
-simultaneously in one FileStream and in Win32 code or another
-FileStream."
+    PowerShell v2/3 caches the output stream. Then it throws errors due
+    to the FileStream not being what is expected. Fixes "The OS handle's
+    position is not what FileStream expected. Do not use a handle
+    simultaneously in one FileStream and in Win32 code or another
+    FileStream."
 
 .EXAMPLE
-Repair-PowerShellOutputRedirectionBug #Only for PSVersion below PS4
-
+    Repair-PowerShellOutputRedirectionBug #Only for PSVersion below PS4
 #>
 function Repair-PowerShellOutputRedirectionBug {
     [CmdletBinding()]

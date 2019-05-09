@@ -10,28 +10,28 @@ InModuleScope Chocolatey {
         Mock New-Item -MockWith {}
         Mock Repair-PowerShellOutputRedirectionBug {}
         Mock Join-Path -ParameterFilter {$ChildPath -eq 'chocolateyInstall.ps1'} -MockWith { {$true} }
-        
+
         Context 'Default' {
             #Need to be first before Get-RemoteString has been called
             It 'Ensure Get-RemoteString is NOT called when install from Package URL' {
                 $null = Install-ChocolateySoftware -ChocolateyPackageUrl 'https://chocolatey.org/api/v2/package/chocolatey/0.10.8/'
-                { Assert-MockCalled Get-RemoteString } | Should Throw
+                { Assert-MockCalled Get-RemoteString } | Should -Throw
             }
 
             It 'Ensure Get-RemoteString is called when install from Feed without version' {
                 $null = Install-ChocolateySoftware
-                { Assert-MockCalled Get-RemoteString } | Should Not Throw
+                { Assert-MockCalled Get-RemoteString } | Should -Not -Throw
             }
 
             It 'Ensure Get-RemoteFile is called' {
                 $null = Install-ChocolateySoftware
-                { Assert-MockCalled Get-RemoteFile } | Should Not Throw
+                { Assert-MockCalled Get-RemoteFile } | Should -Not -Throw
             }
 
             if($PSVersionTable.PSVersion.Major -ge 5) {
                 It 'Ensure Expand-Archive is called' {
                     $null = Install-ChocolateySoftware
-                    { Assert-MockCalled Expand-Archive } | Should Not Throw
+                    { Assert-MockCalled Expand-Archive } | Should -Not -Throw
                 }
             }
         }
