@@ -21,8 +21,8 @@ Param (
     $ForceEnvironmentVariables = [switch]$true,
 
     $MergeList = @('enum*',[PSCustomObject]@{Name='class*';order={(Import-PowerShellDataFile .\SampleModule\Classes\classes.psd1).order.indexOf($_.BaseName)}},'priv*','pub*')
-    
-    ,$CodeCoverageThreshold = 15
+
+    ,$CodeCoverageThreshold = 6
 )
 
 Process {
@@ -38,11 +38,11 @@ Process {
     if (($Env:PSModulePath -split ';') -notcontains (Join-Path $BuildOutput 'modules') ) {
         $Env:PSModulePath += ';' + (Join-Path $BuildOutput 'modules')
     }
-    
+
     Get-ChildItem -Path "$PSScriptRoot/.build/" -Recurse -Include *.ps1 -Verbose |
         Foreach-Object {
             "Importing file $($_.BaseName)" | Write-Verbose
-            . $_.FullName 
+            . $_.FullName
         }
 
     task none {}
@@ -55,7 +55,7 @@ Process {
             UpdateModuleManifest,
             UnitTests,
             UploadUnitTestResultsToAppVeyor,
-            FailBuildIfFailedUnitTest, 
+            FailBuildIfFailedUnitTest,
             FailIfLastCodeConverageUnderThreshold,
             IntegrationTests,
             DeployAll
