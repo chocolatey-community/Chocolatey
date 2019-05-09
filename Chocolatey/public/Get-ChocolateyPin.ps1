@@ -1,3 +1,21 @@
+<#
+.SYNOPSIS
+    Gets the pinned Chocolatey Packages.
+
+.DESCRIPTION
+    This command gets the pinned Chocolatey Packages, and returns
+    the Settings available from there.
+
+.PARAMETER Name
+    Name of the Packages when retrieving a single one or a specific list.
+    It defaults to returning all Packages available in the config file.
+
+.EXAMPLE
+    Get-ChocolateyPin -Name packageName
+
+.NOTES
+    https://chocolatey.org/docs/commands-pin
+#>
 
 function Get-ChocolateyPin {
     [CmdletBinding()]
@@ -6,12 +24,16 @@ function Get-ChocolateyPin {
             ValueFromPipeline
             ,ValueFromPipelineByPropertyName
         )]
-        [string[]]
+        [System.String[]]
         $Name = '*'
     )
 
     if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
-        Throw "Chocolatey Software not found"
+        Throw "Chocolatey Software not found."
+    }
+
+    if (!(Get-ChocolateyPackage -Name $Name)) {
+        Throw "Chocolatey Package $Name cannot be found."
     }
 
     # Prepare the arguments for `choco pin list -r`

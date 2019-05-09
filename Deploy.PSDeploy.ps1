@@ -1,4 +1,4 @@
-if(
+if (
     $env:ProjectName -and $ENV:ProjectName.Count -eq 1 -and
     $env:BuildSystem -eq 'AppVeyor'
    )
@@ -25,6 +25,4 @@ if(
             }
         }
     }
-
-   
 }

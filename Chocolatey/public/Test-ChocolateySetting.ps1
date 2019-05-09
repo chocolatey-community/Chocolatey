@@ -1,38 +1,38 @@
 <#
 .SYNOPSIS
-Test Whether a setting is set, enabled or not found
+    Test Whether a setting is set, enabled or not found
 
 .DESCRIPTION
-Some settings might not be available in your version or SKU.
-This command allows you to test the values of a named setting.
+    Some settings might not be available in your version or SKU.
+    This command allows you to test the values of a named setting.
 
 .PARAMETER Name
-Name of the Setting to verify
+    Name of the Setting to verify
 
 .PARAMETER Value
-Test if the Setting value provided matches with the one set on the config file.
+    Test if the Setting value provided matches with the one set on the config file.
 
 .PARAMETER Unset
-Test if the Setting is disabled, the default is to test if the feature is enabled.
+    Test if the Setting is disabled, the default is to test if the feature is enabled.
 
 .EXAMPLE
-Test-ChocolateySetting -Name SettingName -value ''
+    Test-ChocolateySetting -Name SettingName -value ''
 
 .NOTES
-https://github.com/chocolatey/choco/wiki/CommandsConfig
+    https://github.com/chocolatey/choco/wiki/CommandsConfig
 #>
 function Test-ChocolateySetting {
     [CmdletBinding(
         DefaultParameterSetName = 'Set'
     )]
     [OutputType([Bool])]
-    Param(
+    param(
         [Parameter(
             Mandatory
             ,ValueFromPipelineByPropertyName
         )]
         [Alias('Setting')]
-        [String]
+        [System.String]
         $Name,
 
         [Parameter(
@@ -42,7 +42,7 @@ function Test-ChocolateySetting {
         )]
         [AllowEmptyString()]
         [AllowNull()]
-        [String]
+        [System.String]
         $Value,
 
         [Parameter(
@@ -55,7 +55,7 @@ function Test-ChocolateySetting {
 
     Process {
         if (-not (Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
-            Throw "Chocolatey Software not found"
+            Throw "Chocolatey Software not found."
         }
 
         if (!($Setting = Get-ChocolateySetting -Name $Name)) {
@@ -63,17 +63,17 @@ function Test-ChocolateySetting {
             return $false
         }
         $Setting | Write-Verbose
-        if($Unset) {
+        if ($Unset) {
             $Value = ''
         }
 
         $Value = $ExecutionContext.InvokeCommand.ExpandString($Value).TrimEnd(@('/','\'))
         if ([string]$Setting.value -eq $Value) {
-            Write-Verbose ("The Chocolatey Setting {0} is set to '{1}' as expected" -f $Name,$Value)
+            Write-Verbose ("The Chocolatey Setting {0} is set to '{1}' as expected." -f $Name,$Value)
             return $true
         }
         else {
-            Write-Verbose ("The Chocolatey Setting {0} is {1} NOT as expected:{2}" -f $Name,$Setting.value,$Value)
+            Write-Verbose ("The Chocolatey Setting {0} is NOT set to '{1}' as expected:{2}" -f $Name,$Setting.value,$Value)
             return $False
         }
     }

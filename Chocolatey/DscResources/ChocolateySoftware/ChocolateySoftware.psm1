@@ -9,7 +9,7 @@ function Get-TargetResource
         [System.String]
         $Ensure
 
-        ,[string]
+        ,[System.String]
         $InstallationDirectory
     )
     <#
@@ -28,7 +28,6 @@ function Get-TargetResource
         InstallationDirectory = $InstallationDirectory
     })
 }
-
 
 function Set-TargetResource
 {
@@ -73,7 +72,7 @@ function Set-TargetResource
     if ($ensure -eq 'Present') {
         $AllowedParamName = (Get-Command Install-ChocolateySoftware).Parameters.keys
         foreach ($key in ($PSBoundParameters.keys|Where-Object {$_ -in $AllowedParamName})) {
-            if($PSBoundParameters[$Key]) {
+            if ($PSBoundParameters[$Key]) {
                 $null = $ChocoParams.add($Key,$PSBoundParameters[$Key])
             }
         }
@@ -83,7 +82,6 @@ function Set-TargetResource
         Uninstall-Chocolatey -InstallDir $InstallationDirectory
     }
 }
-
 
 function Test-TargetResource
 {
@@ -133,6 +131,4 @@ function Test-TargetResource
 
 }
 
-
 Export-ModuleMember -Function *-TargetResource
-

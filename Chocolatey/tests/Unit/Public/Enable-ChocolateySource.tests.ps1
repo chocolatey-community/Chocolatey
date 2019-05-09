@@ -21,7 +21,7 @@ InModuleScope Chocolatey {
             
             It 'Should not return value' {
                 $return = Enable-ChocolateySource -Name 'TestSource'
-                $return | Should BeNullOrEmpty
+                $return | Should -BeNullOrEmpty
             }
         }
     }

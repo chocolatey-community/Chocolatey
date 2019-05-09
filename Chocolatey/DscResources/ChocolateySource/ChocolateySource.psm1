@@ -125,7 +125,7 @@ function Set-TargetResource
         'Present' {
             #If we only ensure a Source is Enabled/Disabled by Name, without other arguments
             if (!$ChocoSourceParams.keys.Where{$_ -notin @('Name','Disabled')} ) {
-                if($Disabled) {
+                if ($Disabled) {
                     Disable-ChocolateySource -Name $Name -NoProgress
                 }
                 else {
@@ -194,12 +194,12 @@ function Test-TargetResource
         'Present'=$true
         'Absent'=$false
     }
-    
+
     #Test-Chocolatey source return false when source name does not exist
     # the differences of compare-object when not an exact match with properties
 
-    if(($SourceDifferences = Test-ChocolateySource @ChocoSourceParams) -or $SourceDifferences -eq $false) {
-        if( ($SourceDifferences -eq $False) -and 
+    if (($SourceDifferences = Test-ChocolateySource @ChocoSourceParams) -or $SourceDifferences -eq $false) {
+        if ( ($SourceDifferences -eq $False) -and 
             $Disabled -and  
             $Ensure -eq 'Present' -and
             !($ChocoSourceParams.Keys.where{$_ -notin @('Name','Disabled') } ) 
@@ -226,6 +226,4 @@ function Test-TargetResource
     return ($EnsureResultMap[$Ensure] -eq $SourceDoesMatch )
 }
 
-
 Export-ModuleMember -Function *-TargetResource
-

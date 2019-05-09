@@ -22,7 +22,7 @@ InModuleScope Chocolatey {
 
             It 'Should ensure <RefVersion> <expectedResult> <DiffVersion>' -TestCases $TestCases {
                 Param ($RefVersion, $DiffVersion, $ExpectedResult )
-                Compare-SemVerVersion -ReferenceVersion $RefVersion -DifferenceVersion $DiffVersion | Should be $ExpectedResult
+                Compare-SemVerVersion -ReferenceVersion $RefVersion -DifferenceVersion $DiffVersion | Should -Be $ExpectedResult
             }
         }
     }

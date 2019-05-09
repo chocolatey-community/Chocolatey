@@ -3,22 +3,22 @@ Param (
     [io.DirectoryInfo]
     $ProjectPath = (property ProjectPath (Join-Path $PSScriptRoot '../..' -Resolve -ErrorAction SilentlyContinue)),
 
-    [string]
+    [System.String]
     $BuildOutput = (property BuildOutput 'C:\BuildOutput'),
 
-    [string]
+    [System.String]
     $ProjectName = (property ProjectName (Split-Path -Leaf (Join-Path $PSScriptRoot '../..')) ),
 
-    [string]
+    [System.String]
     $PesterOutputFormat = (property PesterOutputFormat 'NUnitXml'),
 
-    [string]
+    [System.String]
     $RelativePathToQualityTests = (property RelativePathToQualityTests 'tests/QA'),
 
-    [string]
+    [System.String]
     $PesterOutputSubFolder = (property PesterOutputSubFolder 'PesterOut'),
 
-    [string]
+    [System.String]
     $LineSeparation = (property LineSeparation ('-' * 78))
 )
 

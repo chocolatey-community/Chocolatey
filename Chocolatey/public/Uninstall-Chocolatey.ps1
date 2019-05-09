@@ -1,35 +1,34 @@
 <#
 .SYNOPSIS
-Attempts to remove the Chocolatey Software form the system.
+    Attempts to remove the Chocolatey Software form the system.
 
 .DESCRIPTION
-This command attempts to clean the system from the Chocolatey Software files.
-It first look into the provided $InstallDir, or in the $Env:ChocolateyInstall if not provided.
-If the $InstallDir provided is $null or empty, it will attempts to find the Chocolatey folder
-from the choco.exe command path.
-If no choco.exe is found under the $InstallDir, it will fail to uninstall.
-This command also remove the $InstallDir from the Path.
+    This command attempts to clean the system from the Chocolatey Software files.
+    It first look into the provided $InstallDir, or in the $Env:ChocolateyInstall if not provided.
+    If the $InstallDir provided is $null or empty, it will attempts to find the Chocolatey folder
+    from the choco.exe command path.
+    If no choco.exe is found under the $InstallDir, it will fail to uninstall.
+    This command also remove the $InstallDir from the Path.
 
 .PARAMETER InstallDir
-Installation Directory to remove Chocolatey from. Default looks up in $Env:ChocolateyInstall
-Or, if specified with an empty/$null value, tries to find from the choco.exe path.
+    Installation Directory to remove Chocolatey from. Default looks up in $Env:ChocolateyInstall
+    Or, if specified with an empty/$null value, tries to find from the choco.exe path.
 
 .EXAMPLE
-Uninstall-Chocolatey -InstallDir ''
-#Will uninstall Chocolatey from the location of Choco.exe if found from $Env:PATH
-
+    Uninstall-Chocolatey -InstallDir ''
+    Will uninstall Chocolatey from the location of Choco.exe if found from $Env:PATH
 #>
 function Uninstall-Chocolatey {
     [CmdletBinding(
         SupportsShouldProcess
     )]
-    Param(
+    param(
         [AllowNull()]
-        [string]
+        [System.String]
         $InstallDir = $Env:ChocolateyInstall
     )
 
-    process {
+    Process {
         #If InstallDir is empty or null, select from whee choco.exe is available
 
         if (-not $InstallDir) {
@@ -37,7 +36,7 @@ function Uninstall-Chocolatey {
             $chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue
             #Install dir is where choco.exe is found minus \bin subfolder
             if (-not ($chocoCmd -and ($chocoBin = Split-Path -Parent $chocoCmd.Path -ErrorAction SilentlyContinue))) {
-                Write-Warning "Could not find Chocolatey Software Install Folder"
+                Write-Warning "Could not find Chocolatey Software Install Folder."
                 return
             }
             else {
@@ -56,7 +55,7 @@ function Uninstall-Chocolatey {
             -not ((Test-Path $InstallDir) -and (Test-Path "$InstallDir\Choco.exe"))
              )
         {
-            Write-Warning 'Chocolatey Installation Folder Not found'
+            Write-Warning 'Chocolatey Installation Folder Not found.'
             return
         }
 
@@ -87,7 +86,7 @@ function Uninstall-Chocolatey {
                         $_ -notmatch "^$([regex]::Escape($InstallDir))\\bin$"
                     } | Select-Object -unique
 
-        Write-Debug 'Reset the machine Path without choco (and dedupe/no null)'
+        Write-Debug 'Reset the machine Path without choco (and dedupe/no null).'
         Write-Debug ($AllPaths |Format-Table | Out-String)
         [Environment]::SetEnvironmentVariable('Path', ($AllPaths -Join ';'), 'Machine')
 

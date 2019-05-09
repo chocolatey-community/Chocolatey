@@ -73,7 +73,7 @@ VariablesToExport = '*'
 AliasesToExport = '*'
 
 # DSC resources to export from this module
-DscResourcesToExport = @('ChocolateySoftware','ChocolateyPackage','ChocolateyFeature','ChocolateySource')
+DscResourcesToExport = @('ChocolateySoftware','ChocolateyPackage','ChocolateyFeature','ChocolateySource','ChocolateyPin')
 
 # List of all modules packaged with this module
 # ModuleList = @()
@@ -112,5 +112,3 @@ PrivateData = @{
 # DefaultCommandPrefix = ''
 
 }
-
-

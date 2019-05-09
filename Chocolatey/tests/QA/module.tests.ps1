@@ -4,17 +4,16 @@ $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
 $modulePath = Resolve-Path "$here\..\.."
 $moduleName = Split-Path -Path $modulePath -Leaf
 
-
 Describe 'General module control' -Tags 'FunctionalQuality'   {
 
-    It 'imports without errors' {
+    It 'Should import without errors' {
         Write-Warning $modulePath.Path
         { Import-Module -Name $modulePath.Path -Force -ErrorAction Stop } | Should -Not -Throw
         Get-Module $moduleName | Should -Not -BeNullOrEmpty
     }
 
-    It 'Removes without error' {
-        { Remove-Module -Name $moduleName -ErrorAction Stop} | Should -not -Throw
+    It 'Should remove without error' {
+        { Remove-Module -Name $moduleName -ErrorAction Stop} | Should -Not -Throw
         Get-Module $moduleName | Should -beNullOrEmpty
     }
 }
@@ -29,7 +28,7 @@ if (Get-Command Invoke-ScriptAnalyzer -ErrorAction SilentlyContinue) {
     $scriptAnalyzerRules = Get-ScriptAnalyzerRule
 }
 else {
-    if($ErrorActionPreference -ne 'Stop') {
+    if ($ErrorActionPreference -ne 'Stop') {
         Write-Warning "ScriptAnalyzer not found!"
     }
     else {
@@ -39,10 +38,10 @@ else {
 
 foreach ($function in $allModuleFunctions) {
     Describe "Quality for $($function.BaseName)" -Tags 'TestQuality' {
-        It "$($function.BaseName) has a unit test" {
-            Test-Path "$modulePath\tests\Unit\*\$($function.BaseName).tests.ps1" | Should -be $true
+        It "$($function.BaseName) have a unit test" {
+            Test-Path "$modulePath\tests\Unit\*\$($function.BaseName).tests.ps1" | Should -Be $true
         }
-            
+
         if ($scriptAnalyzerRules) {
             It "Script Analyzer for $($function.BaseName)" {
                 forEach ($scriptAnalyzerRule in $scriptAnalyzerRules) {
@@ -58,28 +57,28 @@ foreach ($function in $allModuleFunctions) {
             ParseInput((Get-Content -raw $function.FullName), [ref]$null, [ref]$null)
             $AstSearchDelegate = { $args[0] -is [System.Management.Automation.Language.FunctionDefinitionAst] }
             $ParsedFunction = $AbstractSyntaxTree.FindAll( $AstSearchDelegate,$true )   |
-                                ? Name -eq $function.BaseName
-        if($ParsedFunction.GetHelpContent) {
+                                Where-Object Name -eq $function.BaseName
+        if ($ParsedFunction.GetHelpContent) {
             $FunctionHelp = $ParsedFunction.GetHelpContent()
-        
-            It 'Has a SYNOPSIS' {
+
+            It 'Should have a SYNOPSIS' {
                 $FunctionHelp.Synopsis | should -not -BeNullOrEmpty
             }
 
-            It 'Has a Description, with length > 40' {
+            It 'Should have a Description, with length > 40' {
                 $FunctionHelp.Description.Length | Should -beGreaterThan 40
             }
 
-            It 'Has at least 1 example' {
+            It 'Should have at least 1 example' {
                 $FunctionHelp.Examples.Count | Should -beGreaterThan 0 
                 $FunctionHelp.Examples[0] | Should -match ([regex]::Escape($function.BaseName))
                 $FunctionHelp.Examples[0].Length | Should -BeGreaterThan ($function.BaseName.Length + 10)
             }
 
-            if($ParameterNames = $ParsedFunction.Body.ParamBlock.Parameters.name) {
-                $parameters = $ParameterNames.VariablePath | % {$_.ToString() }
+            if ($ParameterNames = $ParsedFunction.Body.ParamBlock.Parameters.name) {
+                $parameters = $ParameterNames.VariablePath | ForEach-Object {$_.ToString() }
                 foreach ($parameter in $parameters) {
-                    It "Has help for Parameter: $parameter" {
+                    It "Should have help for Parameter: $parameter" {
                         $FunctionHelp.Parameters.($parameter.ToUpper())        | Should -Not -BeNullOrEmpty
                         $FunctionHelp.Parameters.($parameter.ToUpper()).Length | Should -BeGreaterThan 25
                     }
@@ -88,4 +87,3 @@ foreach ($function in $allModuleFunctions) {
         }
     }
 }
-

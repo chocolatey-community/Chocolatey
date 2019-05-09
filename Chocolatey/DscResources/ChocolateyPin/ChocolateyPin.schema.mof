@@ -1,0 +1,8 @@
+
+[ClassVersion("1.0.0.0"), FriendlyName("ChocolateyPin")]
+class ChocolateyPin : OMI_BaseResource
+{
+    [Required, Description("Specifies whether the Chocolatey Package should be added or removed."), ValueMap{"Present","Absent"}, Values{"Present","Absent"}] String Ensure;
+    [Key, Description("Name (or setting) of the Chocolatey Package to modify")] String Name;
+    [Write, Description("Chocolatey Package Version")] String Version;
+};

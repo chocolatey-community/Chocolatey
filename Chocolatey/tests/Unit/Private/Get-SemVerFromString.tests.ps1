@@ -12,9 +12,9 @@ InModuleScope Chocolatey {
             It 'Version <StringVersion> parses correctly' -TestCases $TestCases {
                 param ($StringVersion, $expectedResult)
                 $parsedVersion = Get-SemVerFromString -VersionString $StringVersion
-                $parsedVersion.version    | Should -be $expectedResult.version
-                $parsedVersion.Metadata   | Should -be $expectedResult.Metadata
-                $parsedVersion.Prerelease | Should -be $expectedResult.Prerelease
+                $parsedVersion.version    | Should -Be $expectedResult.version
+                $parsedVersion.Metadata   | Should -Be $expectedResult.Metadata
+                $parsedVersion.Prerelease | Should -Be $expectedResult.Prerelease
             }
         }
     }
