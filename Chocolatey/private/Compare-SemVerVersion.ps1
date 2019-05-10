@@ -38,12 +38,13 @@ function Compare-SemVerVersion {
         [System.String]
         $ReferenceVersion,
 
-        [Parameter(
-            Mandatory
-        )]
         [System.String]
         $DifferenceVersion
     )
+
+    if (!$DifferenceVersion) {
+        return '>'
+    }
 
     $refVersion = Get-SemVerFromString -VersionString $ReferenceVersion -ErrorAction Stop
     $diffVersion = Get-SemVerFromString -VersionString $DifferenceVersion -ErrorAction Stop
