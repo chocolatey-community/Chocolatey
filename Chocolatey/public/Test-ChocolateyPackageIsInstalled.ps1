@@ -113,7 +113,10 @@ function Test-ChocolateyPackageIsInstalled {
                 $PackageFound = $True
                 Write-Debug "Package Found"
 
-                if ((Compare-SemVerVersion $_.version $ReferenceObject.version) -in @('=', '>')) {
+                if (!$Version) {
+                    return $true
+                }
+                elseif ((Compare-SemVerVersion $_.version $ReferenceObject.version) -in @('=', '>')) {
                     return $true
                 }
                 else {

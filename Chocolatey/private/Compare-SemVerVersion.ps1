@@ -42,10 +42,6 @@ function Compare-SemVerVersion {
         $DifferenceVersion
     )
 
-    if (!$DifferenceVersion) {
-        return '>'
-    }
-
     $refVersion = Get-SemVerFromString -VersionString $ReferenceVersion -ErrorAction Stop
     $diffVersion = Get-SemVerFromString -VersionString $DifferenceVersion -ErrorAction Stop
 
