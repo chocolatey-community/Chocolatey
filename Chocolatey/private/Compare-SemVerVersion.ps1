@@ -38,9 +38,6 @@ function Compare-SemVerVersion {
         [System.String]
         $ReferenceVersion,
 
-        [Parameter(
-            Mandatory
-        )]
         [System.String]
         $DifferenceVersion
     )

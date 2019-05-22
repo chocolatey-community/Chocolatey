@@ -13,7 +13,6 @@ function Get-TargetResource
         [System.String]
         $Name,
 
-        [parameter(Mandatory = $true)]
         [System.String]
         $Version,
 
@@ -61,7 +60,6 @@ function Set-TargetResource
         [System.String]
         $Name,
 
-        [parameter(Mandatory = $true)]
         [System.String]
         $Version,
 
@@ -165,7 +163,6 @@ function Test-TargetResource
         [System.String]
         $Name,
 
-        [parameter(Mandatory = $true)]
         [System.String]
         $Version,
 
