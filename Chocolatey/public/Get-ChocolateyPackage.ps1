@@ -62,7 +62,7 @@ function Get-ChocolateyPackage {
             ValueFromPipelineByPropertyName
         )]
         [ValidateNotNullOrEmpty()]
-        [System.String]
+        [String]
         $Name,
 
         [Parameter(
