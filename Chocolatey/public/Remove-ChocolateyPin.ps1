@@ -35,12 +35,12 @@ function Remove-ChocolateyPin {
         }
 
         if (!(Get-ChocolateyPackage -Name $Name)) {
-            Throw "Chocolatey Package $Name cannot be found."
+            Throw "The Pin for Chocolatey Package $Name cannot be found."
         }
 
         $ChocoArguments = @('pin', 'remove', '-r')
         $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
-        Write-Verbose "choco $($ChocoArguments -join ' ')"
+        # Write-Debug "choco $($ChocoArguments -join ' ')"
 
         if ($PSCmdlet.ShouldProcess("$Name", "Remove Pin")) {
             $Output = &$chocoCmd $ChocoArguments
