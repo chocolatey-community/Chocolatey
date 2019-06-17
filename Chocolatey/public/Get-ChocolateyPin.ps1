@@ -46,17 +46,17 @@ function Get-ChocolateyPin {
         return
     }
     else {
-        Write-Debug ("Found {0} Packages" -f $ChocoPinListOutput.count)
+        Write-Verbose ("Found {0} Packages" -f $ChocoPinListOutput.count)
         # Convert the list to objects
         $ChocoPinListOutput = $ChocoPinListOutput | ConvertFrom-Csv -Delimiter '|' -Header 'Name','Version'
     }
 
     if ($Name -ne '*') {
-        Write-Debug 'Filtering pinned Packages'
+        Write-Verbose 'Filtering pinned Packages'
         $ChocoPinListOutput = $ChocoPinListOutput | Where-Object { $_.Name -in $Name }
     }
     else {
-        Write-Debug 'Returning all pinned Packages'
+        Write-Verbose 'Returning all pinned Packages'
     }
 
     foreach ($Pin in $ChocoPinListOutput) {

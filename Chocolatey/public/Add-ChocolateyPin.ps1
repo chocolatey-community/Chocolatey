@@ -57,8 +57,7 @@ function Add-ChocolateyPin {
         $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
         # Write-Debug "choco $($ChocoArguments -join ' ')"
 
-        if ($PSCmdlet.ShouldProcess("$Name $Version", "Add Pin"))
-        {
+        if ($PSCmdlet.ShouldProcess("$Name $Version", "Add Pin")) {
             $Output = &$chocoCmd $ChocoArguments
 
             # LASTEXITCODE is always 0 unless point an existing version (0 when remove but already removed)

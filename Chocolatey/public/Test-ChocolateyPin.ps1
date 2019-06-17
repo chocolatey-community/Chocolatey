@@ -37,17 +37,17 @@ function Test-ChocolateyPin {
         }
 
         if (!($Setting = Get-ChocolateyPin -Name $Name)) {
-            Write-Verbose -Message "The Pin for the Chocolatey Package $Name cannot be found."
+            Write-Verbose -Message "The Pin for the Chocolatey Package '$Name' cannot be found."
             return $false
         }
 
         $Version = $ExecutionContext.InvokeCommand.ExpandString($Version).TrimEnd(@('/','\'))
         if ([string]$Setting.Version -eq $Version) {
-            Write-Verbose ("The Pin for the Chocolatey Package '{0}' is set to '{1}' as expected." -f $Name,$Version)
+            Write-Verbose ("The Pin for the Chocolatey Package '{0}' is set to '{1}' as expected." -f $Name, $Version)
             return $true
         }
         else {
-            Write-Verbose ("The Pin for the Chocolatey Package '{0}' is NOT set to '{1}' as expected." -f $Name,$Setting.Version)
+            Write-Verbose ("The Pin for the Chocolatey Package '{0}' is NOT set to '{1}' as expected." -f $Name, $Setting.Version)
             return $False
         }
     }
