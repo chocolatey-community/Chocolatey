@@ -125,7 +125,14 @@ function Set-TargetResource
             )
             {
                 Write-Verbose "`t -$ChocoOptionName $($ChocoOptions[$ChocoOptionName])"
-                $ChocoCommandParams.Add($ChocoOptionName,$ChocoOptions[$ChocoOptionName])
+                $ChocoCommandParams.Add($ChocoOptionName,$(
+                        if ($ChocoOptions[$ChocoOptionName] -in @('True','False') {
+                            [bool]::Parse($ChocoOptions[$ChocoOptionName])
+                        }
+                        else {
+                            $ChocoOptions[$ChocoOptionName]
+                        }
+                    ))
             }
         }
         Write-Verbose "Starting the Execution..."
