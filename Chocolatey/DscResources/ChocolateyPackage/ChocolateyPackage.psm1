@@ -67,7 +67,10 @@ function Set-TargetResource
         $ChocolateyOptions,
 
         [System.Boolean]
-        $UpdateOnly
+        $UpdateOnly,
+
+        [System.Management.Automation.PSCredential]
+        $Credential
     )
 
     Begin {
@@ -116,6 +119,7 @@ function Set-TargetResource
             NoProgress = $true
         }
         if ($Version -and $Version -ne 'latest') { $ChocoCommandParams.Add('Version',$Version) }
+        if ($Credential) { $ChocoCommandParams.Add('Credential', $Credential) }
 
         #Allow merge but no overrides
         foreach ($ChocoOptionName in $ChocoOptions.Keys) {
@@ -177,7 +181,10 @@ function Test-TargetResource
         $ChocolateyOptions,
 
         [System.Boolean]
-        $UpdateOnly
+        $UpdateOnly,
+
+        [System.Management.Automation.PSCredential]
+        $Credential
     )
 
     Write-Verbose "Converting CIMInstance[] to hashtable"
@@ -189,6 +196,7 @@ function Test-TargetResource
     $TestParams = @{
         Name = $Name
     }
+    if ($Credential) { $TestParams.Add('Credential', $Credential) }
     #Not decided whether Version should be mandatory or not
     if ($Version) { $TestParams.Add('Version',$Version) }
     foreach ($Option in $ChocoOptions.keys) {
