@@ -97,10 +97,10 @@ function Set-TargetResource
         $ChocoCommand = switch ($Ensure) {
             'Present' {
                 if ($testResult.PackagePresent -and !$testResult.VersionGreaterOrEqual) {
-                    Get-Command Update-ChocolateyPackage 
+                    Get-Command Update-ChocolateyPackage
                 }
                 elseif (!$UpdateOnly) {
-                    Get-Command Install-ChocolateyPackage 
+                    Get-Command Install-ChocolateyPackage
                 }
                 else {
                     Write-Verbose "Nothing to do: UpdateOnly : $UpdateOnly"
@@ -143,12 +143,12 @@ function Set-TargetResource
         &$ChocoCommand @ChocoCommandParams -verbose | Write-Verbose
 
         $PostActionResult = Test-ChocolateyPackageIsInstalled @TestParams
-        if ($PostActionResult.PackagePresent -and 
+        if ($PostActionResult.PackagePresent -and
             $PostActionResult.VersionGreaterOrEqual -and
             $Ensure -eq 'Present') {
             Write-Verbose -Message "--> Package Successfully Installed"
         }
-        elseif ((!$PostActionResult.PackagePresent -or 
+        elseif ((!$PostActionResult.PackagePresent -or
                 !$PostActionResult.VersionGreaterOrEqual) -and
                  $Ensure -eq 'Absent') {
             Write-Verbose -Message "--> Package Successfully Removed"
@@ -204,6 +204,14 @@ function Test-TargetResource
             $option -in (Get-Command Test-ChocolateyPackageIsInstalled).Parameters.keys) {
             $null = $TestParams.Add($option,$ChocoOptions[$Option])
         }
+    }
+
+    Write-Verbose "Testing whether we need to refresh the PS environment so chocolatey doesn't fail"
+    if ($null -eq $env:ChocolateyInstall) {
+        write-verbose "Set ChocolateyInstall"
+        $env:ChocolateyInstall = Convert-Path "$((Get-Command choco).Path)\..\.."
+        Import-Module "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
+        refreshenv > $null
     }
 
     $EnsureResultMap = @{
