@@ -84,8 +84,9 @@ Pester:
   # specify the order tests are run.
   Script:
     - tests/Unit
+    - tests/QA
   Tag:
-  CodeCoverageThreshold: 85 # Set to 0 to bypass
+  CodeCoverageThreshold: 1 # Set to 0 to bypass
   CodeCoverageOutputFile: JaCoCo_coverage.xml
   CodeCoverageOutputFileEncoding: ascii
   # Use this if code coverage should be merged from several pipeline test jobs.
@@ -151,4 +152,3 @@ DscResource.DocGenerator:
       - '_(.+?)_' # Match Italic (underscore)
       - '\*\*(.+?)\*\*' # Match bold
       - '\*(.+?)\*' # Match Italic (asterisk)
-
