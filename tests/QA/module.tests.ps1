@@ -1,7 +1,7 @@
 $here = Split-Path -Parent $MyInvocation.MyCommand.Path
 $sut = (Split-Path -Leaf $MyInvocation.MyCommand.Path) -replace '\.Tests\.', '.'
 
-$modulePath = Resolve-Path "$here\..\.."
+$modulePath = Resolve-Path "$here\..\..\output\Chocolatey\"
 $moduleName = Split-Path -Path $modulePath -Leaf
 
 Describe 'General module control' -Tags 'FunctionalQuality'   {
@@ -70,7 +70,7 @@ foreach ($function in $allModuleFunctions) {
             }
 
             It 'Should have at least 1 example' {
-                $FunctionHelp.Examples.Count | Should -beGreaterThan 0 
+                $FunctionHelp.Examples.Count | Should -beGreaterThan 0
                 $FunctionHelp.Examples[0] | Should -match ([regex]::Escape($function.BaseName))
                 $FunctionHelp.Examples[0].Length | Should -BeGreaterThan ($function.BaseName.Length + 10)
             }
