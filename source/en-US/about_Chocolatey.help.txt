@@ -2,23 +2,23 @@ TOPIC
     about_Chocolatey
 
 SHORT DESCRIPTION
-    
+    DSC resources for deployment and configuration of Chocolatey
 
 LONG DESCRIPTION
-    {{ Add Long description here }}
+    This module contains DSC resources for deployment and configuration of Chocolatey
 
 EXAMPLES
-    PS C:\> {{ add examples here }}
+    PS C:\> Get-DscResource -Module Chocolatey
 
 NOTE:
     Thank you to all those who contributed to this module, by writing code, sharing opinions, and provided feedback.
 
 TROUBLESHOOTING NOTE:
-    Look out on the Github repository for issues and new releases.
+    Go to the Github repository for read about issues, submit a new issue, and read
+    about new releases. https://github.com/chocolatey-community/Chocolatey/
 
 SEE ALSO
-  - {{ Please add Project URI such as github }}}
+  - https://github.com/chocolatey-community/Chocolatey/
 
 KEYWORDS
-      {{ Add coma separated keywords here }}
-
+      Chocolatey, DSC, DscResource
