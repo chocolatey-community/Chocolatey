@@ -163,7 +163,7 @@ function Test-TargetResource
 
     $EnsureTestMap = @{
         'Present' = $true;
-        'Absent' = $false
+        'Absent'  = $false
     }
 
     return ($EnsureTestMap[$Ensure] -eq (Test-ChocolateyInstall @ChocoParams))

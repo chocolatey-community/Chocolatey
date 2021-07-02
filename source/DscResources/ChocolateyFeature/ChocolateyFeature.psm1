@@ -62,8 +62,7 @@ function Test-TargetResource
 {
     [CmdletBinding()]
     [OutputType([System.Boolean])]
-    param
-    (
+    param (
         [Parameter(Mandatory = $true)]
         [ValidateSet("Present", "Absent")]
         [System.String]
