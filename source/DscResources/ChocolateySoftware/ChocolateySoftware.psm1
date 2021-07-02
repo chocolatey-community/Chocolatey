@@ -158,7 +158,10 @@ function Test-TargetResource
         $ChocoParams.Add('InstallDir', $InstallDir)
     }
 
-    $EnsureTestMap = @{'Present' = $true; 'Absent' = $false }
+    $EnsureTestMap = @{
+        'Present' = $true;
+        'Absent' = $false
+    }
 
     return ($EnsureTestMap[$Ensure] -eq (Test-ChocolateyInstall @ChocoParams))
 
