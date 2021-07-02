@@ -4,20 +4,21 @@ function Get-TargetResource
     [OutputType([System.Collections.Hashtable])]
     param
     (
-        [parameter(Mandatory = $true)]
-        [ValidateSet("Present","Absent")]
+        [Parameter(Mandatory = $true)]
+        [ValidateSet("Present", "Absent")]
         [System.String]
         $Ensure,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $Name,
 
+        [Parameter()]
         [System.String]
         $Version
     )
 
-    $Env:Path = [Environment]::GetEnvironmentVariable('Path','Machine')
+    $Env:Path = [Environment]::GetEnvironmentVariable('Path', 'Machine')
     Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -verbose:$False
     $null = $PSBoundParameters.remove('Ensure')
 
@@ -36,32 +37,37 @@ function Set-TargetResource
     [CmdletBinding()]
     param
     (
-        [parameter(Mandatory = $true)]
-        [ValidateSet("Present","Absent")]
+        [Parameter(Mandatory = $true)]
+        [ValidateSet("Present", "Absent")]
         [System.String]
         $Ensure,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $Name,
 
+        [Parameter()]
         [System.String]
         $Version
     )
 
-    $Env:Path = [Environment]::GetEnvironmentVariable('Path','Machine')
+    $Env:Path = [Environment]::GetEnvironmentVariable('Path', 'Machine')
     Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -verbose:$False
     $null = $PSBoundParameters.remove('Ensure')
 
-    switch ($Ensure) {
-        'Absent' {
-            if ( $PSBoundParameters.ContainsKey('Version') ) {
+    switch ($Ensure)
+    {
+        'Absent'
+        {
+            if ( $PSBoundParameters.ContainsKey('Version') )
+            {
                 $PSBoundParameters.remove('Version')
             }
             Write-Verbose "Remove Pin for the Chocolatey Package $Name."
             Remove-ChocolateyPin @PSBoundParameters
         }
-        'Present' {
+        'Present'
+        {
             Write-Verbose "Add Pin to the Chocolatey Package $Name."
             Add-ChocolateyPin @PSBoundParameters
         }
@@ -75,26 +81,34 @@ function Test-TargetResource
     [OutputType([System.Boolean])]
     param
     (
-        [parameter(Mandatory = $true)]
-        [ValidateSet("Present","Absent")]
+        [Parameter(Mandatory = $true)]
+        [ValidateSet("Present", "Absent")]
         [System.String]
         $Ensure,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $Name,
 
+        [Parameter()]
         [System.String]
         $Version
     )
 
-    $Env:Path = [Environment]::GetEnvironmentVariable('Path','Machine')
+    $Env:Path = [Environment]::GetEnvironmentVariable('Path', 'Machine')
     Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -verbose:$False
     $null = $PSBoundParameters.remove('Ensure')
-    
-    switch ($Ensure) {
-        'Present' { $PSBoundParameters['Version'] = $Version }
-        'Absent'  { $PSBoundParameters['Version'] = '' }
+
+    switch ($Ensure)
+    {
+        'Present'
+        {
+            $PSBoundParameters['Version'] = $Version
+        }
+        'Absent'
+        {
+            $PSBoundParameters['Version'] = ''
+        }
     }
     return (Test-ChocolateyPin @PSBoundParameters)
 }

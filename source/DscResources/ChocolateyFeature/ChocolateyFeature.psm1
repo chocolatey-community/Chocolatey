@@ -4,25 +4,25 @@ function Get-TargetResource
     [OutputType([System.Collections.Hashtable])]
     param
     (
-        [parameter(Mandatory = $true)]
-        [ValidateSet("Present","Absent")]
+        [Parameter(Mandatory = $true)]
+        [ValidateSet("Present", "Absent")]
         [System.String]
         $Ensure,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $Name
     )
 
-    $Env:Path = [Environment]::GetEnvironmentVariable('Path','Machine')
+    $Env:Path = [Environment]::GetEnvironmentVariable('Path', 'Machine')
 
     Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -verbose:$False
 
     $FeatureConfig = Get-ChocolateyFeature -Name $Name
 
     return @{
-        Ensure = @('Absent','Present')[[int][bool]$FeatureConfig.enabled]
-        Name = $FeatureConfig.Name
+        Ensure = @('Absent', 'Present')[[int][bool]$FeatureConfig.enabled]
+        Name   = $FeatureConfig.Name
     }
 }
 
@@ -31,23 +31,30 @@ function Set-TargetResource
     [CmdletBinding()]
     param
     (
-        [parameter(Mandatory = $true)]
-        [ValidateSet("Present","Absent")]
+        [Parameter(Mandatory = $true)]
+        [ValidateSet("Present", "Absent")]
         [System.String]
         $Ensure,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $Name
     )
 
-    $Env:Path = [Environment]::GetEnvironmentVariable('Path','Machine')
+    $Env:Path = [Environment]::GetEnvironmentVariable('Path', 'Machine')
 
     Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -verbose:$False
 
-    switch ($Ensure) {
-        'Present' { Enable-ChocolateyFeature -Name $Name}
-        'Absent'  { Disable-ChocolateyFeature -Name $Name}
+    switch ($Ensure)
+    {
+        'Present'
+        {
+            Enable-ChocolateyFeature -Name $Name
+        }
+        'Absent'
+        {
+            Disable-ChocolateyFeature -Name $Name
+        }
     }
 }
 
@@ -57,17 +64,17 @@ function Test-TargetResource
     [OutputType([System.Boolean])]
     param
     (
-        [parameter(Mandatory = $true)]
-        [ValidateSet("Present","Absent")]
+        [Parameter(Mandatory = $true)]
+        [ValidateSet("Present", "Absent")]
         [System.String]
         $Ensure,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $Name
     )
-    $Env:Path = [Environment]::GetEnvironmentVariable('Path','Machine')
-    
+    $Env:Path = [Environment]::GetEnvironmentVariable('Path', 'Machine')
+
     Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -verbose:$False
 
     $EnsureResultMap = @{

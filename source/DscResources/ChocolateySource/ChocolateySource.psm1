@@ -4,12 +4,12 @@ function Get-TargetResource
     [OutputType([System.Collections.Hashtable])]
     param
     (
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [ValidateSet("Present","Absent")]
         [System.String]
         $Ensure,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $Name
     )
@@ -41,7 +41,7 @@ function Get-TargetResource
         $username
     #>
     $Env:Path = [Environment]::GetEnvironmentVariable('Path','Machine')
-    
+
     Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -verbose:$False
 
     $ChocoSourceParams = @{
@@ -77,12 +77,12 @@ function Set-TargetResource
     [CmdletBinding()]
     param
     (
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [ValidateSet("Present","Absent")]
         [System.String]
         $Ensure,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $Name,
 
@@ -106,7 +106,7 @@ function Set-TargetResource
     )
 
     $Env:Path = [Environment]::GetEnvironmentVariable('Path','Machine')
-    
+
     Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -verbose:$False
 
     $ChocoSourceParams = @{
@@ -147,12 +147,12 @@ function Test-TargetResource
     [OutputType([System.Boolean])]
     param
     (
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [ValidateSet("Present","Absent")]
         [System.String]
         $Ensure,
 
-        [parameter(Mandatory = $true)]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $Name,
 
@@ -174,7 +174,7 @@ function Test-TargetResource
         [System.Management.Automation.PSCredential]
         $Credential
     )
-    
+
     $Env:Path = [Environment]::GetEnvironmentVariable('Path','Machine')
     Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -verbose:$False
 
@@ -199,10 +199,10 @@ function Test-TargetResource
     # the differences of compare-object when not an exact match with properties
 
     if (($SourceDifferences = Test-ChocolateySource @ChocoSourceParams) -or $SourceDifferences -eq $false) {
-        if ( ($SourceDifferences -eq $False) -and 
-            $Disabled -and  
+        if ( ($SourceDifferences -eq $False) -and
+            $Disabled -and
             $Ensure -eq 'Present' -and
-            !($ChocoSourceParams.Keys.where{$_ -notin @('Name','Disabled') } ) 
+            !($ChocoSourceParams.Keys.where{$_ -notin @('Name','Disabled') } )
         ) {
             # 1. The Source does not exist
             # 2. We want to ensure that
@@ -214,7 +214,7 @@ function Test-TargetResource
         else {
             $SourceDoesMatch = $false
         }
-        
+
         # If the source does not match, it's a good thing when Ensure = 'Absent'
         Write-Verbose "Differences = `r`n$($SourceDifferences | Out-String)"
     }
