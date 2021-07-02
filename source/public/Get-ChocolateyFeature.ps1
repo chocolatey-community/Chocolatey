@@ -17,20 +17,23 @@
 .NOTES
     https://github.com/chocolatey/choco/wiki/CommandsFeature
 #>
-function Get-ChocolateyFeature {
+function Get-ChocolateyFeature
+{
     [CmdletBinding()]
     param(
         [Parameter(
             ValueFromPipeline
-            ,ValueFromPipelineByPropertyName
+            , ValueFromPipelineByPropertyName
         )]
         [Alias('Name')]
         [ValidateNotNullOrEmpty()]
         [string[]]
         $Feature = '*'
     )
-    Begin {
-        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
+    Begin
+    {
+        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
+        {
             Throw "Chocolatey Software not found."
         }
 
@@ -39,30 +42,37 @@ function Get-ChocolateyFeature {
         $ChocoXml.Load($ChocoConfigPath)
     }
 
-    Process {
-        if (!$ChocoXml) {
+    Process
+    {
+        if (!$ChocoXml)
+        {
             Throw "Error with Chocolatey config."
         }
 
-        foreach ($Name in $Feature) {
-            if ($Name -ne '*') {
+        foreach ($Name in $Feature)
+        {
+            if ($Name -ne '*')
+            {
                 Write-Verbose ('Searching for Feature named ${0}' -f [Security.SecurityElement]::Escape($Name))
                 $FeatureNodes = $ChocoXml.SelectNodes("//feature[translate(@name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='$([Security.SecurityElement]::Escape($Name.ToLower()))']")
             }
-            else {
+            else
+            {
                 Write-Verbose 'Returning all Sources configured.'
                 $FeatureNodes = $ChocoXml.chocolatey.features.childNodes
             }
 
-            foreach ($FeatureNode in $FeatureNodes) {
+            foreach ($FeatureNode in $FeatureNodes)
+            {
                 $FeatureObject = [PSCustomObject]@{
-                    PSTypeName  = 'Chocolatey.Feature'
+                    PSTypeName = 'Chocolatey.Feature'
                 }
-                foreach ($property in $FeatureNode.Attributes.name) {
+                foreach ($property in $FeatureNode.Attributes.name)
+                {
                     $FeaturePropertyParam = @{
                         MemberType = 'NoteProperty'
-                        Name = $property
-                        Value = $FeatureNode.($property).ToString()
+                        Name       = $property
+                        Value      = $FeatureNode.($property).ToString()
                     }
                     $FeatureObject | Add-Member @FeaturePropertyParam
                 }

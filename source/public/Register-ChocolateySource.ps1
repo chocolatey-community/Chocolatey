@@ -63,19 +63,20 @@
 .NOTES
     https://github.com/chocolatey/choco/wiki/CommandsSource
 #>
-function Register-ChocolateySource {
+function Register-ChocolateySource
+{
     [CmdletBinding()]
     Param(
         [Parameter(
             Mandatory
-            ,ValueFromPipelineByPropertyName
+            , ValueFromPipelineByPropertyName
         )]
         [System.String]
         $Name,
 
         [Parameter(
             Mandatory
-            ,ValueFromPipelineByPropertyName
+            , ValueFromPipelineByPropertyName
         )]
         $Source,
 
@@ -132,29 +133,35 @@ function Register-ChocolateySource {
         $Key
     )
 
-    Process {
-        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
+    Process
+    {
+        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
+        {
             Throw "Chocolatey Software not found."
         }
 
-        if (!$PSBoundParameters.containskey('Disabled')){
-            $null = $PSBoundParameters.add('Disabled',$Disabled)
+        if (!$PSBoundParameters.containskey('Disabled'))
+        {
+            $null = $PSBoundParameters.add('Disabled', $Disabled)
         }
-        if (!$PSBoundParameters.containskey('SelfService')){
-            $null = $PSBoundParameters.add('SelfService',$SelfService)
+        if (!$PSBoundParameters.containskey('SelfService'))
+        {
+            $null = $PSBoundParameters.add('SelfService', $SelfService)
         }
-        if (!$PSBoundParameters.containskey('BypassProxy')){
-            $null = $PSBoundParameters.add('BypassProxy',$BypassProxy)
+        if (!$PSBoundParameters.containskey('BypassProxy'))
+        {
+            $null = $PSBoundParameters.add('BypassProxy', $BypassProxy)
         }
 
-        $ChocoArguments = @('source','add')
+        $ChocoArguments = @('source', 'add')
         $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
         Write-Verbose "choco $($ChocoArguments -join ' ')"
 
         &$chocoCmd $ChocoArguments | Write-Verbose
 
-        if ($Disabled) {
-            &$chocoCmd @('source','disable',"-n=`"$Name`"") | Write-Verbose
+        if ($Disabled)
+        {
+            &$chocoCmd @('source', 'disable', "-n=`"$Name`"") | Write-Verbose
         }
     }
 }

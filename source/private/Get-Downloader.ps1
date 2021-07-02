@@ -22,7 +22,8 @@
 .EXAMPLE
     Get-Downloader -Url https://chocolatey.org/api/v2
 #>
-function Get-Downloader {
+function Get-Downloader
+{
     [CmdletBinding()]
     param (
         [parameter(
@@ -31,12 +32,15 @@ function Get-Downloader {
         [System.String]
         $url,
 
+        [Parameter()]
         [uri]
         $ProxyLocation,
 
+        [Parameter()]
         [pscredential]
         $ProxyCredential,
 
+        [Parameter()]
         # To bypass the use of any proxy, please set IgnoreProxy
         [switch]
         $IgnoreProxy
@@ -45,28 +49,36 @@ function Get-Downloader {
     $downloader = new-object System.Net.WebClient
     $defaultCreds = [System.Net.CredentialCache]::DefaultCredentials
 
-    if ($defaultCreds -ne $null) {
+    if ($defaultCreds -ne $null)
+    {
         $downloader.Credentials = $defaultCreds
     }
 
-    if ($ignoreProxy -ne $null -and $ignoreProxy -eq 'true') {
+    if ($ignoreProxy -ne $null -and $ignoreProxy -eq 'true')
+    {
         Write-Debug "Explicitly bypassing proxy"
         $downloader.Proxy = [System.Net.GlobalProxySelection]::GetEmptyWebProxy()
     }
-    else {  # check if a proxy is required
-        if ($ProxyLocation -and ![string]::IsNullOrEmpty($ProxyLocation)) {
+    else
+    {
+        # check if a proxy is required
+        if ($ProxyLocation -and ![string]::IsNullOrEmpty($ProxyLocation))
+        {
             $proxy = New-Object System.Net.WebProxy($ProxyLocation, $true)
-            if ($null -ne $ProxyCredential) {
+            if ($null -ne $ProxyCredential)
+            {
                 $proxy.Credentials = $ProxyCredential
             }
 
             Write-Debug "Using explicit proxy server '$ProxyLocation'."
             $downloader.Proxy = $proxy
         }
-        elseif (!$downloader.Proxy.IsBypassed($url)) {
+        elseif (!$downloader.Proxy.IsBypassed($url))
+        {
             # system proxy (pass through)
             $creds = $defaultCreds
-            if ($creds -eq $null) {
+            if ($creds -eq $null)
+            {
                 Write-Debug "Default credentials were null. Attempting backup method"
                 Throw "Could not download required file from $url"
             }
@@ -79,5 +91,5 @@ function Get-Downloader {
         }
     }
 
-  return $downloader
+    return $downloader
 }

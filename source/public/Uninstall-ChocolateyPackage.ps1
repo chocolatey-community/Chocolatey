@@ -118,22 +118,23 @@
 .NOTES
     https://github.com/chocolatey/choco/wiki/Commandsuninstall
 #>
-function Uninstall-ChocolateyPackage {
+function Uninstall-ChocolateyPackage
+{
     [CmdletBinding(
-        SupportsShouldProcess=$true,
-        ConfirmImpact='High'
+        SupportsShouldProcess = $true,
+        ConfirmImpact = 'High'
     )]
     Param(
         [Parameter(
             Mandatory
-            ,ValueFromPipeline
-            ,ValueFromPipelineByPropertyName
+            , ValueFromPipeline
+            , ValueFromPipelineByPropertyName
         )]
         [System.String[]]
         $Name,
 
         [Parameter(
-            ,ValueFromPipelineByPropertyName
+            , ValueFromPipelineByPropertyName
         )]
         [ValidateNotNullOrEmpty()]
         [System.String]
@@ -271,23 +272,29 @@ function Uninstall-ChocolateyPackage {
         $IgnoreAutoUninstallerFailure
     )
 
-    begin {
+    begin
+    {
         $null = $PSboundParameters.remove('Name')
-        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
+        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
+        {
             Throw "Chocolatey Software not found."
         }
-        $CachePath = [io.path]::Combine($Env:ChocolateyInstall,'cache','GetChocolateyPackageCache.xml')
-        if ( (Test-Path $CachePath)) {
+        $CachePath = [io.path]::Combine($Env:ChocolateyInstall, 'cache', 'GetChocolateyPackageCache.xml')
+        if ( (Test-Path $CachePath))
+        {
             $null = Remove-Item $CachePath -ErrorAction SilentlyContinue
         }
     }
-    Process {
-        foreach ($PackageName in $Name) {
-            $ChocoArguments = @('uninstall',$PackageName)
+    Process
+    {
+        foreach ($PackageName in $Name)
+        {
+            $ChocoArguments = @('uninstall', $PackageName)
             $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
             Write-Verbose "choco $($ChocoArguments -join ' ')"
 
-            if ($PSCmdlet.ShouldProcess($PackageName,"Uninstall")) {
+            if ($PSCmdlet.ShouldProcess($PackageName, "Uninstall"))
+            {
                 #Impact confirmed, go choco go!
                 $ChocoArguments += '-y'
                 &$chocoCmd $ChocoArguments | Write-Verbose

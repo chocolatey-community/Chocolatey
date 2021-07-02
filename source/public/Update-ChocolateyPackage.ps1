@@ -144,22 +144,23 @@
 .NOTES
     https://github.com/chocolatey/choco/wiki/CommandsUpgrade
 #>
-function Update-ChocolateyPackage {
+function Update-ChocolateyPackage
+{
     [CmdletBinding(
-        SupportsShouldProcess=$true,
-        ConfirmImpact='High'
+        SupportsShouldProcess = $true,
+        ConfirmImpact = 'High'
     )]
     param(
         [Parameter(
             Mandatory
-            ,ValueFromPipeline
-            ,ValueFromPipelineByPropertyName
+            , ValueFromPipeline
+            , ValueFromPipelineByPropertyName
         )]
         [System.String[]]
         $Name,
 
         [Parameter(
-            ,ValueFromPipelineByPropertyName
+            , ValueFromPipelineByPropertyName
         )]
         [ValidateNotNullOrEmpty()]
         [System.String]
@@ -333,24 +334,30 @@ function Update-ChocolateyPackage {
         $ExcludePrerelease
     )
 
-    begin {
+    begin
+    {
         $null = $PSboundParameters.remove('Name')
-        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
+        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
+        {
             Throw "Chocolatey Software not found."
         }
-        $CachePath = [io.path]::Combine($Env:ChocolateyInstall,'cache','GetChocolateyPackageCache.xml')
-        if ( (Test-Path $CachePath)) {
+        $CachePath = [io.path]::Combine($Env:ChocolateyInstall, 'cache', 'GetChocolateyPackageCache.xml')
+        if ( (Test-Path $CachePath))
+        {
             $null = Remove-Item $CachePath -ErrorAction SilentlyContinue
         }
     }
 
-    Process {
-        foreach ($PackageName in $Name) {
-            $ChocoArguments = @('upgrade',$PackageName)
+    Process
+    {
+        foreach ($PackageName in $Name)
+        {
+            $ChocoArguments = @('upgrade', $PackageName)
             $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
             Write-Verbose "choco $($ChocoArguments -join ' ')"
 
-            if ($PSCmdlet.ShouldProcess($PackageName,"Upgrade")) {
+            if ($PSCmdlet.ShouldProcess($PackageName, "Upgrade"))
+            {
                 #Impact confirmed, go choco go!
                 $ChocoArguments += '-y'
                 &$chocoCmd $ChocoArguments | Write-Verbose

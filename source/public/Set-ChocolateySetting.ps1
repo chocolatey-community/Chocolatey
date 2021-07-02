@@ -20,16 +20,17 @@
 .NOTES
     https://github.com/chocolatey/choco/wiki/CommandsConfig
 #>
-function Set-ChocolateySetting {
+function Set-ChocolateySetting
+{
     [CmdletBinding(
         SupportsShouldProcess
-        ,ConfirmImpact='Low'
+        , ConfirmImpact = 'Low'
     )]
     [OutputType([Void])]
     param(
         [Parameter(
             Mandatory
-            ,ValueFromPipelineByPropertyName
+            , ValueFromPipelineByPropertyName
         )]
         [Alias('Setting')]
         [System.String]
@@ -37,8 +38,8 @@ function Set-ChocolateySetting {
 
         [Parameter(
             Mandatory
-            ,ValueFromPipelineByPropertyName
-            ,ParameterSetName = 'Set'
+            , ValueFromPipelineByPropertyName
+            , ParameterSetName = 'Set'
         )]
         [AllowEmptyString()]
         [System.String]
@@ -46,42 +47,53 @@ function Set-ChocolateySetting {
 
         [Parameter(
             ValueFromPipelineByPropertyName
-            ,ParameterSetName = 'Unset'
+            , ParameterSetName = 'Unset'
         )]
         [switch]
         $Unset
     )
 
-    Process {
-        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
+    Process
+    {
+        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
+        {
             Throw "Chocolatey Software not found."
         }
 
         $ChocoArguments = @('config')
         #Removing PSBoundParameters that could impact Chocolatey's "choco config set" command
-        foreach ($key in @([System.Management.Automation.Cmdlet]::CommonParameters + [System.Management.Automation.Cmdlet]::OptionalCommonParameters)) {
-            if ($PSBoundParameters.ContainsKey($key)) {
+        foreach ($key in @([System.Management.Automation.Cmdlet]::CommonParameters + [System.Management.Automation.Cmdlet]::OptionalCommonParameters))
+        {
+            if ($PSBoundParameters.ContainsKey($key))
+            {
                 $null = $PSBoundParameters.remove($key)
             }
         }
 
-        if ($Unset -or [string]::IsNullOrEmpty($Value)) {
-            if ($PSBoundParameters.ContainsKey('value')) { $null = $PSBoundParameters.Remove('Value') }
+        if ($Unset -or [string]::IsNullOrEmpty($Value))
+        {
+            if ($PSBoundParameters.ContainsKey('value'))
+            {
+                $null = $PSBoundParameters.Remove('Value')
+            }
             $null = $PSBoundParameters.remove('unset')
             $ChocoArguments += 'unset'
         }
-        else {
-            $PSBoundParameters['Value'] = $ExecutionContext.InvokeCommand.ExpandString($Value).TrimEnd(@('/','\'))
+        else
+        {
+            $PSBoundParameters['Value'] = $ExecutionContext.InvokeCommand.ExpandString($Value).TrimEnd(@('/', '\'))
             $ChocoArguments += 'set'
         }
         $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
         Write-Verbose "choco $($ChocoArguments -join ' ')"
 
-        if ($PSCmdlet.ShouldProcess($Env:COMPUTERNAME,"$chocoCmd $($ChocoArguments -join ' ')")) {
+        if ($PSCmdlet.ShouldProcess($Env:COMPUTERNAME, "$chocoCmd $($ChocoArguments -join ' ')"))
+        {
             $cmdOut = &$chocoCmd $ChocoArguments
         }
 
-        if ($cmdOut) {
+        if ($cmdOut)
+        {
             Write-Verbose "$($cmdOut | Out-String)"
         }
     }

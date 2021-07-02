@@ -21,7 +21,8 @@
 .NOTES
     https://github.com/chocolatey/choco/wiki/CommandsConfig
 #>
-function Test-ChocolateySetting {
+function Test-ChocolateySetting
+{
     [CmdletBinding(
         DefaultParameterSetName = 'Set'
     )]
@@ -29,7 +30,7 @@ function Test-ChocolateySetting {
     param(
         [Parameter(
             Mandatory
-            ,ValueFromPipelineByPropertyName
+            , ValueFromPipelineByPropertyName
         )]
         [Alias('Setting')]
         [System.String]
@@ -37,8 +38,8 @@ function Test-ChocolateySetting {
 
         [Parameter(
             Mandatory
-            ,ValueFromPipelineByPropertyName
-            ,ParameterSetName = 'Set'
+            , ValueFromPipelineByPropertyName
+            , ParameterSetName = 'Set'
         )]
         [AllowEmptyString()]
         [AllowNull()]
@@ -47,33 +48,39 @@ function Test-ChocolateySetting {
 
         [Parameter(
             ValueFromPipelineByPropertyName
-            ,ParameterSetName = 'Unset'
+            , ParameterSetName = 'Unset'
         )]
         [switch]
         $Unset
     )
 
-    Process {
-        if (-not (Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
+    Process
+    {
+        if (-not (Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
+        {
             Throw "Chocolatey Software not found."
         }
 
-        if (!($Setting = Get-ChocolateySetting -Name $Name)) {
+        if (!($Setting = Get-ChocolateySetting -Name $Name))
+        {
             Write-Warning "Chocolatey Setting $Name cannot be found."
             return $false
         }
         $Setting | Write-Verbose
-        if ($Unset) {
+        if ($Unset)
+        {
             $Value = ''
         }
 
-        $Value = $ExecutionContext.InvokeCommand.ExpandString($Value).TrimEnd(@('/','\'))
-        if ([string]$Setting.value -eq $Value) {
-            Write-Verbose ("The Chocolatey Setting {0} is set to '{1}' as expected." -f $Name,$Value)
+        $Value = $ExecutionContext.InvokeCommand.ExpandString($Value).TrimEnd(@('/', '\'))
+        if ([string]$Setting.value -eq $Value)
+        {
+            Write-Verbose ("The Chocolatey Setting {0} is set to '{1}' as expected." -f $Name, $Value)
             return $true
         }
-        else {
-            Write-Verbose ("The Chocolatey Setting {0} is NOT set to '{1}' as expected:{2}" -f $Name,$Setting.value,$Value)
+        else
+        {
+            Write-Verbose ("The Chocolatey Setting {0} is NOT set to '{1}' as expected:{2}" -f $Name, $Setting.value, $Value)
             return $False
         }
     }

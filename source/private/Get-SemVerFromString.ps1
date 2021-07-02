@@ -1,4 +1,5 @@
-function Get-SemVerFromString {
+function Get-SemVerFromString
+{
     <#
     .SYNOPSIS
         Private function to parse a string to a SemVer 2.0 custom object, but with added Revision number common to .Net world (and Choco Packages)
@@ -29,10 +30,12 @@ function Get-SemVerFromString {
     )
 
     # Based on SemVer 2.0 but adding Revision (common in .Net/NuGet/Chocolatey packages) https://semver.org
-    if ($VersionString -notmatch '-') {
+    if ($VersionString -notmatch '-')
+    {
         [System.Version]$version, $BuildMetadata = $VersionString -split '\+', 2
     }
-    else {
+    else
+    {
         [System.Version]$version, [System.String]$Tag = $VersionString -split '-', 2
         $PreRelease, $BuildMetadata = $Tag -split '\+', 2
     }

@@ -14,7 +14,8 @@
 .NOTES
     https://chocolatey.org/docs/commands-pin
 #>
-function Remove-ChocolateyPin {
+function Remove-ChocolateyPin
+{
     [CmdletBinding(
         SupportsShouldProcess = $true,
         ConfirmImpact = 'High'
@@ -29,12 +30,15 @@ function Remove-ChocolateyPin {
         $Name
     )
 
-    Process {
-        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
+    Process
+    {
+        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
+        {
             Throw "Chocolatey Software not found."
         }
 
-        if (!(Get-ChocolateyPackage -Name $Name)) {
+        if (!(Get-ChocolateyPackage -Name $Name))
+        {
             Throw "The Pin for Chocolatey Package $Name cannot be found."
         }
 
@@ -42,14 +46,17 @@ function Remove-ChocolateyPin {
         $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
         # Write-Debug "choco $($ChocoArguments -join ' ')"
 
-        if ($PSCmdlet.ShouldProcess("$Name", "Remove Pin")) {
+        if ($PSCmdlet.ShouldProcess("$Name", "Remove Pin"))
+        {
             $Output = &$chocoCmd $ChocoArguments
 
             # LASTEXITCODE is always 0 unless point an existing version (0 when remove but already removed)
-            if ($LASTEXITCODE -ne 0) {
+            if ($LASTEXITCODE -ne 0)
+            {
                 Throw ("Error when trying to remove Pin for {0}.`r`n {1}" -f "$Name", ($output -join "`r`n"))
             }
-            else {
+            else
+            {
                 $output | Write-Verbose
             }
         }

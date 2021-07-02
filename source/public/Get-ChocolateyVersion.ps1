@@ -11,13 +11,15 @@
 .NOTES
     This does not specify the SKU (C4B or Community)
 #>
-function Get-ChocolateyVersion {
+function Get-ChocolateyVersion
+{
     [CmdletBinding()]
     [OutputType([version])]
     param(
     )
 
-    if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
+    if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
+    {
         Throw "Chocolatey Software not found."
     }
 

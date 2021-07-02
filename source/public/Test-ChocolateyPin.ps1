@@ -17,13 +17,14 @@
 .NOTES
     https://chocolatey.org/docs/commands-pin
 #>
-function Test-ChocolateyPin {
+function Test-ChocolateyPin
+{
     [CmdletBinding(
         DefaultParameterSetName = 'Set'
     )]
     [OutputType([Bool])]
     param(
-        [Parameter(Mandatory,ValueFromPipelineByPropertyName)]
+        [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
         [System.String]
         $Name,
 
@@ -31,22 +32,27 @@ function Test-ChocolateyPin {
         $Version
     )
 
-    Process {
-        if (-not (Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
+    Process
+    {
+        if (-not (Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
+        {
             Throw "Chocolatey Software not found."
         }
 
-        if (!($Setting = Get-ChocolateyPin -Name $Name)) {
+        if (!($Setting = Get-ChocolateyPin -Name $Name))
+        {
             Write-Verbose -Message "The Pin for the Chocolatey Package '$Name' cannot be found."
             return $false
         }
 
-        $Version = $ExecutionContext.InvokeCommand.ExpandString($Version).TrimEnd(@('/','\'))
-        if ([string]$Setting.Version -eq $Version) {
+        $Version = $ExecutionContext.InvokeCommand.ExpandString($Version).TrimEnd(@('/', '\'))
+        if ([string]$Setting.Version -eq $Version)
+        {
             Write-Verbose ("The Pin for the Chocolatey Package '{0}' is set to '{1}' as expected." -f $Name, $Version)
             return $true
         }
-        else {
+        else
+        {
             Write-Verbose ("The Pin for the Chocolatey Package '{0}' is NOT set to '{1}' as expected." -f $Name, $Setting.Version)
             return $False
         }

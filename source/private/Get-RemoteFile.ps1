@@ -26,19 +26,27 @@
     Get-RemoteFile -Url https://chocolatey.org/api/v2/0.10.8/ -file C:\chocolatey.zip
 
 #>
-function Get-RemoteFile {
+function Get-RemoteFile
+{
     [CmdletBinding()]
     param (
-        [System.String]$url,
+        [Parameter()]
+        [System.String]
+        $url,
 
-        [System.String]$file,
+        [Parameter()]
+        [System.String]
+        $file,
 
+        [Parameter()]
         [uri]
         $ProxyLocation,
 
+        [Parameter()]
         [pscredential]
         $ProxyCredential,
 
+        [Parameter()]
         # To bypass the use of any proxy, please set IgnoreProxy
         [switch]
         $IgnoreProxy
@@ -46,10 +54,11 @@ function Get-RemoteFile {
 
     Write-Debug "Downloading $url to $file"
     $downloaderParams = @{}
-    $KeysForDownloader = $PSBoundParameters.keys | Where-Object { $_ -notin @('file')}
-    foreach ($key in $KeysForDownloader ) {
+    $KeysForDownloader = $PSBoundParameters.keys | Where-Object { $_ -notin @('file') }
+    foreach ($key in $KeysForDownloader )
+    {
         Write-Debug "`tWith $key :: $($PSBoundParameters[$key])"
-        $null = $downloaderParams.Add($key ,$PSBoundParameters[$key])
+        $null = $downloaderParams.Add($key , $PSBoundParameters[$key])
     }
     $downloader = Get-Downloader @downloaderParams
     $downloader.DownloadFile($url, $file)

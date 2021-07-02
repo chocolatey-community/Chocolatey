@@ -20,20 +20,19 @@ function Test-ChocolateyInstall
 {
     [CmdletBinding()]
     [OutputType([bool])]
-    param(
-        [Parameter(
-            Mandatory = $false
-        )]
+    param (
+        [Parameter()]
         [ValidateNotNullOrEmpty()]
         [System.String]
         $InstallDir
     )
 
     Write-Verbose "Loading machine Path Environment variable into session."
-    $envPath = [Environment]::GetEnvironmentVariable('Path','Machine')
-    [Environment]::SetEnvironmentVariable($envPath,'Process')
+    $envPath = [Environment]::GetEnvironmentVariable('Path', 'Machine')
+    [Environment]::SetEnvironmentVariable($envPath, 'Process')
 
-    if ($InstallDir) {
+    if ($InstallDir)
+    {
         $InstallDir = (Resolve-Path $InstallDir -ErrorAction Stop).Path
     }
 
@@ -50,12 +49,13 @@ function Test-ChocolateyInstall
         else
         {
             Write-Verbose (
-                'Chocolatey Software not installed in {0}`n but in {1}' -f $InstallDir,$chocoCmd.Path
+                'Chocolatey Software not installed in {0}`n but in {1}' -f $InstallDir, $chocoCmd.Path
             )
             return $false
         }
     }
-    else {
+    else
+    {
         Write-Verbose "Chocolatey Software not found."
         return $false
     }

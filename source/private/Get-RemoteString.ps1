@@ -25,17 +25,23 @@
 .EXAMPLE
     Get-RemoteString -Url https://chocolatey.org/install.ps1
 #>
-function Get-RemoteString {
+function Get-RemoteString
+{
     [CmdletBinding()]
     param (
-        [System.String]$url,
+        [Parameter()]
+        [System.String]
+        $url,
 
+        [Parameter()]
         [uri]
         $ProxyLocation,
 
+        [Parameter()]
         [pscredential]
         $ProxyCredential,
 
+        [Parameter()]
         # To bypass the use of any proxy, please set IgnoreProxy
         [switch]
         $IgnoreProxy
@@ -43,10 +49,11 @@ function Get-RemoteString {
 
     Write-Debug "Downloading string from $url"
     $downloaderParams = @{}
-    $KeysForDownloader = $PSBoundParameters.keys | Where-Object { $_ -notin @()}
-    foreach ($key in $KeysForDownloader ) {
+    $KeysForDownloader = $PSBoundParameters.keys | Where-Object { $_ -notin @() }
+    foreach ($key in $KeysForDownloader )
+    {
         Write-Debug "`tWith $key :: $($PSBoundParameters[$key])"
-        $null = $downloaderParams.Add($key,$PSBoundParameters[$key])
+        $null = $downloaderParams.Add($key, $PSBoundParameters[$key])
     }
     $downloader = Get-Downloader @downloaderParams
     return $downloader.DownloadString($url)

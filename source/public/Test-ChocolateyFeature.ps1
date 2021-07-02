@@ -18,13 +18,14 @@
 .NOTES
     https://github.com/chocolatey/choco/wiki/CommandsFeature
 #>
-function Test-ChocolateyFeature {
+function Test-ChocolateyFeature
+{
     [CmdletBinding()]
     [outputType([Bool])]
     param(
         [Parameter(
             Mandatory
-            ,ValueFromPipelineByPropertyName
+            , ValueFromPipelineByPropertyName
         )]
         [Alias('Feature')]
         [System.String]
@@ -37,22 +38,27 @@ function Test-ChocolateyFeature {
         $Disabled
     )
 
-    Process {
-        if (-not (Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
+    Process
+    {
+        if (-not (Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
+        {
             Throw "Chocolatey Software not found."
         }
 
-        if (!($Feature = Get-ChocolateyFeature -Name $Name)) {
+        if (!($Feature = Get-ChocolateyFeature -Name $Name))
+        {
             Write-Warning "Chocolatey Feature $Name cannot be found."
             return $false
         }
         $Feature | Write-Verbose
-        if ($Feature.enabled -eq !$Disabled.ToBool()) {
-            Write-Verbose ("The Chocolatey Feature {0} is set to {1} as expected." -f $Name,(@('Disabled','Enabled')[([int]$Disabled.ToBool())]))
+        if ($Feature.enabled -eq !$Disabled.ToBool())
+        {
+            Write-Verbose ("The Chocolatey Feature {0} is set to {1} as expected." -f $Name, (@('Disabled', 'Enabled')[([int]$Disabled.ToBool())]))
             return $true
         }
-        else {
-            Write-Verbose ("The Chocolatey Feature {0} is NOT set to {1} as expected." -f $Name,(@('Disabled','Enabled')[([int]$Disabled.ToBool())]))
+        else
+        {
+            Write-Verbose ("The Chocolatey Feature {0} is NOT set to {1} as expected." -f $Name, (@('Disabled', 'Enabled')[([int]$Disabled.ToBool())]))
             return $False
         }
     }

@@ -241,11 +241,12 @@ Should install arguments be used exclusively without appending to current packag
 .EXAMPLE
     Get-ChocolateyDefaultArguments @PSBoundparameters
 #>
-function Get-ChocolateyDefaultArgument {
+function Get-ChocolateyDefaultArgument
+{
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSShouldProcess", "")]
     [CmdletBinding(
-        SupportsShouldProcess=$true
-        ,ConfirmImpact="High"
+        SupportsShouldProcess = $true
+        , ConfirmImpact = "High"
     )]
     Param(
         [Parameter(
@@ -465,14 +466,14 @@ function Get-ChocolateyDefaultArgument {
         $VirusPositive,
 
         [Parameter(
-            ,ValueFromPipelineByPropertyName
+            , ValueFromPipelineByPropertyName
         )]
         [ValidateNotNullOrEmpty()]
         [Switch]
         $OrderByPopularity,
 
         [Parameter(
-            ,ValueFromPipelineByPropertyName
+            , ValueFromPipelineByPropertyName
         )]
         [ValidateNotNullOrEmpty()]
         [System.String]
@@ -591,102 +592,326 @@ function Get-ChocolateyDefaultArgument {
         $Key
     )
 
-    Process {
+    Process
+    {
 
-        $ChocoArguments = switch($PSBoundParameters.Keys) {
-            'Value'         { "--value=`"$value`""}
-            'Priority'      { if ( $Priority -gt 0) {"--priority=$priority" } }
-            'SelfService'   { "--allow-self-service"}
-            'Name'          { "--name=`"$Name`"" }
-            'Source'        { "-s`"$Source`"" }
-            'ByPassProxy'   {  "--bypass-proxy" }
-            'CacheLocation' { "--cache-location=`"$CacheLocation`"" }
-            'WhatIf'        {  "--whatif"  }
-            'cert'          { "--cert=`"$Cert`"" }
-            'Force'         {  '--yes'; '--force' }
-            'AcceptLicense' { '--accept-license' }
-            'Verbose'       { '--verbose'}
-            'Debug'         { '--debug'  }
-            'NoProgress'    { '--no-progress' }
-            'Credential'    {
-                if ($Credential.Username) {
+        $ChocoArguments = switch ($PSBoundParameters.Keys)
+        {
+            'Value'
+            {
+                "--value=`"$value`""
+            }
+            'Priority'
+            {
+                if ( $Priority -gt 0)
+                {
+                    "--priority=$priority"
+                }
+            }
+            'SelfService'
+            {
+                "--allow-self-service"
+            }
+            'Name'
+            {
+                "--name=`"$Name`""
+            }
+            'Source'
+            {
+                "-s`"$Source`""
+            }
+            'ByPassProxy'
+            {
+                "--bypass-proxy"
+            }
+            'CacheLocation'
+            {
+                "--cache-location=`"$CacheLocation`""
+            }
+            'WhatIf'
+            {
+                "--whatif"
+            }
+            'cert'
+            {
+                "--cert=`"$Cert`""
+            }
+            'Force'
+            {
+                '--yes'; '--force'
+            }
+            'AcceptLicense'
+            {
+                '--accept-license'
+            }
+            'Verbose'
+            {
+                '--verbose'
+            }
+            'Debug'
+            {
+                '--debug'
+            }
+            'NoProgress'
+            {
+                '--no-progress'
+            }
+            'Credential'
+            {
+                if ($Credential.Username)
+                {
                     "--user=`"$($Credential.Username)`""
                 }
-                if ($Credential.GetNetworkCredential().Password) {
+                if ($Credential.GetNetworkCredential().Password)
+                {
                     "--password=`"$($Credential.GetNetworkCredential().Password)`""
                 }
             }
-            'KeyUser'           { "--user=`"$KeyUser`"" }
-            'Key'               { "--password=`"$Key`"" }
-            'Timeout'           { "--execution-timeout=$Timeout" }
-            'AllowUnofficalBuild'{ "--allow-unofficial-build" }
-            'FailOnSTDErr'      { '--fail-on-stderr' }
-            'Proxy'             { "--Proxy=`"$Proxy`"" }
-            'ProxyCredential'   {
-                if ($ProxyCredential.Username) {
+            'KeyUser'
+            {
+                "--user=`"$KeyUser`""
+            }
+            'Key'
+            {
+                "--password=`"$Key`""
+            }
+            'Timeout'
+            {
+                "--execution-timeout=$Timeout"
+            }
+            'AllowUnofficalBuild'
+            {
+                "--allow-unofficial-build"
+            }
+            'FailOnSTDErr'
+            {
+                '--fail-on-stderr'
+            }
+            'Proxy'
+            {
+                "--Proxy=`"$Proxy`""
+            }
+            'ProxyCredential'
+            {
+                if ($ProxyCredential.Username)
+                {
                     "--proxy-user=`"$($ProxyCredential.Username)`""
                 }
-                if ($ProxyCredential.GetNetworkCredential().Password) {
+                if ($ProxyCredential.GetNetworkCredential().Password)
+                {
                     "--proxy-password=`"$($ProxyCredential.GetNetworkCredential().Password)`""
                 }
             }
-            'ProxyBypassList'   { "--proxy-bypass-list=`"$($ProxyBypassList -join ',')`"" }
-            'ProxyBypassLocal'  { "--proxy-bypass-on-local" }
+            'ProxyBypassList'
+            {
+                "--proxy-bypass-list=`"$($ProxyBypassList -join ',')`""
+            }
+            'ProxyBypassLocal'
+            {
+                "--proxy-bypass-on-local"
+            }
 
             #List / Search Parameters
-            'ByTagOnly'         { '--by-tag-only' }
-            'ByIdOnly'          { '--by-id-only' }
-            'LocalOnly'         { '--local-only' }
-            'IdStartsWith'      { '--id-starts-with' }
-            'ApprovedOnly'      { '--approved-only'}
-            'OrderByPopularity' { '--order-by-popularity' }
-            'NotBroken'         { '--not-broken' }
-            'prerelease'        { '--prerelease' }
-            'IncludePrograms'   { '--include-programs'}
-            'AllVersions'       { '--all-versions' }
-            'Version'           { "--version=`"$version`"" }
-            'exact'             { "--exact" }
+            'ByTagOnly'
+            {
+                '--by-tag-only'
+            }
+            'ByIdOnly'
+            {
+                '--by-id-only'
+            }
+            'LocalOnly'
+            {
+                '--local-only'
+            }
+            'IdStartsWith'
+            {
+                '--id-starts-with'
+            }
+            'ApprovedOnly'
+            {
+                '--approved-only'
+            }
+            'OrderByPopularity'
+            {
+                '--order-by-popularity'
+            }
+            'NotBroken'
+            {
+                '--not-broken'
+            }
+            'prerelease'
+            {
+                '--prerelease'
+            }
+            'IncludePrograms'
+            {
+                '--include-programs'
+            }
+            'AllVersions'
+            {
+                '--all-versions'
+            }
+            'Version'
+            {
+                "--version=`"$version`""
+            }
+            'exact'
+            {
+                "--exact"
+            }
 
             #Install Parameters
-            'x86'               { "--x86"}
-            'OverrideArguments' { '--override-arguments' }
-            'NotSilent'         { '--not-silent' }
-            'ApplyArgsToDependencies' { '--apply-install-arguments-to-dependencies' }
-            'AllowDowngrade'    { '--allow-downgrade' }
-            'SideBySide'        { '--side-by-side' }
-            'ignoredependencies'{ '--ignore-dependencies' }
-            'ForceDependencies' { '--force-dependencies' }
-            'SkipPowerShell'    { '--skip-powershell' }
-            'IgnoreChecksum'    { '--ignore-checksum' }
-            'allowemptychecksum'{ '--allow-empty-checksum' }
-            'AllowEmptyChecksumSecure' { '--allow-empty-checksums-secure' }
-            'RequireChecksum'   { '--requirechecksum'}
-            'Checksum'          { "--download-checksum=`"$Checksum`"" }
-            'Checksum64'        { "--download-checksum-x64=`"$CheckSum64`"" }
-            'ChecksumType'      { "--download-checksum-type=`"$ChecksumType`""}
-            'checksumtype64'    { "--download-checksum-type-x64=`"$Checksumtype64`""}
-            'ignorepackagecodes'{ '--ignore-package-exit-codes' }
-            'UsePackageExitCodes' { '--use-package-exit-codes' }
-            'StopOnFirstFailure'{ '--stop-on-first-failure' }
-            'SkipCache'         { '--skip-download-cache' }
-            'UseDownloadCache'  { '--use-download-cache'}
-            'SkipVirusCheck'    { '--skip-virus-check' }
-            'VirusCheck'        { '--virus-check' }
-            'VirusPositive'     { "--virus-positives-minimum=`"$VirusPositive`"" }
-            'InstallArguments'  { "--install-arguments=`"$InstallArguments`""}
-            'InstallArgumentsSensitive' { "--install-arguments-sensitive=`"$InstallArgumentsSensitive`""}
-            'PackageParameters' {"--package-parameters=`"$PackageParameters`"" }
-            'PackageParametersSensitive' { "--package-parameters-sensitive=`"$PackageParametersSensitive`""}
-            'MaxDownloadRate'   { "--maximum-download-bits-per-second=$MaxDownloadRate" }
-            'IgnoreRememberedArguments' { '--ignore-remembered-arguments' }
-            'UseRememberedArguments' { '--use-remembered-options' }
-            'ExcludePrerelease'  { '--exclude-pre' }
+            'x86'
+            {
+                "--x86"
+            }
+            'OverrideArguments'
+            {
+                '--override-arguments'
+            }
+            'NotSilent'
+            {
+                '--not-silent'
+            }
+            'ApplyArgsToDependencies'
+            {
+                '--apply-install-arguments-to-dependencies'
+            }
+            'AllowDowngrade'
+            {
+                '--allow-downgrade'
+            }
+            'SideBySide'
+            {
+                '--side-by-side'
+            }
+            'ignoredependencies'
+            {
+                '--ignore-dependencies'
+            }
+            'ForceDependencies'
+            {
+                '--force-dependencies'
+            }
+            'SkipPowerShell'
+            {
+                '--skip-powershell'
+            }
+            'IgnoreChecksum'
+            {
+                '--ignore-checksum'
+            }
+            'allowemptychecksum'
+            {
+                '--allow-empty-checksum'
+            }
+            'AllowEmptyChecksumSecure'
+            {
+                '--allow-empty-checksums-secure'
+            }
+            'RequireChecksum'
+            {
+                '--requirechecksum'
+            }
+            'Checksum'
+            {
+                "--download-checksum=`"$Checksum`""
+            }
+            'Checksum64'
+            {
+                "--download-checksum-x64=`"$CheckSum64`""
+            }
+            'ChecksumType'
+            {
+                "--download-checksum-type=`"$ChecksumType`""
+            }
+            'checksumtype64'
+            {
+                "--download-checksum-type-x64=`"$Checksumtype64`""
+            }
+            'ignorepackagecodes'
+            {
+                '--ignore-package-exit-codes'
+            }
+            'UsePackageExitCodes'
+            {
+                '--use-package-exit-codes'
+            }
+            'StopOnFirstFailure'
+            {
+                '--stop-on-first-failure'
+            }
+            'SkipCache'
+            {
+                '--skip-download-cache'
+            }
+            'UseDownloadCache'
+            {
+                '--use-download-cache'
+            }
+            'SkipVirusCheck'
+            {
+                '--skip-virus-check'
+            }
+            'VirusCheck'
+            {
+                '--virus-check'
+            }
+            'VirusPositive'
+            {
+                "--virus-positives-minimum=`"$VirusPositive`""
+            }
+            'InstallArguments'
+            {
+                "--install-arguments=`"$InstallArguments`""
+            }
+            'InstallArgumentsSensitive'
+            {
+                "--install-arguments-sensitive=`"$InstallArgumentsSensitive`""
+            }
+            'PackageParameters'
+            {
+                "--package-parameters=`"$PackageParameters`""
+            }
+            'PackageParametersSensitive'
+            {
+                "--package-parameters-sensitive=`"$PackageParametersSensitive`""
+            }
+            'MaxDownloadRate'
+            {
+                "--maximum-download-bits-per-second=$MaxDownloadRate"
+            }
+            'IgnoreRememberedArguments'
+            {
+                '--ignore-remembered-arguments'
+            }
+            'UseRememberedArguments'
+            {
+                '--use-remembered-options'
+            }
+            'ExcludePrerelease'
+            {
+                '--exclude-pre'
+            }
 
             #uninstall package params
-            'AutoUninstaller'     { '--use-autouninstaller'  }
-            'SkipAutoUninstaller' { '--skip-autouninstaller' }
-            'FailOnAutouninstaller' { '--fail-on-autouninstaller' }
-            'IgnoreAutoUninstallerFailure' { '--ignore-autouninstaller-failure' }
+            'AutoUninstaller'
+            {
+                '--use-autouninstaller'
+            }
+            'SkipAutoUninstaller'
+            {
+                '--skip-autouninstaller'
+            }
+            'FailOnAutouninstaller'
+            {
+                '--fail-on-autouninstaller'
+            }
+            'IgnoreAutoUninstallerFailure'
+            {
+                '--ignore-autouninstaller-failure'
+            }
         }
         return $ChocoArguments
     }

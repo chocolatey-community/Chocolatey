@@ -55,7 +55,8 @@
 .NOTES
     https://github.com/chocolatey/choco/wiki/CommandsList
 #>
-function Get-ChocolateyPackage {
+function Get-ChocolateyPackage
+{
     [CmdletBinding()]
     param(
         [Parameter(
@@ -138,25 +139,41 @@ function Get-ChocolateyPackage {
         $CacheLocation
     )
 
-    Process {
-        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
+    Process
+    {
+        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
+        {
             Throw "Chocolatey Software not found."
         }
 
         $ChocoArguments = @('list', '-r')
         $paramKeys = [Array]::CreateInstance([string], $PSboundparameters.Keys.count)
         $PSboundparameters.Keys.CopyTo($paramKeys, 0)
-        switch ($paramKeys) {
-            'verbose' { $null = $PSBoundParameters.remove('Verbose') }
-            'debug' { $null = $PSBoundParameters.remove('debug') }
-            'Name' { $null = $PSBoundParameters.remove('Name') }
-            'Exact' { $null = $PSBoundParameters.remove('Exact') }
+        switch ($paramKeys)
+        {
+            'verbose'
+            {
+                $null = $PSBoundParameters.remove('Verbose')
+            }
+            'debug'
+            {
+                $null = $PSBoundParameters.remove('debug')
+            }
+            'Name'
+            {
+                $null = $PSBoundParameters.remove('Name')
+            }
+            'Exact'
+            {
+                $null = $PSBoundParameters.remove('Exact')
+            }
         }
 
         $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
         Write-Verbose "choco $($ChocoArguments -join ' ')"
 
-        if ($ChocoArguments -contains '--verbose') {
+        if ($ChocoArguments -contains '--verbose')
+        {
             $ChocoArguments = [System.Collections.ArrayList]$ChocoArguments
             $ChocoArguments.remove('--verbose')
         }
@@ -164,56 +181,77 @@ function Get-ChocolateyPackage {
         if ( $LocalOnly -and
             !$PSboundparameters.containsKey('Version') -and
             (($Name -and $Exact) -or ([string]::IsNullOrEmpty($Name)))
-        ) {
+        )
+        {
             $CacheFolder = Join-Path -Path $Env:ChocolateyInstall -ChildPath 'cache'
-            $CachePath   = Join-Path -Path $CacheFolder -ChildPath 'GetChocolateyPackageCache.xml'
-            try {
-                if (!(Test-Path $CacheFolder)) {
+            $CachePath = Join-Path -Path $CacheFolder -ChildPath 'GetChocolateyPackageCache.xml'
+            try
+            {
+                if (!(Test-Path $CacheFolder))
+                {
                     $null = New-Item -Type Directory -Path $CacheFolder -Force -ErrorAction Stop
                 }
-                if (Test-Path $CachePath) {
+                if (Test-Path $CachePath)
+                {
                     $CachedFile = Get-Item $CachePath
                 }
                 [io.file]::OpenWrite($CachePath).close()
                 $CacheAvailable = $true
             }
-            catch {
+            catch
+            {
                 Write-Debug "Unable to write to cache $CachePath, caching unavailable."
                 $CacheAvailable = $false
             }
 
             if ( $CacheAvailable -and $CachedFile -and
-                 $CachedFile.LastWriteTime -gt ([datetime]::Now.AddSeconds(-60))
-            ) {
+                $CachedFile.LastWriteTime -gt ([datetime]::Now.AddSeconds(-60))
+            )
+            {
                 Write-Debug "Retrieving from cache at $CachePath."
                 $UnfilteredResults = @(Import-Clixml -Path $CachePath)
                 Write-Debug "Loaded $($UnfilteredResults.count) from cache."
             }
-            else {
+            else
+            {
                 Write-Debug "Running command (before caching)."
                 $ChocoListOutput = &$chocoCmd $ChocoArguments
                 Write-Debug "$chocoCmd $($ChocoArguments -join ' ')"
                 $UnfilteredResults = $ChocoListOutput | ConvertFrom-Csv -Delimiter '|' -Header 'Name', 'Version'
                 $CacheFile = [io.fileInfo]$CachePath
 
-                if ($CacheAvailable) {
-                    try {
+                if ($CacheAvailable)
+                {
+                    try
+                    {
                         $null = $UnfilteredResults | Export-Clixml -Path $CacheFile -Force -ErrorAction Stop
                         Write-Debug "Unfiltered list cached at $CacheFile."
                     }
-                    catch {
+                    catch
+                    {
                         Write-Debug "Error Creating the cache at $CacheFile."
                     }
                 }
             }
 
             $UnfilteredResults | Where-Object {
-                $( if ($Name) {$_.Name -eq $Name} else { $true })
+                $( if ($Name)
+                    {
+                        $_.Name -eq $Name
+                    }
+                    else
+                    {
+                        $true
+                    })
             }
         }
-        else {
+        else
+        {
             Write-Debug "Running from command without caching."
-            $ChocoListOutput = &$chocoCmd $ChocoArguments $Name $( if ($Exact) { '--exact' } )
+            $ChocoListOutput = &$chocoCmd $ChocoArguments $Name $( if ($Exact)
+                {
+                    '--exact'
+                } )
             $ChocoListOutput | ConvertFrom-Csv -Delimiter '|' -Header 'Name', 'Version'
         }
     }

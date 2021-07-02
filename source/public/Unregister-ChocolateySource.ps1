@@ -55,12 +55,13 @@
 .NOTES
     https://github.com/chocolatey/choco/wiki/CommandsSource
 #>
-function Unregister-ChocolateySource {
+function Unregister-ChocolateySource
+{
     [CmdletBinding()]
     Param(
         [Parameter(
             Mandatory
-            ,ValueFromPipelineByPropertyName
+            , ValueFromPipelineByPropertyName
         )]
         [System.String]
         $Name,
@@ -120,16 +121,19 @@ function Unregister-ChocolateySource {
 
     )
 
-    Process {
-        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
+    Process
+    {
+        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
+        {
             Throw "Chocolatey Software not found."
         }
 
-        if (!(Get-ChocolateySource -Name $Name)) {
+        if (!(Get-ChocolateySource -Name $Name))
+        {
             Throw "Chocolatey Source $Name cannot be found. You can Register it using Register-ChocolateySource."
         }
 
-        $ChocoArguments = @('source','remove')
+        $ChocoArguments = @('source', 'remove')
         $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
         Write-Verbose "choco $($ChocoArguments -join ' ')"
 

@@ -18,12 +18,13 @@
 .NOTES
     https://github.com/chocolatey/choco/wiki/CommandsSource
 #>
-function Disable-ChocolateySource {
+function Disable-ChocolateySource
+{
     [CmdletBinding()]
     param(
         [Parameter(
             Mandatory
-            ,ValueFromPipelineByPropertyName
+            , ValueFromPipelineByPropertyName
         )]
         [System.String]
         $Name,
@@ -35,16 +36,19 @@ function Disable-ChocolateySource {
         $NoProgress
     )
 
-    Process {
-        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
+    Process
+    {
+        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
+        {
             Throw "Chocolatey Software not found."
         }
 
-        if (!(Get-ChocolateySource -Name $Name)) {
+        if (!(Get-ChocolateySource -Name $Name))
+        {
             Throw "Chocolatey Source $Name cannot be found. You can Register it using Register-ChocolateySource."
         }
 
-        $ChocoArguments = @('source','disable')
+        $ChocoArguments = @('source', 'disable')
         $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
         Write-Verbose "choco $($ChocoArguments -join ' ')"
 

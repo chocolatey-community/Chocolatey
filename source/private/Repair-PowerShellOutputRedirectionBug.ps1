@@ -12,17 +12,20 @@
 .EXAMPLE
     Repair-PowerShellOutputRedirectionBug #Only for PSVersion below PS4
 #>
-function Repair-PowerShellOutputRedirectionBug {
+function Repair-PowerShellOutputRedirectionBug
+{
     [CmdletBinding()]
     Param(
 
     )
 
-    if ($PSVersionTable.PSVersion.Major -lt 4) {
+    if ($PSVersionTable.PSVersion.Major -lt 4)
+    {
         return
     }
 
-    try {
+    try
+    {
         # http://www.leeholmes.com/blog/2008/07/30/workaround-the-os-handles-position-is-not-what-filestream-expected/ plus comments
         $bindingFlags = [Reflection.BindingFlags] "Instance,NonPublic,GetField"
         $objectRef = $host.GetType().GetField("externalHostRef", $bindingFlags).GetValue($host)
@@ -36,7 +39,8 @@ function Repair-PowerShellOutputRedirectionBug {
         $field2 = $consoleHost.GetType().GetField("standardErrorWriter", $bindingFlags)
         $field2.SetValue($consoleHost, [Console]::Error)
     }
-    catch {
+    catch
+    {
         Write-Warning "Unable to apply redirection fix."
     }
 }

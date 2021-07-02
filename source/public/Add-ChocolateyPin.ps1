@@ -22,15 +22,16 @@
 .NOTES
     https://chocolatey.org/docs/commands-pin
 #>
-function Add-ChocolateyPin {
+function Add-ChocolateyPin
+{
     [CmdletBinding(
-        SupportsShouldProcess=$true,
-        ConfirmImpact='High'
+        SupportsShouldProcess = $true,
+        ConfirmImpact = 'High'
     )]
     Param(
         [Parameter(
             Mandatory
-            ,ValueFromPipelineByPropertyName
+            , ValueFromPipelineByPropertyName
         )]
         [Alias('Package')]
         [System.String]
@@ -44,27 +45,33 @@ function Add-ChocolateyPin {
 
     )
 
-    Process {
-        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
+    Process
+    {
+        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
+        {
             Throw "Chocolatey Software not found."
         }
 
-        if (!(Get-ChocolateyPackage -Name $Name)) {
+        if (!(Get-ChocolateyPackage -Name $Name))
+        {
             Throw "Chocolatey Package $Name cannot be found."
         }
 
-        $ChocoArguments = @('pin','add','-r')
+        $ChocoArguments = @('pin', 'add', '-r')
         $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
         # Write-Debug "choco $($ChocoArguments -join ' ')"
 
-        if ($PSCmdlet.ShouldProcess("$Name $Version", "Add Pin")) {
+        if ($PSCmdlet.ShouldProcess("$Name $Version", "Add Pin"))
+        {
             $Output = &$chocoCmd $ChocoArguments
 
             # LASTEXITCODE is always 0 unless point an existing version (0 when remove but already removed)
-            if ($LASTEXITCODE -ne 0) {
+            if ($LASTEXITCODE -ne 0)
+            {
                 Throw ("Error when trying to add Pin for Package '{0}'.`r`n {1}" -f "$Name $Version", ($output -join "`r`n"))
             }
-            else {
+            else
+            {
                 $output | Write-Verbose
             }
         }

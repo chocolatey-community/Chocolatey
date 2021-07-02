@@ -156,22 +156,23 @@
 .NOTES
     https://github.com/chocolatey/choco/wiki/CommandsInstall
 #>
-function Install-ChocolateyPackage {
+function Install-ChocolateyPackage
+{
     [CmdletBinding(
-        SupportsShouldProcess=$true,
-        ConfirmImpact='High'
+        SupportsShouldProcess = $true,
+        ConfirmImpact = 'High'
     )]
     param(
         [Parameter(
             Mandatory
-            ,ValueFromPipeline
-            ,ValueFromPipelineByPropertyName
+            , ValueFromPipeline
+            , ValueFromPipelineByPropertyName
         )]
         [System.String[]]
         $Name,
 
         [Parameter(
-            ,ValueFromPipelineByPropertyName
+            , ValueFromPipelineByPropertyName
         )]
         [ValidateNotNullOrEmpty()]
         [System.String]
@@ -359,27 +360,34 @@ function Install-ChocolateyPackage {
         $VirusPositive
     )
 
-    begin {
+    begin
+    {
         $null = $PSboundParameters.remove('Name')
-        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
+        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
+        {
             Throw "Chocolatey Software not found."
         }
-        $CachePath = [io.path]::Combine($Env:ChocolateyInstall,'cache','GetChocolateyPackageCache.xml')
-        if ( (Test-Path $CachePath)) {
+        $CachePath = [io.path]::Combine($Env:ChocolateyInstall, 'cache', 'GetChocolateyPackageCache.xml')
+        if ( (Test-Path $CachePath))
+        {
             $null = Remove-Item $CachePath -ErrorAction SilentlyContinue
         }
     }
-    Process {
-        foreach ($PackageName in $Name) {
-            $ChocoArguments = @('install',$PackageName)
+    Process
+    {
+        foreach ($PackageName in $Name)
+        {
+            $ChocoArguments = @('install', $PackageName)
             $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
             Write-Verbose "choco $($ChocoArguments -join ' ')"
 
-            if ($PSCmdlet.ShouldProcess($PackageName,"Install")) {
+            if ($PSCmdlet.ShouldProcess($PackageName, "Install"))
+            {
                 #Impact confirmed, go choco go!
                 $ChocoArguments += '-y'
                 $ChocoOut = &$chocoCmd $ChocoArguments
-                if ($ChocoOut) {
+                if ($ChocoOut)
+                {
                     Write-Output $ChocoOut
                 }
             }

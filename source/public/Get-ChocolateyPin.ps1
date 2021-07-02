@@ -17,22 +17,25 @@
     https://chocolatey.org/docs/commands-pin
 #>
 
-function Get-ChocolateyPin {
+function Get-ChocolateyPin
+{
     [CmdletBinding()]
     Param(
         [Parameter(
             ValueFromPipeline
-            ,ValueFromPipelineByPropertyName
+            , ValueFromPipelineByPropertyName
         )]
         [System.String]
         $Name = '*'
     )
 
-    if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
+    if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
+    {
         Throw "Chocolatey Software not found."
     }
 
-    if (!(Get-ChocolateyPackage -Name $Name)) {
+    if (!(Get-ChocolateyPackage -Name $Name))
+    {
         Throw "Chocolatey Package $Name cannot be found."
     }
 
@@ -42,28 +45,33 @@ function Get-ChocolateyPin {
     # Write-Debug -Message "choco $($ChocoArguments -join ' ')"
 
     # Stop here if the list is empty
-    if (-Not ($ChocoPinListOutput = &$chocoCmd $ChocoArguments)) {
+    if (-Not ($ChocoPinListOutput = &$chocoCmd $ChocoArguments))
+    {
         return
     }
-    else {
+    else
+    {
         Write-Verbose ("Found {0} Packages" -f $ChocoPinListOutput.count)
         # Convert the list to objects
-        $ChocoPinListOutput = $ChocoPinListOutput | ConvertFrom-Csv -Delimiter '|' -Header 'Name','Version'
+        $ChocoPinListOutput = $ChocoPinListOutput | ConvertFrom-Csv -Delimiter '|' -Header 'Name', 'Version'
     }
 
-    if ($Name -ne '*') {
+    if ($Name -ne '*')
+    {
         Write-Verbose 'Filtering pinned Packages'
         $ChocoPinListOutput = $ChocoPinListOutput | Where-Object { $_.Name -in $Name }
     }
-    else {
+    else
+    {
         Write-Verbose 'Returning all pinned Packages'
     }
 
-    foreach ($Pin in $ChocoPinListOutput) {
+    foreach ($Pin in $ChocoPinListOutput)
+    {
         [PSCustomObject]@{
-            PSTypeName  = 'Chocolatey.Pin'
-            Name        = $Pin.Name
-            Version     = $Pin.Version
+            PSTypeName = 'Chocolatey.Pin'
+            Name       = $Pin.Name
+            Version    = $Pin.Version
         }
     }
 }

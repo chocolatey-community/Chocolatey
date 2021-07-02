@@ -34,7 +34,8 @@
 .NOTES
     https://github.com/chocolatey/choco/wiki/CommandsList
 #>
-function Test-ChocolateyPackageIsInstalled {
+function Test-ChocolateyPackageIsInstalled
+{
     [CmdletBinding()]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseOutputTypeCorrectly', '')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", "")]
@@ -79,13 +80,16 @@ function Test-ChocolateyPackageIsInstalled {
 
     )
 
-    Process {
-        if (-not (Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
+    Process
+    {
+        if (-not (Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
+        {
             Throw "Chocolatey Software not found."
         }
 
         #if version latest verify against sources
-        if (! ($InstalledPackages = @(Get-ChocolateyPackage -LocalOnly -Name $Name -Exact)) ) {
+        if (! ($InstalledPackages = @(Get-ChocolateyPackage -LocalOnly -Name $Name -Exact)) )
+        {
             Write-Verbose "Could not find Package $Name."
         }
 
@@ -93,51 +97,65 @@ function Test-ChocolateyPackageIsInstalled {
         $null = $SearchPackageParams.Remove('version')
         $null = $SearchPackageParams.Remove('UpdateOnly')
 
-        if ($Version -eq 'latest') {
+        if ($Version -eq 'latest')
+        {
             $ReferenceObject = Get-ChocolateyPackage @SearchPackageParams -Exact
-            if (!$ReferenceObject) {
+            if (!$ReferenceObject)
+            {
                 Throw "Latest version of Package $name not found. Verify that the sources are reachable and package exists."
             }
         }
-        else {
+        else
+        {
             $ReferenceObject = [PSCustomObject]@{
                 Name = $Name
             }
-            if ($Version) { $ReferenceObject | Add-Member -MemberType NoteProperty -Name version -value $Version }
+            if ($Version)
+            {
+                $ReferenceObject | Add-Member -MemberType NoteProperty -Name version -value $Version
+            }
         }
 
         $PackageFound = $false
         $MatchingPackages = $InstalledPackages | Where-Object {
             Write-Debug "Testing $($_.Name) against $($ReferenceObject.Name)"
-            if ($_.Name -eq $ReferenceObject.Name) {
+            if ($_.Name -eq $ReferenceObject.Name)
+            {
                 $PackageFound = $True
                 Write-Debug "Package Found"
 
-                if (!$Version) {
+                if (!$Version)
+                {
                     return $true
                 }
-                elseif ((Compare-SemVerVersion $_.version $ReferenceObject.version) -in @('=', '>')) {
+                elseif ((Compare-SemVerVersion $_.version $ReferenceObject.version) -in @('=', '>'))
+                {
                     return $true
                 }
-                else {
+                else
+                {
                     return $false
                 }
             }
         }
 
-        if ($MatchingPackages) {
+        if ($MatchingPackages)
+        {
             Write-Verbose ("'{0}' packages match the given properties." -f $MatchingPackages.Count)
             $VersionGreaterOrEqual = $true
         }
-        elseif ($PackageFound -and $UpdateOnly) {
+        elseif ($PackageFound -and $UpdateOnly)
+        {
             Write-Verbose "This package is installed with a lower version than specified."
             $VersionGreaterOrEqual = $false
         }
-        elseif (!$PackageFound -and $UpdateOnly) {
+        elseif (!$PackageFound -and $UpdateOnly)
+        {
             Write-Verbose "No packages match the selection, but no need to Install."
             $VersionGreaterOrEqual = $true
         }
-        else {
+        else
+        {
             Write-Verbose "No packages match the selection and need Installing."
             $VersionGreaterOrEqual = $False
         }

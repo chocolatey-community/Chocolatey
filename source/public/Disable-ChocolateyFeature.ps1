@@ -17,12 +17,13 @@
 .NOTES
     https://github.com/chocolatey/choco/wiki/CommandsFeature
 #>
-function Disable-ChocolateyFeature {
+function Disable-ChocolateyFeature
+{
     [CmdletBinding()]
     param(
         [Parameter(
             Mandatory
-            ,ValueFromPipelineByPropertyName
+            , ValueFromPipelineByPropertyName
         )]
         [Alias('Feature')]
         [System.String]
@@ -35,16 +36,19 @@ function Disable-ChocolateyFeature {
         $NoProgress
     )
 
-    Process {
-        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
+    Process
+    {
+        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
+        {
             Throw "Chocolatey Software not found."
         }
 
-        if (!(Get-ChocolateyFeature -Name $Name)) {
+        if (!(Get-ChocolateyFeature -Name $Name))
+        {
             Throw "Chocolatey Feature $Name cannot be found."
         }
 
-        $ChocoArguments = @('feature','disable')
+        $ChocoArguments = @('feature', 'disable')
         $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
         Write-Verbose "choco $($ChocoArguments -join ' ')"
 

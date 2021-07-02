@@ -19,20 +19,23 @@
 .NOTES
     https://github.com/chocolatey/choco/wiki/CommandsSource
 #>
-function Get-ChocolateySource {
+function Get-ChocolateySource
+{
     [CmdletBinding()]
     param(
         [Parameter(
             ValueFromPipeline
-            ,ValueFromPipelineByPropertyName
+            , ValueFromPipelineByPropertyName
         )]
         [Alias('id')]
         [ValidateNotNullOrEmpty()]
         [string[]]
         $Name = '*'
     )
-    Begin {
-        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
+    Begin
+    {
+        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
+        {
             Throw "Chocolatey Software not found."
         }
         $ChocoConfigPath = join-path $chocoCmd.Path ..\..\config\chocolatey.config -Resolve
@@ -40,22 +43,28 @@ function Get-ChocolateySource {
         $ChocoXml.Load($ChocoConfigPath)
     }
 
-    Process {
-        if (!$ChocoXml) {
+    Process
+    {
+        if (!$ChocoXml)
+        {
             Throw "Error with Chocolatey config."
         }
 
-        foreach ($id in $Name) {
-            if ($id -ne '*') {
+        foreach ($id in $Name)
+        {
+            if ($id -ne '*')
+            {
                 Write-Verbose ('Searching for Source with id ${0}' -f [Security.SecurityElement]::Escape($id))
                 $sourceNodes = $ChocoXml.SelectNodes("//source[translate(@id,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='$([Security.SecurityElement]::Escape($id.ToLower()))']")
             }
-            else {
+            else
+            {
                 Write-Verbose 'Returning all Sources configured.'
                 $sourceNodes = $ChocoXml.chocolatey.sources.childNodes
             }
 
-            foreach ($source in $sourceNodes) {
+            foreach ($source in $sourceNodes)
+            {
                 Write-Output ([PSCustomObject]@{
                         PSTypeName  = 'Chocolatey.Source'
                         Name        = $source.id

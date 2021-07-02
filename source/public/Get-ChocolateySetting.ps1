@@ -16,20 +16,23 @@
 .NOTES
     https://github.com/chocolatey/choco/wiki/CommandsConfig
 #>
-function Get-ChocolateySetting {
+function Get-ChocolateySetting
+{
     [CmdletBinding()]
     param(
         [Parameter(
             ValueFromPipeline
-            ,ValueFromPipelineByPropertyName
+            , ValueFromPipelineByPropertyName
         )]
         [Alias('Name')]
         [ValidateNotNullOrEmpty()]
         [string[]]
         $Setting = '*'
     )
-    Begin {
-        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
+    Begin
+    {
+        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
+        {
             Throw "Chocolatey Software not found."
         }
 
@@ -38,26 +41,33 @@ function Get-ChocolateySetting {
         $ChocoXml.Load($ChocoConfigPath)
     }
 
-    Process {
-        if (!$ChocoXml) {
+    Process
+    {
+        if (!$ChocoXml)
+        {
             Throw "Error with Chocolatey config."
         }
 
-        foreach ($Name in $Setting) {
-            if ($Name -ne '*') {
+        foreach ($Name in $Setting)
+        {
+            if ($Name -ne '*')
+            {
                 Write-Verbose ("Searching for Setting named {0}" -f [Security.SecurityElement]::Escape($Name))
                 $SettingNodes = $ChocoXml.SelectNodes("//add[translate(@key,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='$([Security.SecurityElement]::Escape($Name.ToLower()))']")
             }
-            else {
+            else
+            {
                 Write-Verbose 'Returning all Sources configured.'
                 $SettingNodes = $ChocoXml.chocolatey.config.childNodes
             }
 
-            foreach ($SettingNode in $SettingNodes) {
+            foreach ($SettingNode in $SettingNodes)
+            {
                 $SettingObject = [PSCustomObject]@{
-                    PSTypeName  = 'Chocolatey.Setting'
+                    PSTypeName = 'Chocolatey.Setting'
                 }
-                foreach ($property in $SettingNode.Attributes.name) {
+                foreach ($property in $SettingNode.Attributes.name)
+                {
                     $SettingPropertyParam = @{
                         MemberType = 'NoteProperty'
                         Name       = $property
