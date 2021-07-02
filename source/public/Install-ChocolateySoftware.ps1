@@ -73,7 +73,7 @@ function Install-ChocolateySoftware
     [CmdletBinding(
         DefaultParameterSetName = 'FromFeedUrl'
     )]
-    param(
+    param (
         [Parameter(
             ParameterSetName = 'FromPackageUrl'
         )]
@@ -86,21 +86,27 @@ function Install-ChocolateySoftware
         [uri]
         $PackageFeedUrl = 'https://chocolatey.org/api/v2',
 
+        [Parameter()]
         [System.String]
         $Version,
 
+        [Parameter()]
         [System.String]
         $ChocoTempDir,
 
+        [Parameter()]
         [uri]
         $ProxyLocation,
 
+        [Parameter()]
         [pscredential]
         $ProxyCredential,
 
+        [Parameter()]
         [switch]
         $IgnoreProxy,
 
+        [Parameter()]
         [System.String]
         $InstallationDirectory
     )

@@ -26,8 +26,8 @@ function Get-Downloader
 {
     [CmdletBinding()]
     param (
-        [parameter(
-            Mandatory
+        [Parameter(
+            Mandatory = $true
         )]
         [System.String]
         $url,

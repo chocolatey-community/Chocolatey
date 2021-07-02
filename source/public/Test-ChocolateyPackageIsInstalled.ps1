@@ -39,9 +39,9 @@ function Test-ChocolateyPackageIsInstalled
     [CmdletBinding()]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseOutputTypeCorrectly', '')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", "")]
-    param(
+    param (
         [Parameter(
-            Mandatory
+            Mandatory = $true
             , ValueFromPipelineByPropertyName
         )]
         [ValidateNotNullOrEmpty()]
@@ -80,7 +80,7 @@ function Test-ChocolateyPackageIsInstalled
 
     )
 
-    Process
+    process
     {
         if (-not (Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
         {

@@ -1,9 +1,9 @@
 InModuleScope Chocolatey {
     Describe 'Get-ChocolateyVersion' {
-        
+
         Mock Get-Command -MockWith {
-            Param()
-            { Param() '1.2.3' }
+            param ()
+            { param () '1.2.3' }
         }
 
         Context 'Default' {
@@ -13,6 +13,6 @@ InModuleScope Chocolatey {
                 $version | Should -Be '1.2.3'
             }
         }
-        
+
     }
 }

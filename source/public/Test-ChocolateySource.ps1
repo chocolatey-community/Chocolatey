@@ -50,13 +50,14 @@
 .NOTES
     https://github.com/chocolatey/choco/wiki/CommandsSource
 #>
-function Test-ChocolateySource {
+function Test-ChocolateySource
+{
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseOutputTypeCorrectly', '')]
     [CmdletBinding()]
-    param(
+    param (
         [Parameter(
-            Mandatory
-            ,ValueFromPipelineByPropertyName
+            Mandatory = $true
+            , ValueFromPipelineByPropertyName
         )]
         [System.String]
         $Name,
@@ -96,39 +97,48 @@ function Test-ChocolateySource {
         [PSCredential]
         $Credential,
 
+        [Parameter()]
         #To be used when Password is too long (>240 char) like a key
         $KeyUser,
+        [Parameter()]
         $Key
     )
 
-    Process {
-        if (-not (Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue)) {
+    process
+    {
+        if (-not (Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
+        {
             Throw "Chocolatey Software not found."
         }
 
-        if (-not ($Source = (Get-ChocolateySource -Name $Name)) ) {
+        if (-not ($Source = (Get-ChocolateySource -Name $Name)) )
+        {
             Write-Verbose "Chocolatey Source $Name cannot be found."
             Return $false
         }
 
         $ReferenceSource = [PSCustomObject]@{}
         foreach ( $Property in $PSBoundParameters.keys.where{
-            $_ -notin ([System.Management.Automation.Cmdlet]::CommonParameters + [System.Management.Automation.Cmdlet]::OptionalCommonParameters)}
+                $_ -notin ([System.Management.Automation.Cmdlet]::CommonParameters + [System.Management.Automation.Cmdlet]::OptionalCommonParameters) }
         )
         {
-            if ($Property -notin @('Credential','Key','KeyUser')) {
+            if ($Property -notin @('Credential', 'Key', 'KeyUser'))
+            {
                 $MemberParams = @{
                     MemberType = 'NoteProperty'
-                    Name = $Property
-                    Value = $PSboundParameters[$Property]
+                    Name       = $Property
+                    Value      = $PSboundParameters[$Property]
                 }
                 $ReferenceSource | Add-Member @MemberParams
             }
-            else {
-                if ($Credential) {
+            else
+            {
+                if ($Credential)
+                {
                     $Username = $Credential.UserName
                 }
-                else {
+                else
+                {
                     $Username = $KeyUser
                 }
                 $PasswordParam = @{
@@ -149,18 +159,22 @@ function Test-ChocolateySource {
                 $PasswordBytes = [Security.Cryptography.ProtectedData]::Unprotect($SecureStr, $salt, [Security.Cryptography.DataProtectionScope]::LocalMachine)
                 $PasswordInFile = [system.text.encoding]::UTF8.GetString($PasswordBytes)
 
-                if ($Credential) {
+                if ($Credential)
+                {
                     $PasswordParameter = $Credential.GetNetworkCredential().Password
                 }
-                else {
+                else
+                {
                     $PasswordParameter = $Key
                 }
 
-                if ($PasswordInFile -eq $PasswordParameter) {
+                if ($PasswordInFile -eq $PasswordParameter)
+                {
                     Write-Verbose "The Passwords Match."
                     $Source.Password = 'Reference Object Password'
                 }
-                else {
+                else
+                {
                     Write-Verbose "The Password Do not Match."
                     $Source.Password = 'Source Object Password'
                 }

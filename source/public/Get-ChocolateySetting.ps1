@@ -19,7 +19,7 @@
 function Get-ChocolateySetting
 {
     [CmdletBinding()]
-    param(
+    param (
         [Parameter(
             ValueFromPipeline
             , ValueFromPipelineByPropertyName
@@ -29,7 +29,7 @@ function Get-ChocolateySetting
         [string[]]
         $Setting = '*'
     )
-    Begin
+    begin
     {
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
         {
@@ -41,7 +41,7 @@ function Get-ChocolateySetting
         $ChocoXml.Load($ChocoConfigPath)
     }
 
-    Process
+    process
     {
         if (!$ChocoXml)
         {

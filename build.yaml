@@ -123,7 +123,7 @@ ModuleBuildTasks:
 
 # Invoke-Build Header to be used to 'decorate' the terminal output of the tasks.
 TaskHeader: |
-  param($Path)
+  param ($Path)
   ""
   "=" * 79
   Write-Build Cyan "`t`t`t$($Task.Name.replace("_"," ").ToUpper())"

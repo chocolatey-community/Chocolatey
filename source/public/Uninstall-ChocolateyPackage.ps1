@@ -124,9 +124,9 @@ function Uninstall-ChocolateyPackage
         SupportsShouldProcess = $true,
         ConfirmImpact = 'High'
     )]
-    Param(
+    param (
         [Parameter(
-            Mandatory
+            Mandatory = $true
             , ValueFromPipeline
             , ValueFromPipelineByPropertyName
         )]
@@ -285,7 +285,7 @@ function Uninstall-ChocolateyPackage
             $null = Remove-Item $CachePath -ErrorAction SilentlyContinue
         }
     }
-    Process
+    process
     {
         foreach ($PackageName in $Name)
         {

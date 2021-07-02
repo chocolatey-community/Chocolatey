@@ -15,7 +15,7 @@
 function Repair-PowerShellOutputRedirectionBug
 {
     [CmdletBinding()]
-    Param(
+    param (
 
     )
 

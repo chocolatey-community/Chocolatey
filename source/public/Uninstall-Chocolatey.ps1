@@ -23,14 +23,14 @@ function Uninstall-Chocolatey
     [CmdletBinding(
         SupportsShouldProcess
     )]
-    param(
+    param (
         [Parameter()]
         [AllowNull()]
         [System.String]
         $InstallDir = $Env:ChocolateyInstall
     )
 
-    Process
+    process
     {
         #If InstallDir is empty or null, select from whee choco.exe is available
 

@@ -58,7 +58,7 @@
 function Get-ChocolateyPackage
 {
     [CmdletBinding()]
-    param(
+    param (
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
@@ -139,7 +139,7 @@ function Get-ChocolateyPackage
         $CacheLocation
     )
 
-    Process
+    process
     {
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
         {

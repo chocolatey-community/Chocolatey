@@ -1,5 +1,5 @@
 function Get-MergedModule {
-    param(
+    param (
         [Parameter(ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [String]$Name,
 

@@ -248,7 +248,7 @@ function Get-ChocolateyDefaultArgument
         SupportsShouldProcess = $true
         , ConfirmImpact = "High"
     )]
-    Param(
+    param (
         [Parameter(
             ValueFromPipelineByPropertyName
         )]
@@ -587,8 +587,10 @@ function Get-ChocolateyDefaultArgument
         [Switch]
         $IgnoreAutoUninstallerFailure,
 
+        [Parameter()]
         #To be used when Password is too long (>240 char) like a key
         $KeyUser,
+        [Parameter()]
         $Key
     )
 

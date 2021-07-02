@@ -162,9 +162,9 @@ function Install-ChocolateyPackage
         SupportsShouldProcess = $true,
         ConfirmImpact = 'High'
     )]
-    param(
+    param (
         [Parameter(
-            Mandatory
+            Mandatory = $true
             , ValueFromPipeline
             , ValueFromPipelineByPropertyName
         )]
@@ -373,7 +373,7 @@ function Install-ChocolateyPackage
             $null = Remove-Item $CachePath -ErrorAction SilentlyContinue
         }
     }
-    Process
+    process
     {
         foreach ($PackageName in $Name)
         {

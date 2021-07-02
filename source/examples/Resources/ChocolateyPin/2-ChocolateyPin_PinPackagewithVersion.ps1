@@ -19,7 +19,7 @@
 
 .ICONURI https://blog.chocolatey.org/assets/images/chocolatey-icon.png
 
-.EXTERNALMODULEDEPENDENCIES 
+.EXTERNALMODULEDEPENDENCIES
 
 .REQUIREDSCRIPTS
 
@@ -32,17 +32,17 @@ Updated author, copyright notice, and URLs.
 
 #>
 
-<# 
+<#
 
-.DESCRIPTION 
- This is an unofficial module with DSC resource to Install and configure Chocolatey. 
+.DESCRIPTION
+ This is an unofficial module with DSC resource to Install and configure Chocolatey.
 
-#> 
+#>
 
-Param()
+param ()
 
 
-configuration Chocolatey 
+configuration Chocolatey
 {
     Import-DscResource -ModuleName Chocolatey
 

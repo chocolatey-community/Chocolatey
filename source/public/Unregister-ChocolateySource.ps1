@@ -58,9 +58,9 @@
 function Unregister-ChocolateySource
 {
     [CmdletBinding()]
-    Param(
+    param (
         [Parameter(
-            Mandatory
+            Mandatory = $true
             , ValueFromPipelineByPropertyName
         )]
         [System.String]
@@ -121,7 +121,7 @@ function Unregister-ChocolateySource
 
     )
 
-    Process
+    process
     {
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
         {

@@ -150,9 +150,9 @@ function Update-ChocolateyPackage
         SupportsShouldProcess = $true,
         ConfirmImpact = 'High'
     )]
-    param(
+    param (
         [Parameter(
-            Mandatory
+            Mandatory = $true
             , ValueFromPipeline
             , ValueFromPipelineByPropertyName
         )]
@@ -348,7 +348,7 @@ function Update-ChocolateyPackage
         }
     }
 
-    Process
+    process
     {
         foreach ($PackageName in $Name)
         {

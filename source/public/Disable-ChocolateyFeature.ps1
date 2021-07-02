@@ -20,9 +20,9 @@
 function Disable-ChocolateyFeature
 {
     [CmdletBinding()]
-    param(
+    param (
         [Parameter(
-            Mandatory
+            Mandatory = $true
             , ValueFromPipelineByPropertyName
         )]
         [Alias('Feature')]
@@ -36,7 +36,7 @@ function Disable-ChocolateyFeature
         $NoProgress
     )
 
-    Process
+    process
     {
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
         {

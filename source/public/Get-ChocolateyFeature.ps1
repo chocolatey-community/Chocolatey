@@ -20,7 +20,7 @@
 function Get-ChocolateyFeature
 {
     [CmdletBinding()]
-    param(
+    param (
         [Parameter(
             ValueFromPipeline
             , ValueFromPipelineByPropertyName
@@ -30,7 +30,7 @@ function Get-ChocolateyFeature
         [string[]]
         $Feature = '*'
     )
-    Begin
+    begin
     {
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
         {
@@ -42,7 +42,7 @@ function Get-ChocolateyFeature
         $ChocoXml.Load($ChocoConfigPath)
     }
 
-    Process
+    process
     {
         if (!$ChocoXml)
         {

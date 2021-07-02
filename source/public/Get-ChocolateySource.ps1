@@ -22,7 +22,7 @@
 function Get-ChocolateySource
 {
     [CmdletBinding()]
-    param(
+    param (
         [Parameter(
             ValueFromPipeline
             , ValueFromPipelineByPropertyName
@@ -32,7 +32,7 @@ function Get-ChocolateySource
         [string[]]
         $Name = '*'
     )
-    Begin
+    begin
     {
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
         {
@@ -43,7 +43,7 @@ function Get-ChocolateySource
         $ChocoXml.Load($ChocoConfigPath)
     }
 
-    Process
+    process
     {
         if (!$ChocoXml)
         {

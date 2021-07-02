@@ -24,7 +24,8 @@ function Get-SemVerFromString
     [CmdletBinding()]
     [OutputType([PSobject])]
 
-    Param (
+    param (
+        [Parameter()]
         [System.String]
         $VersionString
     )

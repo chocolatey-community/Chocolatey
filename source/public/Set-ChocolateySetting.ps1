@@ -27,9 +27,9 @@ function Set-ChocolateySetting
         , ConfirmImpact = 'Low'
     )]
     [OutputType([Void])]
-    param(
+    param (
         [Parameter(
-            Mandatory
+            Mandatory = $true
             , ValueFromPipelineByPropertyName
         )]
         [Alias('Setting')]
@@ -37,7 +37,7 @@ function Set-ChocolateySetting
         $Name,
 
         [Parameter(
-            Mandatory
+            Mandatory = $true
             , ValueFromPipelineByPropertyName
             , ParameterSetName = 'Set'
         )]
@@ -53,7 +53,7 @@ function Set-ChocolateySetting
         $Unset
     )
 
-    Process
+    process
     {
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
         {

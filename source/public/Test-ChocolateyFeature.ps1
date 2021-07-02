@@ -22,9 +22,9 @@ function Test-ChocolateyFeature
 {
     [CmdletBinding()]
     [outputType([Bool])]
-    param(
+    param (
         [Parameter(
-            Mandatory
+            Mandatory = $true
             , ValueFromPipelineByPropertyName
         )]
         [Alias('Feature')]
@@ -38,7 +38,7 @@ function Test-ChocolateyFeature
         $Disabled
     )
 
-    Process
+    process
     {
         if (-not (Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
         {

@@ -20,7 +20,7 @@
 function Get-ChocolateyPin
 {
     [CmdletBinding()]
-    Param(
+    param (
         [Parameter(
             ValueFromPipeline
             , ValueFromPipelineByPropertyName

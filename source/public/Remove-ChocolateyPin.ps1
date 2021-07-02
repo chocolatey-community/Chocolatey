@@ -20,9 +20,9 @@ function Remove-ChocolateyPin
         SupportsShouldProcess = $true,
         ConfirmImpact = 'High'
     )]
-    param(
+    param (
         [Parameter(
-            Mandatory
+            Mandatory = $true
             , ValueFromPipelineByPropertyName
         )]
         [Alias('Package')]
@@ -30,7 +30,7 @@ function Remove-ChocolateyPin
         $Name
     )
 
-    Process
+    process
     {
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
         {

@@ -15,7 +15,7 @@ function Get-ChocolateyVersion
 {
     [CmdletBinding()]
     [OutputType([version])]
-    param(
+    param (
     )
 
     if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))

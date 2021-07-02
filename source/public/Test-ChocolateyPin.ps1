@@ -23,16 +23,17 @@ function Test-ChocolateyPin
         DefaultParameterSetName = 'Set'
     )]
     [OutputType([Bool])]
-    param(
-        [Parameter(Mandatory, ValueFromPipelineByPropertyName)]
+    param (
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName)]
         [System.String]
         $Name,
 
+        [Parameter()]
         [System.String]
         $Version
     )
 
-    Process
+    process
     {
         if (-not (Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
         {

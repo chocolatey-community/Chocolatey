@@ -66,16 +66,16 @@
 function Register-ChocolateySource
 {
     [CmdletBinding()]
-    Param(
+    param (
         [Parameter(
-            Mandatory
+            Mandatory = $true
             , ValueFromPipelineByPropertyName
         )]
         [System.String]
         $Name,
 
         [Parameter(
-            Mandatory
+            Mandatory = $true
             , ValueFromPipelineByPropertyName
         )]
         $Source,
@@ -128,12 +128,14 @@ function Register-ChocolateySource
         [switch]
         $NoProgress,
 
+        [Parameter()]
         #To be used when Password is too long (>240 char) like a key
         $KeyUser,
+        [Parameter()]
         $Key
     )
 
-    Process
+    process
     {
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
         {

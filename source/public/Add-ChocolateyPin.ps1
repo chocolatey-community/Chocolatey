@@ -28,9 +28,9 @@ function Add-ChocolateyPin
         SupportsShouldProcess = $true,
         ConfirmImpact = 'High'
     )]
-    Param(
+    param (
         [Parameter(
-            Mandatory
+            Mandatory = $true
             , ValueFromPipelineByPropertyName
         )]
         [Alias('Package')]
@@ -45,7 +45,7 @@ function Add-ChocolateyPin
 
     )
 
-    Process
+    process
     {
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
         {
