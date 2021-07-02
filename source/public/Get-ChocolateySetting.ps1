@@ -33,7 +33,7 @@ function Get-ChocolateySetting
     {
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
         {
-            Throw "Chocolatey Software not found."
+            throw "Chocolatey Software not found."
         }
 
         $ChocoConfigPath = join-path $chocoCmd.Path ..\..\config\chocolatey.config -Resolve
@@ -45,7 +45,7 @@ function Get-ChocolateySetting
     {
         if (!$ChocoXml)
         {
-            Throw "Error with Chocolatey config."
+            throw "Error with Chocolatey config."
         }
 
         foreach ($Name in $Setting)

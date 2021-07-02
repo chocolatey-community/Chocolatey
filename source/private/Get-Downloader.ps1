@@ -80,7 +80,7 @@ function Get-Downloader
             if ($creds -eq $null)
             {
                 Write-Debug "Default credentials were null. Attempting backup method"
-                Throw "Could not download required file from $url"
+                throw "Could not download required file from $url"
             }
 
             $proxyaddress = $downloader.Proxy.GetProxy($url).Authority

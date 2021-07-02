@@ -41,12 +41,12 @@ function Enable-ChocolateySource
     {
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
         {
-            Throw "Chocolatey Software not found."
+            throw "Chocolatey Software not found."
         }
 
         if (!(Get-ChocolateySource -id $Name))
         {
-            Throw "Chocolatey Source $Name cannot be found. You can Register it using Register-ChocolateySource."
+            throw "Chocolatey Source $Name cannot be found. You can Register it using Register-ChocolateySource."
         }
 
         $ChocoArguments = @('source', 'enable')

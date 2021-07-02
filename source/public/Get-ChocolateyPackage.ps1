@@ -143,7 +143,7 @@ function Get-ChocolateyPackage
     {
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
         {
-            Throw "Chocolatey Software not found."
+            throw "Chocolatey Software not found."
         }
 
         $ChocoArguments = @('list', '-r')

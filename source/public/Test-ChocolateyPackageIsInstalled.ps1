@@ -84,7 +84,7 @@ function Test-ChocolateyPackageIsInstalled
     {
         if (-not (Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
         {
-            Throw "Chocolatey Software not found."
+            throw "Chocolatey Software not found."
         }
 
         #if version latest verify against sources
@@ -102,7 +102,7 @@ function Test-ChocolateyPackageIsInstalled
             $ReferenceObject = Get-ChocolateyPackage @SearchPackageParams -Exact
             if (!$ReferenceObject)
             {
-                Throw "Latest version of Package $name not found. Verify that the sources are reachable and package exists."
+                throw "Latest version of Package $name not found. Verify that the sources are reachable and package exists."
             }
         }
         else
@@ -160,7 +160,8 @@ function Test-ChocolateyPackageIsInstalled
             $VersionGreaterOrEqual = $False
         }
 
-        Write-Output ([PSCustomObject]@{
+        Write-Output (
+            [PSCustomObject]@{
                 PackagePresent        = $PackageFound
                 VersionGreaterOrEqual = $VersionGreaterOrEqual
             })

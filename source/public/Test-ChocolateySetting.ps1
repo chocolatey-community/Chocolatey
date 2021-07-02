@@ -58,7 +58,7 @@ function Test-ChocolateySetting
     {
         if (-not (Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
         {
-            Throw "Chocolatey Software not found."
+            throw "Chocolatey Software not found."
         }
 
         if (!($Setting = Get-ChocolateySetting -Name $Name))

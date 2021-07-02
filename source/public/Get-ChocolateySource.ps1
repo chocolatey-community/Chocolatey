@@ -36,7 +36,7 @@ function Get-ChocolateySource
     {
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
         {
-            Throw "Chocolatey Software not found."
+            throw "Chocolatey Software not found."
         }
         $ChocoConfigPath = join-path $chocoCmd.Path ..\..\config\chocolatey.config -Resolve
         $ChocoXml = [xml]::new()
@@ -47,7 +47,7 @@ function Get-ChocolateySource
     {
         if (!$ChocoXml)
         {
-            Throw "Error with Chocolatey config."
+            throw "Error with Chocolatey config."
         }
 
         foreach ($id in $Name)
@@ -65,7 +65,8 @@ function Get-ChocolateySource
 
             foreach ($source in $sourceNodes)
             {
-                Write-Output ([PSCustomObject]@{
+                Write-Output (
+                    [PSCustomObject]@{
                         PSTypeName  = 'Chocolatey.Source'
                         Name        = $source.id
                         Source      = $source.value

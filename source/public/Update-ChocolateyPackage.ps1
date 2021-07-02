@@ -339,7 +339,7 @@ function Update-ChocolateyPackage
         $null = $PSboundParameters.remove('Name')
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
         {
-            Throw "Chocolatey Software not found."
+            throw "Chocolatey Software not found."
         }
         $CachePath = [io.path]::Combine($Env:ChocolateyInstall, 'cache', 'GetChocolateyPackageCache.xml')
         if ( (Test-Path $CachePath))

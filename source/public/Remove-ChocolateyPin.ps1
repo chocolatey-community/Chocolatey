@@ -34,12 +34,12 @@ function Remove-ChocolateyPin
     {
         if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
         {
-            Throw "Chocolatey Software not found."
+            throw "Chocolatey Software not found."
         }
 
         if (!(Get-ChocolateyPackage -Name $Name))
         {
-            Throw "The Pin for Chocolatey Package $Name cannot be found."
+            throw "The Pin for Chocolatey Package $Name cannot be found."
         }
 
         $ChocoArguments = @('pin', 'remove', '-r')
@@ -53,7 +53,7 @@ function Remove-ChocolateyPin
             # LASTEXITCODE is always 0 unless point an existing version (0 when remove but already removed)
             if ($LASTEXITCODE -ne 0)
             {
-                Throw ("Error when trying to remove Pin for {0}.`r`n {1}" -f "$Name", ($output -join "`r`n"))
+                throw ("Error when trying to remove Pin for {0}.`r`n {1}" -f "$Name", ($output -join "`r`n"))
             }
             else
             {

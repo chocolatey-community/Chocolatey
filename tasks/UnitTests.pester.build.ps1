@@ -44,11 +44,11 @@ task UnitTests {
         "`tTesting against Source Code: $BuildOutput\$ProjectPath"
     }
 
-    #Resolving the Unit Tests path based on 2 possible Path: 
+    #Resolving the Unit Tests path based on 2 possible Path:
     #    ProjectPath\ProjectName\tests\Unit (my way, I like to ship tests with Modules)
     # or ProjectPath\tests\Unit (Warren's way: http://ramblingcookiemonster.github.io/Building-A-PowerShell-Module/)
     $UnitTestPath = [io.DirectoryInfo][system.io.path]::Combine($ProjectPath,$ProjectName,$PathToUnitTests)
-    
+
     if (!$UnitTestPath.Exists -and
         (   #Try a module structure where the tests are outside of the Source directory
             ($UnitTestPath = [io.DirectoryInfo][system.io.path]::Combine($ProjectPath,$PathToUnitTests)) -and
@@ -74,7 +74,7 @@ task UnitTests {
     $TestResultFileParentFolder = Split-Path $TestResultFile -Parent
     $PesterOutFilePath = [system.io.path]::Combine($BuildOutput,'testResults','unit',$PesterOutputSubFolder,$TestResultFileName)
     $PesterOutParentFolder = Split-Path $PesterOutFilePath -Parent
-    
+
     if (!(Test-Path $PesterOutParentFolder)) {
         Write-Verbose "CREATING Pester Results Output Folder $PesterOutParentFolder"
         $null = mkdir $PesterOutParentFolder -Force
@@ -84,18 +84,18 @@ task UnitTests {
         Write-Verbose "CREATING Test Results Output Folder $TestResultFileParentFolder"
         $null = mkdir $TestResultFileParentFolder -Force
     }
-    
+
     Push-Location $UnitTestPath
     if ($TestFromBuildOutput) {
         $ListOfTestedFile = Get-ChildItem -Recurse "$BuildOutput\$ProjectName" -include *.ps1,*.psm1 -Exclude *.tests.ps1
     }
     else {
-        $ListOfTestedFile = Get-ChildItem | Foreach-Object { 
+        $ListOfTestedFile = Get-ChildItem | Foreach-Object {
             $fileName = $_.BaseName -replace '\.tests'
             "$ProjectPath\$ProjectName\*\$fileName.ps1"
         }
     }
-    
+
     $ListOfTestedFile | ForEach-Object { Write-Verbose $_}
     "Number of tested files: $($ListOfTestedFile.Count)"
     $PesterParams = @{
@@ -145,7 +145,7 @@ task FailIfLastCodeConverageUnderThreshold {
             return
         }
         else {
-            Throw "No command were tested. Threshold of $CodeCoverageThreshold % not met"
+            throw "No command were tested. Threshold of $CodeCoverageThreshold % not met"
         }
     }
     $PesterOutPath
@@ -154,7 +154,7 @@ task FailIfLastCodeConverageUnderThreshold {
     if ($PesterObject.CodeCoverage.NumberOfCommandsAnalyzed) {
         $coverage = $PesterObject.CodeCoverage.NumberOfCommandsExecuted / $PesterObject.CodeCoverage.NumberOfCommandsAnalyzed
         if ($coverage -lt $CodeCoverageThreshold/100) {
-            Throw "The Code Coverage FAILURE: ($($Coverage*100) %) is under the threshold of $CodeCoverageThreshold %."
+            throw "The Code Coverage FAILURE: ($($Coverage*100) %) is under the threshold of $CodeCoverageThreshold %."
         }
         else {
             Write-Host "Code Coverage SUCCESS with value of $($coverage*100) %" -ForegroundColor Green

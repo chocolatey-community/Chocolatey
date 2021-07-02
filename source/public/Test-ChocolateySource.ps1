@@ -108,19 +108,17 @@ function Test-ChocolateySource
     {
         if (-not (Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
         {
-            Throw "Chocolatey Software not found."
+            throw "Chocolatey Software not found."
         }
 
         if (-not ($Source = (Get-ChocolateySource -Name $Name)) )
         {
             Write-Verbose "Chocolatey Source $Name cannot be found."
-            Return $false
+            return $false
         }
 
         $ReferenceSource = [PSCustomObject]@{}
-        foreach ( $Property in $PSBoundParameters.keys.where{
-                $_ -notin ([System.Management.Automation.Cmdlet]::CommonParameters + [System.Management.Automation.Cmdlet]::OptionalCommonParameters) }
-        )
+        foreach ( $Property in $PSBoundParameters.keys | Where-Object {$_ -notin ([System.Management.Automation.Cmdlet]::CommonParameters + [System.Management.Automation.Cmdlet]::OptionalCommonParameters) })
         {
             if ($Property -notin @('Credential', 'Key', 'KeyUser'))
             {

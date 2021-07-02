@@ -594,7 +594,7 @@ function Get-ChocolateyDefaultArgument
         $Key
     )
 
-    Process
+    process
     {
 
         $ChocoArguments = switch ($PSBoundParameters.Keys)

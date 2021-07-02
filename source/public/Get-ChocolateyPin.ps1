@@ -31,12 +31,12 @@ function Get-ChocolateyPin
 
     if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
     {
-        Throw "Chocolatey Software not found."
+        throw "Chocolatey Software not found."
     }
 
     if (!(Get-ChocolateyPackage -Name $Name))
     {
-        Throw "Chocolatey Package $Name cannot be found."
+        throw "Chocolatey Package $Name cannot be found."
     }
 
     # Prepare the arguments for `choco pin list -r`
