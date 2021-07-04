@@ -28,21 +28,61 @@ stages:
               script: |
                 Get-ChildItem -Recurse
 
+          - task: PowerShell@2
+            enabled: true
+            displayName: Install pwsh-preview
+            inputs:
               pwsh: true
-          - task: GitVersion@5
-            name: gitVersion
+              targetType: inline
+              continueOnError: true
+              script: |
+                # Update the list of packages
+                sudo apt-get update
+                # Install pre-requisite packages.
+                sudo apt-get install -y wget apt-transport-https software-properties-common
+                # Download the Microsoft repository GPG keys
+                wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
+                # Register the Microsoft repository GPG keys
+                sudo dpkg -i packages-microsoft-prod.deb
+                # Update the list of products
+                sudo apt-get update
+                # Enable the "universe" repositories
+                sudo add-apt-repository universe
+                # Install PowerShell
+                sudo apt-get install -y powershell-preview
+                pwsh-preview -c 'Enable-ExperimentalFeature -Name PSSubsystemPluginModel'
+                pwsh-preview -c 'Install-Module -Name PSDesiredStateConfiguration -AllowPrerelease -Force'
+
+          - task: gitversion/setup@0
+            displayName: Install GitVersion
+            inputs:
+              versionSpec: '5.x'
+
+          - task: gitversion/execute@0
             displayName: 'Evaluate Next Version'
             inputs:
-              runtime: 'core'
-              configFilePath: 'GitVersion.yml'
+              useConfigFile: true
+              configfilePath: GitVersion.yml
 
           - task: PowerShell@2
             name: package
             displayName: 'Build & Package Module'
             inputs:
-              filePath: './build.ps1'
-              arguments: '-tasks pack -Verbose'
               pwsh: true
+              targetType: inline
+              continueOnError: true
+              script: |
+                pwsh-preview -c {
+                  ./build.ps1 -Tasks noop -ResolveDependency
+                  Import-Module GuestConfiguration
+                  Enable-ExperimentalFeature -Name GuestConfiguration.Pester
+                  Enable-ExperimentalFeature -Name GuestConfiguration.SetScenario
+                  Enable-ExperimentalFeature -Name PSDesiredStateConfiguration.InvokeDscResource -ErrorAction SilentlyContinue
+                }
+                pwsh-preview -c {
+                  Import-Module -Name PSDesiredStateConfiguration -PassThru
+                  ./build.ps1 -tasks pack
+                }
             env:
               ModuleVersion: $(gitVersion.NuGetVersionV2)
 
