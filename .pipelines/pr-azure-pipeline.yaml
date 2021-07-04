@@ -5,6 +5,7 @@ pr:
   paths:
     exclude:
     - CHANGELOG.md
+trigger: none
 
 variables:
   buildFolderName: output
@@ -17,7 +18,7 @@ stages:
       - job: Package_Module
         displayName: 'Package Module'
         pool:
-          vmImage: 'ubuntu 16.04'
+          vmImage: 'ubuntu-latest'
         steps:
           - task: PowerShell@2
             name: wtf
@@ -40,7 +41,7 @@ stages:
             displayName: 'Build & Package Module'
             inputs:
               filePath: './build.ps1'
-              arguments: '-ResolveDependency -tasks pack -Verbose'
+              arguments: '-tasks pack -Verbose'
               pwsh: true
             env:
               ModuleVersion: $(gitVersion.NuGetVersionV2)
