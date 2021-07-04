@@ -19,6 +19,15 @@ stages:
         pool:
           vmImage: 'ubuntu 16.04'
         steps:
+          - task: PowerShell@2
+            name: wtf
+            displayName: 'whats here'
+            inputs:
+              targetType: inline
+              script: |
+                Get-ChildItem -Recurse
+
+              pwsh: true
           - task: GitVersion@5
             name: gitVersion
             displayName: 'Evaluate Next Version'
@@ -31,7 +40,7 @@ stages:
             displayName: 'Build & Package Module'
             inputs:
               filePath: './build.ps1'
-              arguments: '-ResolveDependency -tasks pack'
+              arguments: '-ResolveDependency -tasks pack -Verbose'
               pwsh: true
             env:
               ModuleVersion: $(gitVersion.NuGetVersionV2)
