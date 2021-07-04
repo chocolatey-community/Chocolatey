@@ -5,7 +5,7 @@
 
 CopyPaths:
   - en-US
-  - DSCResources
+  - DscResources
   # - Modules
 Encoding: UTF8
 # Can be used to manually specify module's semantic version if the preferred method of
