@@ -1,11 +1,10 @@
 pr:
   branches:
-    exclude:
+    include:
     - main
   paths:
     exclude:
     - CHANGELOG.md
-trigger: none
 
 variables:
   buildFolderName: output
