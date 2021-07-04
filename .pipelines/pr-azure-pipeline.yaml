@@ -6,6 +6,8 @@ pr:
     exclude:
     - CHANGELOG.md
 
+trigger: none
+
 variables:
   buildFolderName: output
   buildArtifactName: output
