@@ -74,13 +74,8 @@ stages:
               script: |
                 pwsh-preview -c {
                   ./build.ps1 -Tasks noop -ResolveDependency
-                  Import-Module GuestConfiguration
-                  Enable-ExperimentalFeature -Name GuestConfiguration.Pester
-                  Enable-ExperimentalFeature -Name GuestConfiguration.SetScenario
-                  Enable-ExperimentalFeature -Name PSDesiredStateConfiguration.InvokeDscResource -ErrorAction SilentlyContinue
                 }
                 pwsh-preview -c {
-                  Import-Module -Name PSDesiredStateConfiguration -PassThru
                   ./build.ps1 -tasks pack
                 }
             env:
