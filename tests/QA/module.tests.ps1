@@ -66,16 +66,6 @@ $allModuleFunctions = &$mut {Get-Command -Module $args[0] -CommandType Function 
             It "$($function.Name) has a unit test" {
                 Get-ChildItem "tests\" -recurse -include "$($function.Name).Tests.ps1" | Should Not BeNullOrEmpty
             }
-
-            if ($scriptAnalyzerRules) {
-                It "Script Analyzer for $($functionFile.FullName)" {
-                    $PSSAResult = (Invoke-ScriptAnalyzer -Path $functionFile.FullName)
-                    $Report = $PSSAResult | Format-Table -AutoSize | Out-String -Width 110
-                    $PSSAResult  | Should -BeNullOrEmpty -Because `
-                        "some rule triggered.`r`n`r`n $Report"
-                }
-
-            }
         }
 
         Describe "Help for $($function.Name)" -Tags 'helpQuality' {
