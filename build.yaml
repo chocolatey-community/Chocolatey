@@ -60,8 +60,8 @@ BuildWorkflow:
 
   # Use this task when you have multiple parallel tests, which produce multiple
   # code coverage files and needs to get merged into one file.
-  #merge:
-    #- Merge_CodeCoverage_Files
+  merge:
+    - Merge_CodeCoverage_Files
 
   publish:
     - publish_module_to_gallery
