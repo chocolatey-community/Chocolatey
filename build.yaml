@@ -97,7 +97,7 @@ Pester:
   # CodeCoverageMergedOutputFile - the file that is created by the merge build task and
   # is the file that should be uploaded to code coverage services.
   #CodeCoverageOutputFile: JaCoCo_Merge.xml
-  CodeCoverageMergedOutputFile: JaCoCo_coverage.xml
+  CodeCoverageMergedOutputFile: CodeCov_Merged.xml
   CodeCoverageFilePattern: Codecov*.xml
 
 DscTest:
