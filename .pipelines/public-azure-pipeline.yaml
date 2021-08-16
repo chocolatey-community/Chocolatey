@@ -177,6 +177,7 @@ stages:
               bash <(curl -s https://codecov.io/bash) -f "./$(buildFolderName)/$(testResultFolderName)/JaCoCo_coverage.xml"
             displayName: 'Upload to Codecov.io'
 
+
   - stage: Deploy
     dependsOn: Test
     condition: |
