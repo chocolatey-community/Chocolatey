@@ -6,7 +6,18 @@ pr:
     exclude:
     - CHANGELOG.md
 
-trigger: none
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    include:
+    - source/*
+  tags:
+    include:
+    - "v*"
+    exclude:
+    - "*-*"
 
 variables:
   buildFolderName: output
