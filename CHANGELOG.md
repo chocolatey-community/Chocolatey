@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- modified project with new Sampler template.
+- modified project with new Sampler template. 
 
 ### Removed
 
