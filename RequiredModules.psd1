@@ -22,4 +22,3 @@
     xDscResourceDesigner        = 'latest'
     'DscResource.DocGenerator'  = 'latest'
 }
-
