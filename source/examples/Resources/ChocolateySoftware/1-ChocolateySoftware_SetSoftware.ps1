@@ -41,5 +41,17 @@ Updated author, copyright notice, and URLs.
 
 param ()
 
+configuration Example
+{
+    Import-DscResource -ModuleName Chocolatey
+
+    Node localhost {
+        ChocolateySoftware ChococacheLocation {
+            Ensure = 'Present'
+            InstallationDirectory  = 'C:\Temp\Choco'
+        }
+    }
+}
+
 
 # So there something

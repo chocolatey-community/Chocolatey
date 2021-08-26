@@ -52,7 +52,7 @@ configuration Default {
     }
 }
 
-configuration Remove {
+configuration Example {
     Import-DscResource -ModuleName Chocolatey
 
     Node localhost {
