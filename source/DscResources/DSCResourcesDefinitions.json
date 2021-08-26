@@ -1,11 +1,9 @@
-[
-    {
-        "ChocolateySoftware": [
-            {
+[{
+        "ChocolateySoftware": [{
                 "Name": "Ensure",
                 "Type": "String",
                 "Attribute": "key",
-                "ValidateSet": ["Present","Absent"],
+                "ValidateSet": ["Present", "Absent"],
                 "Description": "Specifies whether the Chocolatey Software should be installed on the machine or not."
             },
             {
@@ -59,12 +57,11 @@
         ]
     },
     {
-        "ChocolateySource": [
-            {
+        "ChocolateySource": [{
                 "Name": "Ensure",
                 "Type": "String",
                 "Attribute": "Require",
-                "ValidateSet": ["Present","Absent"],
+                "ValidateSet": ["Present", "Absent"],
                 "Description": "Specifies whether the Chocolatey Software should be installed on the machine or not."
             },
             {
@@ -112,12 +109,11 @@
         ]
     },
     {
-        "ChocolateyFeature": [
-            {
+        "ChocolateyFeature": [{
                 "Name": "Ensure",
                 "Type": "String",
                 "Attribute": "Require",
-                "ValidateSet": ["Present","Absent"],
+                "ValidateSet": ["Present", "Absent"],
                 "Description": "Specifies whether the Chocolatey Feature should be enabled or not."
             },
             {
@@ -147,12 +143,11 @@
         ]
     },
     {
-        "ChocolateyPackage": [
-            {
+        "ChocolateyPackage": [{
                 "Name": "Ensure",
                 "Type": "String",
                 "Attribute": "Require",
-                "ValidateSet": ["Present","Absent"],
+                "ValidateSet": ["Present", "Absent"],
                 "Description": "Specifies whether the Chocolatey Package should be installed on the machine or not."
             },
             {
@@ -182,12 +177,11 @@
         ]
     },
     {
-        "ChocolateySetting": [
-            {
+        "ChocolateySetting": [{
                 "Name": "Ensure",
                 "Type": "String",
                 "Attribute": "Require",
-                "ValidateSet": ["Present","Absent"],
+                "ValidateSet": ["Present", "Absent"],
                 "Description": "Specifies whether the Chocolatey Setting should be set or unset."
             },
             {
@@ -205,12 +199,11 @@
         ]
     },
     {
-        "ChocolateyPin": [
-            {
+        "ChocolateyPin": [{
                 "Name": "Ensure",
                 "Type": "String",
                 "Attribute": "Require",
-                "ValidateSet": ["Present","Absent"],
+                "ValidateSet": ["Present", "Absent"],
                 "Description": "Specifies whether the Chocolatey Pin should be set or unset."
             },
             {
