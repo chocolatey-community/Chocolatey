@@ -66,7 +66,7 @@ BuildWorkflow:
   publish:
     - publish_module_to_gallery
     - Publish_Release_To_GitHub
-    - Publish_GitHub_Wiki_Content
+   # - Publish_GitHub_Wiki_Content
     - Create_ChangeLog_GitHub_PR
 
 ####################################################
