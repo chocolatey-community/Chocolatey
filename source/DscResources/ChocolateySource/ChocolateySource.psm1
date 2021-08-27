@@ -12,8 +12,8 @@ function Get-TargetResource
 
         [Parameter(Mandatory = $true)]
         [System.String]
-        $Name,
-
+        $Name
+<#
         [Parameter()]
         [System.String]
         $Source,
@@ -37,6 +37,7 @@ function Get-TargetResource
         [Parameter()]
         [System.String]
         $username
+        #>
     )
     $Env:Path = [Environment]::GetEnvironmentVariable('Path', 'Machine')
 
