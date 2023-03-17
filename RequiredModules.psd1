@@ -11,6 +11,7 @@
     PSScriptAnalyzer            = 'latest'
     Pester                      = 'latest'
     Plaster                     = 'latest'
+    'powershell-yaml'           = 'latest'
     ModuleBuilder               = 'latest'
     ChangelogManagement         = 'latest'
     Sampler                     = 'latest'
