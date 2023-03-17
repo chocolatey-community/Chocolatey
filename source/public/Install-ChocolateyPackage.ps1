@@ -76,10 +76,6 @@
 .PARAMETER AllowDowngrade
     AllowDowngrade - Should an attempt at downgrading be allowed? Defaults to false.
 
-.PARAMETER SideBySide
-    AllowMultipleVersions - Should multiple versions of a package be
-    installed? Defaults to false.
-
 .PARAMETER IgnoreDependencies
     IgnoreDependencies - Ignore dependencies when installing package(s).
     Defaults to false.
@@ -272,12 +268,6 @@ function Install-ChocolateyPackage
         )]
         [switch]
         $AllowDowngrade,
-
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
-        [switch]
-        $SideBySide,
 
         [Parameter(
             ValueFromPipelineByPropertyName

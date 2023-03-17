@@ -73,9 +73,6 @@ Should install arguments be used exclusively without appending to current packag
 .PARAMETER AllowDowngrade
     Should an attempt at downgrading be allowed? Defaults to false.
 
-.PARAMETER SideBySide
-    AllowMultipleVersions - Should multiple versions of a package be installed?
-
 .PARAMETER IgnoreDependencies
     IgnoreDependencies - Ignore dependencies when installing package(s).
 
@@ -372,12 +369,6 @@ function Get-ChocolateyDefaultArgument
         )]
         [Switch]
         $AllowDowngrade,
-
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
-        [Switch]
-        $SideBySide,
 
         [Parameter(
             ValueFromPipelineByPropertyName
@@ -784,10 +775,7 @@ function Get-ChocolateyDefaultArgument
             {
                 '--allow-downgrade'
             }
-            'SideBySide'
-            {
-                '--side-by-side'
-            }
+
             'ignoredependencies'
             {
                 '--ignore-dependencies'
