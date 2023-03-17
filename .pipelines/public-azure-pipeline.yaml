@@ -1,18 +1,10 @@
-pr:
+trigger:
   branches:
     include:
     - main
   paths:
     exclude:
     - CHANGELOG.md
-
-trigger:
-  branches:
-    include:
-    - main
-  paths:
-    include:
-    - source/*
   tags:
     include:
     - "v*"
@@ -23,6 +15,7 @@ variables:
   buildFolderName: output
   buildArtifactName: output
   testResultFolderName: testResults
+  defaultBranch: main
 
 stages:
   - stage: Build
@@ -30,31 +23,26 @@ stages:
       - job: Package_Module
         displayName: 'Package Module'
         pool:
-          vmImage: 'windows-latest'
+          vmImage: 'ubuntu-latest'
         steps:
-          - task: gitversion/setup@0
-            displayName: Install GitVersion
-            inputs:
-              versionSpec: '5.x'
-
-          - task: gitversion/execute@0
-            displayName: 'Evaluate Next Version'
-            inputs:
-              useConfigFile: true
-              configfilePath: GitVersion.yml
-
+          - pwsh: |
+              dotnet tool install --global GitVersion.Tool
+              $gitVersionObject = dotnet-gitversion | ConvertFrom-Json
+              $gitVersionObject.PSObject.Properties.ForEach{
+                  Write-Host -Object "Setting Task Variable '$($_.Name)' with value '$($_.Value)'."
+                  Write-Host -Object "##vso[task.setvariable variable=$($_.Name);]$($_.Value)"
+              }
+              Write-Host -Object "##vso[build.updatebuildnumber]$($gitVersionObject.FullSemVer)"
+            displayName: Calculate ModuleVersion (GitVersion)
           - task: PowerShell@2
             name: package
             displayName: 'Build & Package Module'
             inputs:
+              filePath: './build.ps1'
+              arguments: '-ResolveDependency -tasks pack'
               pwsh: true
-              targetType: inline
-              continueOnError: true
-              script: |
-                  ./build.ps1 -Tasks noop,pack -ResolveDependency
             env:
-              ModuleVersion: $(gitVersion.NuGetVersionV2)
-
+              ModuleVersion: $(NuGetVersionV2)
           - task: PublishPipelineArtifact@1
             displayName: 'Publish Pipeline Artifact'
             inputs:
@@ -66,6 +54,42 @@ stages:
   - stage: Test
     dependsOn: Build
     jobs:
+      - job: hqrm_windows_core
+        displayName: 'HQRM on Windows'
+        timeoutInMinutes: 0
+        pool:
+          vmImage: 'windows-latest'
+        steps:
+          - task: DownloadPipelineArtifact@2
+            displayName: 'Download Pipeline Artifact'
+            inputs:
+              buildType: 'current'
+              artifactName: 'output'
+              targetPath: '$(Build.SourcesDirectory)/output'
+
+          - task: PowerShell@2
+            name: test
+            displayName: 'Run Tests'
+            inputs:
+              filePath: './build.ps1'
+              arguments: '-tasks hqrmtest'
+              pwsh: true
+
+          - task: PublishTestResults@2
+            displayName: 'Publish Test Results'
+            condition: succeededOrFailed()
+            inputs:
+              testResultsFormat: 'NUnit'
+              testResultsFiles: 'output/testResults/NUnit*.xml'
+              testRunTitle: 'Windows Server Core (PowerShell Core)'
+
+          - task: PublishPipelineArtifact@1
+            displayName: 'Publish Test Artifact'
+            inputs:
+              targetPath: '$(buildFolderName)/$(testResultFolderName)/'
+              artifactName: 'CodeCoverageWinPS7'
+              parallel: true
+
       - job: test_windows_core
         displayName: 'Windows (PowerShell Core)'
         timeoutInMinutes: 0
@@ -188,7 +212,6 @@ stages:
               bash <(curl -s https://codecov.io/bash) -f "./$(buildFolderName)/$(testResultFolderName)/JaCoCo_coverage.xml"
             displayName: 'Upload to Codecov.io'
 
-
   - stage: Deploy
     dependsOn: Test
     condition: |
@@ -204,14 +227,14 @@ stages:
       - job: Deploy_Module
         displayName: 'Deploy Module'
         pool:
-          vmImage: 'ubuntu 16.04'
+          vmImage: 'ubuntu-latest'
         steps:
           - task: DownloadPipelineArtifact@2
             displayName: 'Download Pipeline Artifact'
             inputs:
               buildType: 'current'
-              artifactName: $(buildArtifactName)
-              targetPath: '$(Build.SourcesDirectory)/$(buildArtifactName)'
+              artifactName: 'output'
+              targetPath: '$(Build.SourcesDirectory)/output'
           - task: PowerShell@2
             name: publishRelease
             displayName: 'Publish Release'
@@ -222,8 +245,8 @@ stages:
             env:
               GitHubToken: $(GitHubToken)
               GalleryApiToken: $(GalleryApiToken)
-              ReleaseBranch: main
-              MainGitBranch: main
+              ReleaseBranch: $(defaultBranch)
+              MainGitBranch: $(defaultBranch)
           - task: PowerShell@2
             name: sendChangelogPR
             displayName: 'Send Changelog PR'
@@ -233,3 +256,5 @@ stages:
               pwsh: true
             env:
               GitHubToken: $(GitHubToken)
+              ReleaseBranch: $(defaultBranch)
+              MainGitBranch: $(defaultBranch)
