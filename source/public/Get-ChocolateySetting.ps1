@@ -1,3 +1,4 @@
+
 <#
 .SYNOPSIS
     Gets the Settings set in the Configuration file.

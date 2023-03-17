@@ -1,3 +1,4 @@
+
 <#
 .SYNOPSIS
     Updates the Chocolatey package to the latest version.

@@ -1,3 +1,4 @@
+
 <#
 .SYNOPSIS
     Test Whether a setting is set, enabled or not found

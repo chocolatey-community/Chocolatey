@@ -1,3 +1,4 @@
+
 <#
 .SYNOPSIS
     Attempts to remove the Chocolatey Software form the system.

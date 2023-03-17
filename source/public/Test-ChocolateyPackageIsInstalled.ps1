@@ -1,3 +1,4 @@
+
 <#
 .SYNOPSIS
     Verify if a Chocolatey Package is installed locally

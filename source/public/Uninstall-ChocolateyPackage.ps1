@@ -1,3 +1,4 @@
+
 <#
 .SYNOPSIS
     Uninstalls a Chocolatey package or a list of packages.
