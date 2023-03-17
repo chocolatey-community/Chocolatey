@@ -53,13 +53,11 @@
 #>
 function Test-ChocolateySource
 {
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseOutputTypeCorrectly', '')]
     [CmdletBinding()]
-    param (
-        [Parameter(
-            Mandatory = $true
-            , ValueFromPipelineByPropertyName
-        )]
+    [OutputType([bool])]
+    param
+    (
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [System.String]
         $Name,
 
