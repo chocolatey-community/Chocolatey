@@ -283,6 +283,7 @@ function Convert-CimInstancesToHashtable
 {
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSDSCUseVerboseMessageInDSCResource', '')]
     [CmdletBinding()]
+    [OutputType([hashtable])]
     param (
         [Parameter()]
         [Microsoft.Management.Infrastructure.CimInstance[]]

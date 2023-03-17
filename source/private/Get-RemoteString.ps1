@@ -52,9 +52,10 @@ function Get-RemoteString
     $KeysForDownloader = $PSBoundParameters.keys | Where-Object { $_ -notin @() }
     foreach ($key in $KeysForDownloader )
     {
-        Write-Debug "`tWith $key :: $($PSBoundParameters[$key])"
+        Write-Debug -Message "`tWith $key :: $($PSBoundParameters[$key])"
         $null = $downloaderParams.Add($key, $PSBoundParameters[$key])
     }
+
     $downloader = Get-Downloader @downloaderParams
     return $downloader.DownloadString($url)
 }
