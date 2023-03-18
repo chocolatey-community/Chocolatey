@@ -55,7 +55,7 @@ stages:
     dependsOn: Build
     jobs:
       - job: hqrm_windows
-        displayName: 'HQRM on Windows'
+        displayName: 'HQRM on Windows PowerShell'
         timeoutInMinutes: 0
         pool:
           vmImage: 'windows-latest'
@@ -81,7 +81,7 @@ stages:
             inputs:
               testResultsFormat: 'NUnit'
               testResultsFiles: 'output/testResults/NUnit*.xml'
-              testRunTitle: 'Windows Server Core (PowerShell Core)'
+              testRunTitle: 'Windows Server (Windows PowerShell)'
 
           - task: PublishPipelineArtifact@1
             displayName: 'Publish Test Artifact'
