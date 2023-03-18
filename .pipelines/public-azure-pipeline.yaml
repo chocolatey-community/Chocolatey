@@ -54,7 +54,7 @@ stages:
   - stage: Test
     dependsOn: Build
     jobs:
-      - job: hqrm_windows_core
+      - job: hqrm_windows
         displayName: 'HQRM on Windows'
         timeoutInMinutes: 0
         pool:
@@ -73,7 +73,7 @@ stages:
             inputs:
               filePath: './build.ps1'
               arguments: '-tasks hqrmtest'
-              pwsh: true
+              pwsh: false
 
           - task: PublishTestResults@2
             displayName: 'Publish Test Results'
