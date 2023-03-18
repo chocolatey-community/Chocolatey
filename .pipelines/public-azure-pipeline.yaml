@@ -87,7 +87,7 @@ stages:
             displayName: 'Publish Test Artifact'
             inputs:
               targetPath: '$(buildFolderName)/$(testResultFolderName)/'
-              artifactName: 'CodeCoverageWinPS7'
+              artifactName: 'HQRMCodeCoverageWinPS'
               parallel: true
 
       - job: test_windows_core
