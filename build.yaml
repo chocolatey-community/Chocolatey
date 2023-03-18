@@ -95,13 +95,17 @@ Pester:
       CIFormat: Auto
     CodeCoverage:
       CoveragePercentTarget: 10
-      OutputPath: JaCoCo_coverage.xml
+      OutputPath: JaCoCo_Merge.xml
       OutputEncoding: ascii
       UseBreakpoints: false
     TestResult:
       OutputFormat: NUnitXML
       OutputEncoding: ascii
   # Sampler pipeline configuration
+
+CodeCoverage:
+  CodeCoverageMergedOutputFile: JaCoCo_coverage.xml
+  CodeCoverageFilePattern: JaCoCo_Merge.xml
 
 DscTest:
   Pester:
@@ -144,14 +148,6 @@ TaskHeader: |
   Write-Build DarkGray "  $Path"
   Write-Build DarkGray "  $($Task.InvocationInfo.ScriptName):$($Task.InvocationInfo.ScriptLineNumber)"
   ""
-# Use this to merged code coverage from several pipeline test jobs.
-# CodeCoverageFilePattern      - the pattern used to search all pipeline test job artifacts
-#                                after the file specified in CodeCoverageOutputFile.
-# CodeCoverageMergedOutputFile - the file that is created by the merge build task and
-#                                is the file that should be uploaded to code coverage services.
-CodeCoverage:
-  CodeCoverageFilePattern: JaCoCo_coverage.xml # the pattern used to search all pipeline test job artifacts
-  CodeCoverageMergedOutputFile: JaCoCo_merge.xml # the file that is created for the merged code coverage
 
 GitHubConfig:
   GitHubFilesToAdd:
