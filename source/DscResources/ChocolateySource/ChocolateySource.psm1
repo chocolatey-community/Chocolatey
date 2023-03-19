@@ -13,34 +13,32 @@ function Get-TargetResource
         [Parameter(Mandatory = $true)]
         [System.String]
         $Name
-    )
-    <#
-        ,
-
-        [parameter()]
+<#
+        [Parameter()]
         [System.String]
         $Source,
 
-        [parameter()]
+        [Parameter()]
         [System.Boolean]
         $Disabled,
 
-        [parameter()]
+        [Parameter()]
         [System.Boolean]
         $ByPassProxy,
 
-        [parameter()]
+        [Parameter()]
         [System.Boolean]
         $SelfService,
 
-        [parameter()]
+        [Parameter()]
         [System.Int]
         $priority,
 
-        [parameter()]
+        [Parameter()]
         [System.String]
         $username
-    #>
+        #>
+    )
     $Env:Path = [Environment]::GetEnvironmentVariable('Path', 'Machine')
 
     Import-Module $PSScriptRoot\..\..\Chocolatey.psd1 -verbose:$False

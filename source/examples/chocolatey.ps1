@@ -42,7 +42,7 @@ Updated author, copyright notice, and URLs.
 param ()
 
 
-configuration ChocolateyConfig {
+configuration Example {
     Import-DscResource -ModuleName Chocolatey
 
     Node localhost {
@@ -66,10 +66,10 @@ configuration ChocolateyConfig {
 
         ChocolateyPackage Putty {
            DependsOn          = '[ChocolateySoftware]ChocoInst'
-            Ensure            = 'Present'
-            Name              = 'Putty'
-            Version           = 'Latest'
-            ChocolateyOptions = @{ source = 'https://chocolatey.org/api/v2/' }
+           Ensure            = 'Present'
+           Name              = 'Putty'
+           Version           = 'Latest'
+           ChocolateyOptions = @(@{ source = 'https://chocolatey.org/api/v2/' })
         }
     }
 }

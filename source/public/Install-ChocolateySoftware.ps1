@@ -62,7 +62,7 @@
     Install-ChocolateySoftware
 
 .EXAMPLE
-    Install latest chocolatey software from a custom internal feed
+    # Install latest chocolatey software from a custom internal feed
     Install-ChocolateySoftware -PackageFeedUrl https://proget.mycorp.local/nuget/Choco
 
 .NOTES
@@ -126,7 +126,7 @@ function Install-ChocolateySoftware
         # Use integers because the enumeration values for TLS 1.2 and TLS 1.1 won't
         # exist in .NET 4.0, even though they are addressable if .NET 4.5+ is
         # installed (.NET 4.5 is an in-place upgrade).
-        [System.Net.ServicePointManager]::SecurityProtocol = 3072 -bor 768 -bor 192 -bor 48
+        [System.Net.ServicePointManager]::SecurityProtocol = 3072 -bor 768 -bor 192
     }
     catch
     {

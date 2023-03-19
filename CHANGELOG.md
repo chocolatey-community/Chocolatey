@@ -11,4 +11,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
-- Emptied psm1 file from source code as dynamically generated.
+- Removed SideBySide option as per [#61](https://github.com/chocolatey-community/Chocolatey/issues/61).

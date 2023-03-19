@@ -1,3 +1,4 @@
+
 <#
 .SYNOPSIS
     Verify if a Chocolatey Package is installed locally
@@ -37,13 +38,9 @@
 function Test-ChocolateyPackageIsInstalled
 {
     [CmdletBinding()]
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseOutputTypeCorrectly', '')]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseDeclaredVarsMoreThanAssignments", "")]
     param (
-        [Parameter(
-            Mandatory = $true
-            , ValueFromPipelineByPropertyName
-        )]
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName)]
         [ValidateNotNullOrEmpty()]
         [System.String]
         $Name,

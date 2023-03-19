@@ -1,3 +1,4 @@
+
 <#
 .SYNOPSIS
     Updates the Chocolatey package to the latest version.
@@ -77,10 +78,6 @@
 
 .PARAMETER AllowDowngrade
     AllowDowngrade - Should an attempt at downgrading be allowed? Defaults to false.
-
-.PARAMETER SideBySide
-    AllowMultipleVersions - Should multiple versions of a package be
-    installed? Defaults to false.
 
 .PARAMETER IgnoreDependencies
     IgnoreDependencies - Ignore dependencies when installing package(s).
@@ -260,12 +257,6 @@ function Update-ChocolateyPackage
         )]
         [Switch]
         $AllowDowngrade,
-
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
-        [Switch]
-        $SideBySide,
 
         [Parameter(
             ValueFromPipelineByPropertyName

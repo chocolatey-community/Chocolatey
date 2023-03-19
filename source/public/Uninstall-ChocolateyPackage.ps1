@@ -1,3 +1,4 @@
+
 <#
 .SYNOPSIS
     Uninstalls a Chocolatey package or a list of packages.
@@ -57,10 +58,6 @@
 .PARAMETER ApplyArgsToDependencies
     Apply Install Arguments To Dependencies  - Should install arguments be
     applied to dependent packages? Defaults to false.
-
-.PARAMETER SideBySide
-    AllowMultipleVersions - Should multiple versions of a package be
-    installed? Defaults to false.
 
 .PARAMETER IgnoreDependencies
     IgnoreDependencies - Ignore dependencies when installing package(s).
@@ -204,12 +201,6 @@ function Uninstall-ChocolateyPackage
         )]
         [Switch]
         $ApplyArgsToDependencies,
-
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
-        [Switch]
-        $SideBySide,
 
         [Parameter(
             ValueFromPipelineByPropertyName

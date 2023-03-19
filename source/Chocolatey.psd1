@@ -27,7 +27,7 @@
     CompanyName          = 'SynEdgy Limited'
 
     # Copyright statement for this module
-    Copyright            = '(c) 2021 Gael Colas. All rights reserved.'
+    Copyright            = '(c) 2023 Gael Colas. All rights reserved.'
 
     # Description of the functionality provided by this module
     Description          = 'This is an unofficial module with DSC resource to Install and configure Chocolatey.'
@@ -81,8 +81,7 @@
     AliasesToExport      = '*'
 
     # DSC resources to export from this module
-    DscResourcesToExport = 'ChocolateyFeature', 'ChocolateyPackage', 'ChocolateyPin',
-    'ChocolateySetting', 'ChocolateySoftware', 'ChocolateySource'
+    DscResourcesToExport = @()
 
     # List of all modules packaged with this module
     # ModuleList = @()

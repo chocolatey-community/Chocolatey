@@ -1,3 +1,4 @@
+
 <#
 .SYNOPSIS
     Register a new Chocolatey source or edit an existing one.

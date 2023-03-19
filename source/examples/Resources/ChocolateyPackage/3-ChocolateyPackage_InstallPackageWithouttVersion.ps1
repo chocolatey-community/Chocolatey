@@ -42,7 +42,7 @@ Updated author, copyright notice, and URLs.
 param ()
 
 
-configuration Chocolatey
+configuration Example
 {
     Import-DscResource -ModuleName Chocolatey
 
@@ -50,7 +50,7 @@ configuration Chocolatey
         ChocolateyPackage Putty {
             Ensure            = 'Present'
             Name              = 'Putty'
-            ChocolateyOptions = @{ source = 'https://chocolatey.org/api/v2/' }
+            ChocolateyOptions = @(@{ source = 'https://chocolatey.org/api/v2/' })
         }
     }
 }

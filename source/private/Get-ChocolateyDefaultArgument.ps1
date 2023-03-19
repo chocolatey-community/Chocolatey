@@ -1,3 +1,4 @@
+
 <#
 .SYNOPSIS
 Transforms parameters Key/value into choco.exe Parameters.
@@ -73,14 +74,8 @@ Should install arguments be used exclusively without appending to current packag
 .PARAMETER AllowDowngrade
     Should an attempt at downgrading be allowed? Defaults to false.
 
-.PARAMETER SideBySide
-    AllowMultipleVersions - Should multiple versions of a package be installed?
-
 .PARAMETER IgnoreDependencies
     IgnoreDependencies - Ignore dependencies when installing package(s).
-
-.PARAMETER NoProgress
-    Do Not Show Progress - Do not show download progress percentages
 
 .PARAMETER ForceDependencies
     Force dependencies to be reinstalled when force
@@ -243,354 +238,235 @@ Should install arguments be used exclusively without appending to current packag
 #>
 function Get-ChocolateyDefaultArgument
 {
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSShouldProcess", "")]
-    [CmdletBinding(
-        SupportsShouldProcess = $true
-        , ConfirmImpact = "High"
-    )]
-    param (
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+    [CmdletBinding()]
+    [OutputType([Object[]])]
+    param
+    (
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [System.String]
         $Name,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         $Source,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $Disabled,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         $Value,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $BypassProxy,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $SelfService,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $NotBroken,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $AllVersions,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [int]
         $Priority = 0,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [PSCredential]
         $Credential,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [PSCredential]
         $ProxyCredential,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $Force,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [System.String]
         $CacheLocation,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [String]
         $InstallArguments,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [String]
         $InstallArgumentsSensitive,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [String]
         $PackageParameters,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [String]
         $PackageParametersSensitive,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $OverrideArguments,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $NotSilent,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $ApplyArgsToDependencies,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $AllowDowngrade,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
-        [Switch]
-        $SideBySide,
-
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $IgnoreDependencies,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
-        [Switch]
-        $NoProgress,
-
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $ForceDependencies,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $SkipPowerShell,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $IgnoreChecksum,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $AllowEmptyChecksum,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $ignorePackageCodes,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $UsePackageCodes,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $StopOnFirstFailure,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $SkipCache,
 
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $UseDownloadCache,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $SkipVirusCheck,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $VirusCheck,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNullOrEmpty()]
         [int]
         $VirusPositive,
 
-        [Parameter(
-            , ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNullOrEmpty()]
         [Switch]
         $OrderByPopularity,
 
-        [Parameter(
-            , ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNullOrEmpty()]
         [System.String]
         $Version,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $LocalOnly,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $IdOnly,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $Prerelease,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $ApprovedOnly,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $IncludePrograms,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $ByIdOnly,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $IdStartsWith,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $Exact,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $x86,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $AcceptLicense,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [int]
         $Timeout,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $UseRememberedArguments,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $IgnoreRememberedArguments,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $ExcludePrerelease,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $AutoUninstaller,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $SkipAutoUninstaller,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $FailOnAutouninstaller,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [Switch]
         $IgnoreAutoUninstallerFailure,
 
         [Parameter()]
         #To be used when Password is too long (>240 char) like a key
+        [string]
         $KeyUser,
+
         [Parameter()]
+        [string]
         $Key
     )
 
@@ -784,10 +660,7 @@ function Get-ChocolateyDefaultArgument
             {
                 '--allow-downgrade'
             }
-            'SideBySide'
-            {
-                '--side-by-side'
-            }
+
             'ignoredependencies'
             {
                 '--ignore-dependencies'
@@ -915,6 +788,8 @@ function Get-ChocolateyDefaultArgument
                 '--ignore-autouninstaller-failure'
             }
         }
+
+        $ChocoArguments += @('--no-progress', '--limit-output')
         return $ChocoArguments
     }
 }

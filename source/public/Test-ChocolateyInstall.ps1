@@ -1,3 +1,4 @@
+
 <#
 .SYNOPSIS
     Test if the Chocolatey Software is installed.

@@ -42,7 +42,7 @@ Updated author, copyright notice, and URLs.
 param ()
 
 
-configuration Chocolatey {
+configuration Example {
 
     Import-DscResource -ModuleName Chocolatey
 

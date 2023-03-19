@@ -1,3 +1,4 @@
+
 <#
 .SYNOPSIS
     Retrieve the version of the Chocolatey available in $Env:Path
