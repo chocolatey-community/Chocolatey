@@ -19,9 +19,11 @@ BeforeAll {
 Describe Get-ChocolateyDefaultArgument {
 
     Context 'Default' {
-        It 'Should return a string' {
+        It 'Should return an array of string' {
             $result = InModuleScope -ScriptBlock { Get-ChocolateyDefaultArgument -key 'value' }
-            $result | Should -BeLike '--password="value"*'
+            $result | Should -Contain '--password="value"'
+            $result | Should -Contain '--no-progress'
+            $result | Should -Contain '--limit-output'
         }
     }
 }
