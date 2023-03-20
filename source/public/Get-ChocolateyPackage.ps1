@@ -59,7 +59,8 @@
 function Get-ChocolateyPackage
 {
     [CmdletBinding()]
-    param (
+    param
+    (
         [Parameter(ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNullOrEmpty()]
         [String]
