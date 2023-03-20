@@ -239,7 +239,7 @@ Should install arguments be used exclusively without appending to current packag
 function Get-ChocolateyDefaultArgument
 {
     [CmdletBinding()]
-    [OutputType([Object[]])]
+    [OutputType([collections.generic.list[string]])]
     param
     (
         [Parameter(ValueFromPipelineByPropertyName = $true)]
@@ -472,7 +472,7 @@ function Get-ChocolateyDefaultArgument
 
     process
     {
-
+        [collections.generic.list[string]] $ChocoArguments = [collections.generic.list[string]]::new()
         $ChocoArguments = switch ($PSBoundParameters.Keys)
         {
             'Value'
@@ -789,7 +789,8 @@ function Get-ChocolateyDefaultArgument
             }
         }
 
-        $ChocoArguments += @('--no-progress', '--limit-output')
+        $null = $ChocoArguments.Add('--no-progress')
+        $null = $ChocoArguments.Add('--limit-output')
         return $ChocoArguments
     }
 }
