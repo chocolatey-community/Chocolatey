@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Modified project with new Sampler template. 
+- Modified project with new Sampler template.
+- Invoking choco commands now always add `--no-progress` & `--limit-output`
 
 ### Removed
 
