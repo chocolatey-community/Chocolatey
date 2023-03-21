@@ -155,197 +155,131 @@
 #>
 function Install-ChocolateyPackage
 {
-    [CmdletBinding(
-        SupportsShouldProcess = $true,
-        ConfirmImpact = 'High'
-    )]
-    param (
-        [Parameter(
-            Mandatory = $true
-            , ValueFromPipeline
-            , ValueFromPipelineByPropertyName
-        )]
+    [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'High')]
+    param
+    (
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
         [System.String[]]
         $Name,
 
-        [Parameter(
-            , ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNullOrEmpty()]
         [System.String]
         $Version,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         $Source,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [PSCredential]
         $Credential,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [switch]
         $Force,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [System.String]
         $CacheLocation,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [switch]
         $NoProgress,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [switch]
         $AcceptLicense,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [int]
         $Timeout,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [switch]
         $x86,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [System.String]
         $InstallArguments,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [System.String]
         $InstallArgumentsSensitive,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [System.String]
         $PackageParameters,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [System.String]
         $PackageParametersSensitive,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [switch]
         $OverrideArguments,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [switch]
         $NotSilent,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [switch]
         $ApplyArgsToDependencies,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [switch]
         $AllowDowngrade,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [switch]
         $IgnoreDependencies,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [switch]
         $ForceDependencies,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [switch]
         $SkipPowerShell,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [switch]
         $IgnoreChecksum,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [switch]
         $AllowEmptyChecksum,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [switch]
         $ignorePackageCodes,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [switch]
         $UsePackageCodes,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [switch]
         $StopOnFirstFailure,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [switch]
         $SkipCache,
 
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [switch]
         $UseDownloadCache,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [switch]
         $SkipVirusCheck,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [switch]
         $VirusCheck,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNullOrEmpty()]
         [int]
         $VirusPositive
@@ -354,21 +288,26 @@ function Install-ChocolateyPackage
     begin
     {
         $null = $PSboundParameters.remove('Name')
-        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
+        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType 'Application' -ErrorAction 'SilentlyContinue'))
         {
             throw "Chocolatey Software not found."
         }
+
         $CachePath = [io.path]::Combine($Env:ChocolateyInstall, 'cache', 'GetChocolateyPackageCache.xml')
-        if ( (Test-Path $CachePath))
+        if ( (Test-Path -Path $CachePath))
         {
-            $null = Remove-Item $CachePath -ErrorAction SilentlyContinue
+            Write-Debug -Message 'Removing cache begin of Install-ChocolateyPackage'
+            $null = Remove-Item -Path $CachePath -ErrorAction SilentlyContinue -Force -Confirm:$false
+            Write-Debug -Message 'Removed'
         }
     }
+
     process
     {
         foreach ($PackageName in $Name)
         {
             $ChocoArguments = @('install', $PackageName)
+
             $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
             Write-Verbose "choco $($ChocoArguments -join ' ')"
 
@@ -376,11 +315,7 @@ function Install-ChocolateyPackage
             {
                 #Impact confirmed, go choco go!
                 $ChocoArguments += '-y'
-                $ChocoOut = &$chocoCmd $ChocoArguments
-                if ($ChocoOut)
-                {
-                    Write-Output $ChocoOut
-                }
+                &$chocoCmd $ChocoArguments
             }
         }
     }
