@@ -41,7 +41,7 @@ BuildWorkflow:
     - Build_NestedModules_ModuleBuilder
     - Create_changelog_release_output
     - Generate_Conceptual_Help
-    # - Generate_Wiki_Content
+    - Generate_Wiki_Content
 
   pack:
     - build
@@ -50,6 +50,9 @@ BuildWorkflow:
   hqrmtest:
     # - Set_PSModulePath
     - Invoke_HQRM_Tests_Stop_On_Fail
+
+  gcpol:
+    - build_guestconfiguration_packages
 
   # Defining test task to be run when invoking `./build.ps1 -Tasks test`
   test:
@@ -152,6 +155,8 @@ TaskHeader: |
 GitHubConfig:
   GitHubFilesToAdd:
     - 'CHANGELOG.md'
+  ReleaseAssets:
+    - output/GCPackages/ChocoIsInstalled*.zip
   GitHubConfigUserName: dscbot
   GitHubConfigUserEmail: dsccommunity@outlook.com
   UpdateChangelogOnPrerelease: false
