@@ -21,10 +21,9 @@
 #>
 function Uninstall-Chocolatey
 {
-    [CmdletBinding(
-        SupportsShouldProcess
-    )]
-    param (
+    [CmdletBinding(SupportsShouldProcess = $true)]
+    param
+    (
         [Parameter()]
         [AllowNull()]
         [System.String]
@@ -34,11 +33,10 @@ function Uninstall-Chocolatey
     process
     {
         #If InstallDir is empty or null, select from whee choco.exe is available
-
         if (-not $InstallDir)
         {
-            Write-Debug "Attempting to find the choco.exe command."
-            $chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue
+            Write-Debug -Message "Attempting to find the choco.exe command."
+            $chocoCmd = Get-Command -Name 'choco.exe' -CommandType 'Application' -ErrorAction 'SilentlyContinue'
             #Install dir is where choco.exe is found minus \bin subfolder
             if (-not ($chocoCmd -and ($chocoBin = Split-Path -Parent $chocoCmd.Path -ErrorAction SilentlyContinue)))
             {
@@ -51,18 +49,19 @@ function Uninstall-Chocolatey
                 $InstallDir = (Resolve-Path ([io.path]::combine($chocoBin, '..'))).Path
             }
         }
-        Write-Verbose "Chocolatey Installation Folder is $InstallDir"
 
+        Write-Verbose "Chocolatey Installation Folder is $InstallDir"
         $chocoFiles = @('choco.exe', 'chocolatey.exe', 'cinst.exe', 'cuninst.exe', 'clist.exe', 'cpack.exe', 'cpush.exe',
             'cver.exe', 'cup.exe').Foreach{ $_; "$_.old" } #ensure the .old are also removed
 
         #If Install dir does not have a choco.exe, do nothing as it could delete unwanted files
-        if (
+        if
+        (
             [string]::IsNullOrEmpty($InstallDir) -or
-            -not ((Test-Path $InstallDir) -and (Test-Path "$InstallDir\Choco.exe"))
+            -not ((Test-Path -Path $InstallDir) -and (Test-Path -Path "$InstallDir\Choco.exe"))
         )
         {
-            Write-Warning 'Chocolatey Installation Folder Not found.'
+            Write-Warning -Message 'Chocolatey Installation Folder Not found.'
             return
         }
 
@@ -86,7 +85,7 @@ function Uninstall-Chocolatey
             $FilesToRemove | Sort-Object -Descending FullName | remove-item -Force -recurse -ErrorAction 'SilentlyContinue' -Confirm:$false
         }
 
-        Write-Verbose "Removing $InstallDir from the Path and the ChocolateyInstall Environment variable."
+        Write-Verbose -Message "Removing $InstallDir from the Path and the ChocolateyInstall Environment variable."
         [Environment]::SetEnvironmentVariable('ChocolateyInstall', $null, 'Machine')
         $Env:ChocolateyInstall = $null
         $AllPaths = [Environment]::GetEnvironmentVariable('Path', 'machine').split(';').where{

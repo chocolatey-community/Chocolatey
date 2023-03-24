@@ -46,6 +46,7 @@ BuildWorkflow:
   pack:
     - build
     - package_module_nupkg
+    - gcpol
 
   hqrmtest:
     # - Set_PSModulePath
@@ -156,7 +157,7 @@ GitHubConfig:
   GitHubFilesToAdd:
     - 'CHANGELOG.md'
   ReleaseAssets:
-    - output/GCPackages/ChocoIsInstalled*.zip
+    - output/GCPackages/ChocolateyIsInstalled*.zip
   GitHubConfigUserName: dscbot
   GitHubConfigUserEmail: dsccommunity@outlook.com
   UpdateChangelogOnPrerelease: false
