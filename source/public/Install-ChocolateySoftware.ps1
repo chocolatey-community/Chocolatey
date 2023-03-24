@@ -268,7 +268,7 @@ function Install-ChocolateySoftware
     $chocoPkgDir = Join-Path -Path $chocoPath -ChildPath 'lib\chocolatey'
     $nupkg = Join-Path -Path $chocoPkgDir -ChildPath 'chocolatey.nupkg'
     $null = [System.IO.Directory]::CreateDirectory($chocoPkgDir)
-    Copy-Item -Source "$file" -Destination "$nupkg" -Force -ErrorAction SilentlyContinue
+    Copy-Item -Path "$file" -Destination "$nupkg" -Force -ErrorAction SilentlyContinue
 
     if ($ChocoVersion = & "$chocoPath\choco.exe" @('-v'))
     {
