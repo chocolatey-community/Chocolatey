@@ -152,47 +152,51 @@ function Install-ChocolateySoftware
                 {
                     $url = 'https://chocolatey.org/api/v2'
                 }
+
                 Write-Verbose "Getting latest version of the Chocolatey package for download."
                 $url = "$url/Packages()?`$filter=((Id%20eq%20%27chocolatey%27)%20and%20(not%20IsPrerelease))%20and%20IsLatestVersion"
-                Write-Debug "Retrieving Binary URL from Package Metadata: $url"
+                Write-Debug -Message ('Retrieving Binary URL from Package Metadata: {0}' -f $url)
 
                 $GetRemoteStringParams = @{
                     url = $url
                 }
-                $GetRemoteStringParamsName = (get-command Get-RemoteString).parameters.keys
+
+                [string[]]$getRemoteStringParamsName = (Get-Command -Name Get-RemoteString).parameters.keys
                 $KeysForRemoteString = $PSBoundParameters.keys | Where-Object { $_ -in $GetRemoteStringParamsName }
                 foreach ($key in $KeysForRemoteString )
                 {
-                    Write-Debug "`tWith $key :: $($PSBoundParameters[$key])"
-                    $null = $GetRemoteStringParams.Add($key , $PSBoundParameters[$key])
+                    Write-Debug -Message "`tWith $key :: $($PSBoundParameters[$key])"
+                    $GetRemoteStringParams[$key] =$PSBoundParameters[$key]
                 }
+
                 [xml]$result = Get-RemoteString @GetRemoteStringParams
                 Write-Debug "New URL for nupkg: $url"
                 $url = $result.feed.entry.content.src
             }
         }
+
         'FromPackageUrl'
         {
             #ignores version
-            Write-Verbose "Downloading Chocolatey from : $ChocolateyPackageUrl"
+            Write-Verbose -Message "Downloading Chocolatey from : $ChocolateyPackageUrl"
             $url = $ChocolateyPackageUrl
         }
     }
 
-    if ($null -eq $env:TEMP)
+    if ([string]::IsNullOrEmpty($env:TEMP))
     {
         $env:TEMP = Join-Path $Env:SYSTEMDRIVE 'temp'
     }
 
     $tempDir = [io.path]::Combine($Env:TEMP, 'chocolatey', 'chocInstall')
-    if (![System.IO.Directory]::Exists($tempDir))
+    if (-not [System.IO.Directory]::Exists($tempDir))
     {
         $null = New-Item -path $tempDir -ItemType Directory
     }
-    $file = Join-Path $tempDir "chocolatey.zip"
 
+    $file = Join-Path $tempDir "chocolatey.zip"
     # Download the Chocolatey package
-    Write-Verbose "Getting Chocolatey from $url."
+    Write-Verbose -Message "Getting Chocolatey from $url."
     $GetRemoteFileParams = @{
         url  = $url
         file = $file
@@ -243,17 +247,17 @@ function Install-ChocolateySoftware
 
     Write-Verbose 'Ensuring chocolatey commands are on the path.'
     $chocoPath = [Environment]::GetEnvironmentVariable('ChocolateyInstall')
-    if ($chocoPath -eq $null -or $chocoPath -eq '')
+    if ([string]::IsNullOrEmpty($chocoPath))
     {
         $chocoPath = "$env:ALLUSERSPROFILE\Chocolatey"
     }
 
-    if (!(Test-Path ($chocoPath)))
+    if (-not (Test-Path -Path $chocoPath))
     {
         $chocoPath = "$env:SYSTEMDRIVE\ProgramData\Chocolatey"
     }
 
-    $chocoExePath = Join-Path $chocoPath 'bin'
+    $chocoExePath = Join-Path -Path $chocoPath -ChildPath 'bin'
 
     if ($($env:Path).ToLower().Contains($($chocoExePath).ToLower()) -eq $false)
     {
@@ -261,13 +265,13 @@ function Install-ChocolateySoftware
     }
 
     Write-Verbose 'Ensuring chocolatey.nupkg is in the lib folder'
-    $chocoPkgDir = Join-Path $chocoPath 'lib\chocolatey'
-    $nupkg = Join-Path $chocoPkgDir 'chocolatey.nupkg'
+    $chocoPkgDir = Join-Path -Path $chocoPath -ChildPath 'lib\chocolatey'
+    $nupkg = Join-Path -Path $chocoPkgDir -ChildPath 'chocolatey.nupkg'
     $null = [System.IO.Directory]::CreateDirectory($chocoPkgDir)
-    Copy-Item "$file" "$nupkg" -Force -ErrorAction SilentlyContinue
+    Copy-Item -Path "$file" -Destination "$nupkg" -Force -ErrorAction SilentlyContinue
 
-    if ($ChocoVersion = & "$chocoPath\choco.exe" -v)
+    if ($ChocoVersion = & "$chocoPath\choco.exe" @('-v'))
     {
-        Write-Verbose "Installed Chocolatey Version: $ChocoVersion"
+        Write-Verbose ('Installed Chocolatey Version: {0}'-f $ChocoVersion)
     }
 }

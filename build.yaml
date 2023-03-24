@@ -51,6 +51,9 @@ BuildWorkflow:
     # - Set_PSModulePath
     - Invoke_HQRM_Tests_Stop_On_Fail
 
+  gcpol:
+    - build_guestconfiguration_packages
+
   # Defining test task to be run when invoking `./build.ps1 -Tasks test`
   test:
     # - Set_PSModulePath
@@ -152,6 +155,8 @@ TaskHeader: |
 GitHubConfig:
   GitHubFilesToAdd:
     - 'CHANGELOG.md'
+  ReleaseAssets:
+    - output/GCPackages/ChocoIsInstalled*.zip
   GitHubConfigUserName: dscbot
   GitHubConfigUserEmail: dsccommunity@outlook.com
   UpdateChangelogOnPrerelease: false

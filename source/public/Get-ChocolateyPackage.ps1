@@ -165,14 +165,15 @@ function Get-ChocolateyPackage
             $CachePath = Join-Path -Path $CacheFolder -ChildPath 'GetChocolateyPackageCache.xml'
             try
             {
-                if (!(Test-Path $CacheFolder))
+                if (-not (Test-Path -Path $CacheFolder))
                 {
                     $null = New-Item -Type Directory -Path $CacheFolder -Force -ErrorAction Stop
                 }
-                if (Test-Path $CachePath)
+                if (Test-Path -Path $CachePath)
                 {
                     $CachedFile = Get-Item $CachePath
                 }
+
                 [io.file]::OpenWrite($CachePath).close()
                 $CacheAvailable = $true
             }
@@ -202,7 +203,7 @@ function Get-ChocolateyPackage
                 {
                     try
                     {
-                        $null = $UnfilteredResults | Export-Clixml -Path $CacheFile -Force -ErrorAction Stop
+                        $null = $UnfilteredResults | Export-Clixml -Path $CacheFile -Force -ErrorAction 'Stop'
                         Write-Debug "Unfiltered list cached at $CacheFile."
                     }
                     catch

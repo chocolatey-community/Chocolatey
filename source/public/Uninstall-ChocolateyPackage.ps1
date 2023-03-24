@@ -273,7 +273,7 @@ function Uninstall-ChocolateyPackage
         $CachePath = [io.path]::Combine($Env:ChocolateyInstall, 'cache', 'GetChocolateyPackageCache.xml')
         if ( (Test-Path $CachePath))
         {
-            $null = Remove-Item $CachePath -ErrorAction SilentlyContinue
+            $null = Remove-Item -Path $CachePath -ErrorAction 'SilentlyContinue' -Confirm:$false
         }
     }
     process

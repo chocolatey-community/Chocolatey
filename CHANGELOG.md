@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Modified project with new Sampler template.
 - Invoking choco commands now always add `--no-progress` & `--limit-output`
+- Changed `ChocolateySoftware` to be class-based DSC Resource.
+- Changed `ChocolateyPackage` to be class-based DSC Resource.
+
+### Added
+
+- Added the `ChocolateyIsInstalled` Azure Automanage Machine Configuration package that validates that Chocolatey is installed.
 
 ### Removed
 

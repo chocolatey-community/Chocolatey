@@ -25,10 +25,9 @@
 function Get-Downloader
 {
     [CmdletBinding()]
+    [OutputType([System.Net.WebClient])]
     param (
-        [Parameter(
-            Mandatory = $true
-        )]
+        [Parameter(Mandatory = $true)]
         [System.String]
         $url,
 
@@ -46,7 +45,7 @@ function Get-Downloader
         $IgnoreProxy
     )
 
-    $downloader = new-object System.Net.WebClient
+    $downloader = [System.Net.WebClient]::new()
     $defaultCreds = [System.Net.CredentialCache]::DefaultCredentials
 
     if ($defaultCreds -ne $null)

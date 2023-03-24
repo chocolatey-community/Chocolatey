@@ -83,7 +83,7 @@ function Uninstall-Chocolatey
 
         if ($Pscmdlet.ShouldProcess('Chocofiles'))
         {
-            $FilesToRemove | Sort-Object -Descending FullName | remove-item -Force -recurse -ErrorAction SilentlyContinue
+            $FilesToRemove | Sort-Object -Descending FullName | remove-item -Force -recurse -ErrorAction 'SilentlyContinue' -Confirm:$false
         }
 
         Write-Verbose "Removing $InstallDir from the Path and the ChocolateyInstall Environment variable."
