@@ -28,7 +28,8 @@
 function Get-RemoteString
 {
     [CmdletBinding()]
-    param (
+    param
+    (
         [Parameter()]
         [System.String]
         $url,

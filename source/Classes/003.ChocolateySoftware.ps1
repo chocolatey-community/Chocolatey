@@ -166,16 +166,19 @@ class ChocolateySoftware
             )
 
             $installChocoSoftwareParam = @{}
-            $properties.Where{-not [string]::IsNullOrEmpty($_)}.Foreach{
+
+            $properties.Where{-not [string]::IsNullOrEmpty($this.($_))}.Foreach{
                 $installChocoSoftwareParam[$_] = $this.($_)
             }
 
+            Write-Debug -Message ('Installing Chocolatey with parameters: {0}' -f ($installChocoSoftwareParam | ConvertTo-Json -Depth 2))
             Install-ChocolateySoftware @installChocoSoftwareParam
         }
         elseif ($currentState.Reasons.code.Where{$_ -match 'ChocoShouldBeRemoved$'})
         {
             if ( -not [string]::isNullOrEmpty($this.InstallationDirectory))
             {
+                Write-Debug -Message ('Uninstall-Chocolatey -InstallationDir ''{0}''' -f $this.InstallationDirectory)
                 $null = Uninstall-Chocolatey -InstallationDir $this.InstallationDirectory
             }
             else

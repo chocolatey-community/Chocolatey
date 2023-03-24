@@ -60,6 +60,7 @@ function Get-RemoteFile
         Write-Debug "`tWith $key :: $($PSBoundParameters[$key])"
         $null = $downloaderParams.Add($key , $PSBoundParameters[$key])
     }
+
     $downloader = Get-Downloader @downloaderParams
     $downloader.DownloadFile($url, $file)
 }

@@ -59,6 +59,20 @@ class ChocolateyPackage
     {
         $currentState = [ChocolateyPackage]::new()
         $currentState.Name = $this.Name
+
+        if ($false -eq (Test-ChocolateyInstall))
+        {
+            Write-Debug -Message 'Chocolatey is not installed.'
+            $currentState.Ensure = 'Absent'
+
+            $currentState.Reasons += @{
+                code = 'ChocolateyPackage:ChocolateyPackage:ChocolateyNotInstalled'
+                phrase = 'The Chocolatey software is not installed. We cannot check if a package is present using choco.'
+            }
+
+            return $currentState
+        }
+
         $localPackage = Get-ChocolateyPackage -LocalOnly -Name $this.Name -Exact
 
         if ($null -eq $localPackage)
