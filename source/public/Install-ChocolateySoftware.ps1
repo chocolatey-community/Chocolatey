@@ -183,20 +183,20 @@ function Install-ChocolateySoftware
         }
     }
 
-    if ($null -eq $env:TEMP)
+    if ([string]::IsNullOrEmpty($env:TEMP))
     {
         $env:TEMP = Join-Path $Env:SYSTEMDRIVE 'temp'
     }
 
     $tempDir = [io.path]::Combine($Env:TEMP, 'chocolatey', 'chocInstall')
-    if (![System.IO.Directory]::Exists($tempDir))
+    if (-not [System.IO.Directory]::Exists($tempDir))
     {
         $null = New-Item -path $tempDir -ItemType Directory
     }
-    $file = Join-Path $tempDir "chocolatey.zip"
 
+    $file = Join-Path $tempDir "chocolatey.zip"
     # Download the Chocolatey package
-    Write-Verbose "Getting Chocolatey from $url."
+    Write-Verbose -Message "Getting Chocolatey from $url."
     $GetRemoteFileParams = @{
         url  = $url
         file = $file
@@ -247,17 +247,17 @@ function Install-ChocolateySoftware
 
     Write-Verbose 'Ensuring chocolatey commands are on the path.'
     $chocoPath = [Environment]::GetEnvironmentVariable('ChocolateyInstall')
-    if ($chocoPath -eq $null -or $chocoPath -eq '')
+    if ([string]::IsNullOrEmpty($chocoPath))
     {
         $chocoPath = "$env:ALLUSERSPROFILE\Chocolatey"
     }
 
-    if (!(Test-Path ($chocoPath)))
+    if (-not (Test-Path -Path $chocoPath))
     {
         $chocoPath = "$env:SYSTEMDRIVE\ProgramData\Chocolatey"
     }
 
-    $chocoExePath = Join-Path $chocoPath 'bin'
+    $chocoExePath = Join-Path -Path $chocoPath -ChildPath 'bin'
 
     if ($($env:Path).ToLower().Contains($($chocoExePath).ToLower()) -eq $false)
     {
@@ -265,13 +265,13 @@ function Install-ChocolateySoftware
     }
 
     Write-Verbose 'Ensuring chocolatey.nupkg is in the lib folder'
-    $chocoPkgDir = Join-Path $chocoPath 'lib\chocolatey'
-    $nupkg = Join-Path $chocoPkgDir 'chocolatey.nupkg'
+    $chocoPkgDir = Join-Path -Path $chocoPath -ChildPath 'lib\chocolatey'
+    $nupkg = Join-Path -Path $chocoPkgDir -ChildPath 'chocolatey.nupkg'
     $null = [System.IO.Directory]::CreateDirectory($chocoPkgDir)
-    Copy-Item "$file" "$nupkg" -Force -ErrorAction SilentlyContinue
+    Copy-Item -Source "$file" -Destination "$nupkg" -Force -ErrorAction SilentlyContinue
 
-    if ($ChocoVersion = & "$chocoPath\choco.exe" -v)
+    if ($ChocoVersion = & "$chocoPath\choco.exe" @('-v'))
     {
-        Write-Verbose "Installed Chocolatey Version: $ChocoVersion"
+        Write-Verbose ('Installed Chocolatey Version: {0}'-f $ChocoVersion)
     }
 }
