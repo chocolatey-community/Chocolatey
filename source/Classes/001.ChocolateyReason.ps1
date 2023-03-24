@@ -1,8 +1,8 @@
 class ChocolateyReason
 {
-    [DscProperty()]
+    [DscProperty(NotConfigurable)]
     [string] $Code
 
-    [DscProperty()]
+    [DscProperty(NotConfigurable)]
     [string] $Phrase
 }
