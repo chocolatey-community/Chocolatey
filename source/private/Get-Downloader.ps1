@@ -25,6 +25,7 @@
 function Get-Downloader
 {
     [CmdletBinding()]
+    [OutputType([System.Net.WebClient])]
     param (
         [Parameter(Mandatory = $true)]
         [System.String]
