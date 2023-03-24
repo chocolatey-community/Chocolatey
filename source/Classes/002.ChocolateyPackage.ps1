@@ -7,7 +7,7 @@ using namespace System.Management.Automation
     .DESCRIPTION
         The ChocolateyPackage DSC Resource helps with chocolatey package management.
     .PARAMETER Name
-        The exact name of the ChocolateyPackage to set in the desired state.
+        The name of the ChocolateyPackage to set in the desired state.
     .PARAMETER Version
         The version of the package to install. If not set, it will only ensure the package
         is present/absent.
@@ -241,7 +241,6 @@ class ChocolateyPackage
             'ShouldNotBeInstalled$'
             {
                 $chocoCommand = Get-Command -Name 'Uninstall-ChocolateyPackage' -Module 'Chocolatey'
-                $chocoCommandParams['Force'] = $true
             }
         }
 

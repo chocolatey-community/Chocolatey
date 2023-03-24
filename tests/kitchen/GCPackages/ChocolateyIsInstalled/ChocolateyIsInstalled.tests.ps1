@@ -32,17 +32,17 @@ Describe 'Test ChocolateyIsInstalled Package' {
         $result.complianceStatus | Should -be $true
     }
 
-    # it 'Gets the non-compliant InstalledApplicationLinux @(''powershell-preview'',''somethingNotInstalled'') Package Compliance Status (with params)' {
+    it 'Remediates the non-compliant ChocolateyIsInstalled with Putty as param' {
 
-    #     # $result = $null
-    #     # $result = Get-GuestConfigurationPackageComplianceStatus -Path $packageZip -Parameter @{
-    #     #     ResourceType = "GC_InstalledApplicationLinux"
-    #     #     ResourceId = "InstalledApplicationLinux"
-    #     #     ResourcePropertyName =  "AttributesYmlContent"
-    #     #     ResourcePropertyValue = "powershell;somethingNotInstalled"
-    #     # }
+        $result = $null
+        $result = Start-GuestConfigurationPackageRemediation -Path $packageZip -Parameter @{
+            ResourceType = "ChocolateyPackage"
+            ResourceId = "chocoSoftwareInstalled"
+            ResourcePropertyName =  "Name"
+            ResourcePropertyValue = "putty.portable"
+        }
 
-    #     # $result.Resources.Reasons | Should -not -BeNullOrEmpty
-    #     # $result.complianceStatus | Should -be $false
-    # }
+        $result.Resources.Reasons | Should -not -BeNullOrEmpty
+        $result.complianceStatus | Should -be $true
+    }
 }

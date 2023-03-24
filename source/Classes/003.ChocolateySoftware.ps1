@@ -179,11 +179,11 @@ class ChocolateySoftware
             if ( -not [string]::isNullOrEmpty($this.InstallationDirectory))
             {
                 Write-Debug -Message ('Uninstall-Chocolatey -InstallationDir ''{0}''' -f $this.InstallationDirectory)
-                $null = Uninstall-Chocolatey -InstallationDir $this.InstallationDirectory
+                $null = Uninstall-Chocolatey -InstallationDir $this.InstallationDirectory -Confirm:$false
             }
             else
             {
-                $null = Uninstall-Chocolatey
+                $null = Uninstall-Chocolatey -Confirm:$false
             }
         }
         else
