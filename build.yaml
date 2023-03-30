@@ -158,6 +158,7 @@ GitHubConfig:
     - 'CHANGELOG.md'
   ReleaseAssets:
     - output/GCPackages/ChocolateyIsInstalled*.zip
+    - output/GCPackages/DisableChocolateyCommunitySource*.zip
   GitHubConfigUserName: dscbot
   GitHubConfigUserEmail: dsccommunity@outlook.com
   UpdateChangelogOnPrerelease: false

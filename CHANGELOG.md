@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added the `ChocolateyIsInstalled` Azure Automanage Machine Configuration package that validates that Chocolatey is installed.
+- Added the `DisableChocolateyCommunitySource` Azure Automanage Machine Configuration package that ensures the Chocolatey Community source is disabled.
 - Added repository's Wiki.
 
 ### Removed
