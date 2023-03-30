@@ -70,6 +70,7 @@
 #>
 function Install-ChocolateySoftware
 {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
     [CmdletBinding(
         DefaultParameterSetName = 'FromFeedUrl'
     )]
@@ -112,7 +113,7 @@ function Install-ChocolateySoftware
 
         [Parameter(DontShow)]
         [switch]
-        $RunAnyway = $(Assert-ChocolateyIsElevated)
+        $RunNonElevated = $(Assert-ChocolateyIsElevated)
     )
 
     if ($PSVersionTable.PSVersion.Major -lt 4)

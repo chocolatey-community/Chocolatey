@@ -155,6 +155,7 @@
 #>
 function Install-ChocolateyPackage
 {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
     [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'High')]
     param
     (
@@ -286,7 +287,7 @@ function Install-ChocolateyPackage
 
         [Parameter(DontShow)]
         [switch]
-        $RunAnyway = $(Assert-ChocolateyIsElevated)
+        $RunNonElevated = $(Assert-ChocolateyIsElevated)
     )
 
     begin

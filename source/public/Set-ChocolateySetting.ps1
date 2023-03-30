@@ -23,6 +23,7 @@
 #>
 function Set-ChocolateySetting
 {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
     [CmdletBinding(
         SupportsShouldProcess
         , ConfirmImpact = 'Low'
@@ -55,7 +56,7 @@ function Set-ChocolateySetting
 
         [Parameter(DontShow)]
         [switch]
-        $RunAnyway = $(Assert-ChocolateyIsElevated)
+        $RunNonElevated = $(Assert-ChocolateyIsElevated)
     )
 
     process

@@ -66,6 +66,7 @@
 #>
 function Register-ChocolateySource
 {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
     [CmdletBinding()]
     param
     (
@@ -117,7 +118,7 @@ function Register-ChocolateySource
 
         [Parameter(DontShow)]
         [switch]
-        $RunAnyway = $(Assert-ChocolateyIsElevated)
+        $RunNonElevated = $(Assert-ChocolateyIsElevated)
     )
 
     process

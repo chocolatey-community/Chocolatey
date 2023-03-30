@@ -21,6 +21,7 @@
 #>
 function Uninstall-Chocolatey
 {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
     [CmdletBinding(SupportsShouldProcess = $true)]
     param
     (
@@ -31,7 +32,7 @@ function Uninstall-Chocolatey
 
         [Parameter(DontShow)]
         [switch]
-        $RunAnyway = $(Assert-ChocolateyIsElevated)
+        $RunNonElevated = $(Assert-ChocolateyIsElevated)
     )
 
     process
