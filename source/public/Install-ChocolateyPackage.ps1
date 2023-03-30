@@ -282,7 +282,11 @@ function Install-ChocolateyPackage
         [Parameter(ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNullOrEmpty()]
         [int]
-        $VirusPositive
+        $VirusPositive,
+
+        [Parameter(DontShow)]
+        [switch]
+        $RunAnyway = $(Assert-ChocolateyIsElevated)
     )
 
     begin

@@ -260,7 +260,11 @@ function Uninstall-ChocolateyPackage
             ValueFromPipelineByPropertyName
         )]
         [Switch]
-        $IgnoreAutoUninstallerFailure
+        $IgnoreAutoUninstallerFailure,
+
+        [Parameter(DontShow)]
+        [switch]
+        $RunAnyway = $(Assert-ChocolateyIsElevated)
     )
 
     begin

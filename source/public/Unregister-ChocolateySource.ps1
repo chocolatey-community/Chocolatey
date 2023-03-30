@@ -118,8 +118,11 @@ function Unregister-ChocolateySource
             ValueFromPipelineByPropertyName
         )]
         [Switch]
-        $NoProgress
+        $NoProgress,
 
+        [Parameter(DontShow)]
+        [switch]
+        $RunAnyway = $(Assert-ChocolateyIsElevated)
     )
 
     process

@@ -51,7 +51,11 @@ function Set-ChocolateySetting
             , ParameterSetName = 'Unset'
         )]
         [switch]
-        $Unset
+        $Unset,
+
+        [Parameter(DontShow)]
+        [switch]
+        $RunAnyway = $(Assert-ChocolateyIsElevated)
     )
 
     process

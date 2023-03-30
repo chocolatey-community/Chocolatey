@@ -27,7 +27,11 @@ function Uninstall-Chocolatey
         [Parameter()]
         [AllowNull()]
         [System.String]
-        $InstallDir = $Env:ChocolateyInstall
+        $InstallDir = $Env:ChocolateyInstall,
+
+        [Parameter(DontShow)]
+        [switch]
+        $RunAnyway = $(Assert-ChocolateyIsElevated)
     )
 
     process

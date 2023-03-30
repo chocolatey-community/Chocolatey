@@ -322,7 +322,11 @@ function Update-ChocolateyPackage
             ValueFromPipelineByPropertyName
         )]
         [Switch]
-        $ExcludePrerelease
+        $ExcludePrerelease,
+
+        [Parameter(DontShow)]
+        [switch]
+        $RunAnyway = $(Assert-ChocolateyIsElevated)
     )
 
     begin

@@ -108,7 +108,11 @@ function Install-ChocolateySoftware
 
         [Parameter()]
         [System.String]
-        $InstallationDirectory
+        $InstallationDirectory,
+
+        [Parameter(DontShow)]
+        [switch]
+        $RunAnyway = $(Assert-ChocolateyIsElevated)
     )
 
     if ($PSVersionTable.PSVersion.Major -lt 4)
