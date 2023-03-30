@@ -1,37 +1,40 @@
+
+[DscResource()]
 class ChocolateySource
 {
-    # [DscProperty()]
+    [DscProperty()]
     [Ensure] $Ensure = 'Present'
 
-    # [DscProperty(Key)]
+    [DscProperty(Key)]
     [string] $Name
 
-    # [DscProperty()]
+    [DscProperty()]
     # If we want to make sure a source is disabled, we don't need to provide its
     # source location
     [string] $Source
 
-    # [DscProperty()]
+    [DscProperty()]
     [Nullable[bool]] $Disabled
 
-    # [DscProperty()]
+    [DscProperty()]
     [Nullable[bool]] $ByPassProxy
 
-    # [DscProperty()]
+    [DscProperty()]
     [Nullable[bool]] $SelfService
 
-    # [DscProperty()]
+    [DscProperty()]
     [Nullable[int]] $Priority
 
-    # [DscProperty(NotConfigurable)]
+    [DscProperty()]
     [String] $Username
 
+    [DscProperty()]
     [String] $Password
 
-    # [DscProperty()] # WriteOnly
+    [DscProperty()] # WriteOnly
     [pscredential] $Credential
 
-    # [DscProperty(NotConfigurable)]
+    [DscProperty(NotConfigurable)]
     [ChocolateyReason[]] $Reasons
 
 
