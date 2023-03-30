@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Invoking choco commands now always add `--no-progress` & `--limit-output`
 - Changed `ChocolateySoftware` to be class-based DSC Resource.
 - Changed `ChocolateyPackage` to be class-based DSC Resource.
+- Changed `ChocolateySource` to be a class-based DSC Resource.
 
 ### Added
 
