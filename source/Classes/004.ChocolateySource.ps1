@@ -1,4 +1,57 @@
 
+<#
+    .SYNOPSIS
+        The `ChocolateySource` DSC resource is used to configure or remove source feeds for chocolatey.
+
+    .DESCRIPTION
+        Chocolatey will allow you to interact with sources.
+        You can register a new source, whether internal or external with some source
+        specific settings such as proxy.
+
+    .PARAMETER Ensure
+        Indicate whether the Chocolatey source should be installed or removed from the system.
+
+    .PARAMETER Name
+        Name - the name of the source. Required with some actions. Defaults to empty.
+
+    .PARAMETER Source
+        Source - The source. This can be a folder/file share or an http location.
+        If it is a url, it will be a location you can go to in a browser and
+        it returns OData with something that says Packages in the browser,
+        similar to what you see when you go to https://chocolatey.org/api/v2/.
+        Defaults to empty.
+
+    .PARAMETER Disabled
+        Allow the source to be registered but disabled.
+
+    .PARAMETER BypassProxy
+        Bypass Proxy - Should this source explicitly bypass any explicitly or
+        system configured proxies? Defaults to false. Available in 0.10.4+.
+
+    .PARAMETER SelfService
+        Allow Self-Service - Should this source be allowed to be used with self-
+        service? Requires business edition (v1.10.0+) with feature
+        'useBackgroundServiceWithSelfServiceSourcesOnly' turned on. Defaults to
+        false. Available in 0.10.4+.
+
+    .PARAMETER Priority
+        Priority - The priority order of this source as compared to other
+        sources, lower is better. Defaults to 0 (no priority). All priorities
+        above 0 will be evaluated first, then zero-based values will be
+        evaluated in config file order. Available in 0.9.9.9+.
+
+    .PARAMETER Credential
+        Credential used with authenticated feeds. Defaults to empty.
+
+    .EXAMPLE
+        Invoke-DscResource -ModuleName Chocolatey -Name ChocolateySource -Method Get -Property @{
+            Ensure  = 'Present'
+            Name    = 'Chocolatey'
+            Disable = $true
+        }
+
+        # This example shows how to call the resource using Invoke-DscResource.
+#>
 [DscResource()]
 class ChocolateySource
 {
@@ -235,7 +288,13 @@ class ChocolateySource
 
                 if (-not [string]::IsNullOrEmpty($this.Username))
                 {
-                    $registerChocolateySourceParams['Username'] = $this.Username
+                    $registerChocolateySourceParams['KeyUser'] = $this.Username
+                    throw 'NotImplementedYet'
+                }
+
+                if (-not [string]::isNullOrEmpty($this.Password))
+                {
+                    $registerChocolateySourceParams['Key'] = $this.Password
                 }
 
                 if (-not [string]::IsNullOrEmpty($this.Credential))
