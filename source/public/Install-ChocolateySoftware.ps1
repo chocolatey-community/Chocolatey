@@ -57,6 +57,10 @@
 .PARAMETER InstallationDirectory
     Set the Installation Directory for Chocolatey, by creating the Environment Variable. This will persist after the installation.
 
+.PARAMETER RunNonElevated
+    Throws if the process is not running elevated. use -RunNonElevated if you really want to run
+    even if the current shell is not elevated.
+
 .EXAMPLE
     Install latest chocolatey software from the Community repository (non pre-release version)
     Install-ChocolateySoftware

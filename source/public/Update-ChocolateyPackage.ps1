@@ -135,6 +135,10 @@
     Exclude Prerelease - Should prerelease be ignored for upgrades? Will be
     ignored if you pass `--pre`. Available in 0.10.4+.
 
+.PARAMETER RunNonElevated
+    Throws if the process is not running elevated. use -RunNonElevated if you really want to run
+    even if the current shell is not elevated.
+
 .EXAMPLE
     Update-ChocolateyPackage -Name All
 

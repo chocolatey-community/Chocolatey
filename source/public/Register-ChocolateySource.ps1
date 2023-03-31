@@ -58,6 +58,10 @@
 .PARAMETER Key
     API key for the source (too long in C4B to be passed as credentials)
 
+.PARAMETER RunNonElevated
+    Throws if the process is not running elevated. use -RunNonElevated if you really want to run
+    even if the current shell is not elevated.
+
 .EXAMPLE
     Register-ChocolateySource -Name MyNuget -Source https://proget/nuget/choco
 

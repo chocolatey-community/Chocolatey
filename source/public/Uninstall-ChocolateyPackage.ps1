@@ -109,6 +109,10 @@
     uninstaller reports an error. Overrides the default feature
     'failOnAutoUninstaller' set to 'False'. Available in 0.9.10+.
 
+.PARAMETER RunNonElevated
+    Throws if the process is not running elevated. use -RunNonElevated if you really want to run
+    even if the current shell is not elevated.
+
 .EXAMPLE
     Uninstall-ChocolateyPackage -Name Putty
 
