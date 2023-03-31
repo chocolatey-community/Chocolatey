@@ -8,4 +8,3 @@ class ChocolateyFeature : OMI_BaseResource
     [Read] String SetExplicitly;
     [Read] String Description;
 };
-
