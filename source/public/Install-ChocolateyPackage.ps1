@@ -147,6 +147,10 @@
     'virusCheckMinimumPositives' set to '5'. Available in 0.9.10+. Licensed
     editions only. See https://chocolatey.org/docs/features-virus-check
 
+.PARAMETER RunNonElevated
+    Throws if the process is not running elevated. use -RunNonElevated if you really want to run
+    even if the current shell is not elevated.
+
 .EXAMPLE
     Install-ChocolateyPackage -Name Chocolatey -Version 0.10.8
 
@@ -155,6 +159,7 @@
 #>
 function Install-ChocolateyPackage
 {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
     [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'High')]
     param
     (
@@ -282,7 +287,11 @@ function Install-ChocolateyPackage
         [Parameter(ValueFromPipelineByPropertyName = $true)]
         [ValidateNotNullOrEmpty()]
         [int]
-        $VirusPositive
+        $VirusPositive,
+
+        [Parameter(DontShow)]
+        [switch]
+        $RunNonElevated = $(Assert-ChocolateyIsElevated)
     )
 
     begin

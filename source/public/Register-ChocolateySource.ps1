@@ -58,6 +58,10 @@
 .PARAMETER Key
     API key for the source (too long in C4B to be passed as credentials)
 
+.PARAMETER RunNonElevated
+    Throws if the process is not running elevated. use -RunNonElevated if you really want to run
+    even if the current shell is not elevated.
+
 .EXAMPLE
     Register-ChocolateySource -Name MyNuget -Source https://proget/nuget/choco
 
@@ -66,74 +70,59 @@
 #>
 function Register-ChocolateySource
 {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
     [CmdletBinding()]
-    param (
-        [Parameter(
-            Mandatory = $true
-            , ValueFromPipelineByPropertyName
-        )]
+    param
+    (
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [System.String]
         $Name,
 
-        [Parameter(
-            Mandatory = $true
-            , ValueFromPipelineByPropertyName
-        )]
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         $Source,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [switch]
         $Disabled = $false,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [switch]
         $BypassProxy = $false,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [switch]
         $SelfService = $false,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [int]
         $Priority = 0,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [PSCredential]
         $Credential,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [switch]
         $Force,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [System.String]
         $CacheLocation,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [switch]
         $NoProgress,
 
         [Parameter()]
         #To be used when Password is too long (>240 char) like a key
         $KeyUser,
+
         [Parameter()]
-        $Key
+        $Key,
+
+        [Parameter(DontShow)]
+        [switch]
+        $RunNonElevated = $(Assert-ChocolateyIsElevated)
     )
 
     process
@@ -143,15 +132,17 @@ function Register-ChocolateySource
             throw "Chocolatey Software not found."
         }
 
-        if (!$PSBoundParameters.containskey('Disabled'))
+        if (-not $PSBoundParameters.containskey('Disabled'))
         {
             $null = $PSBoundParameters.add('Disabled', $Disabled)
         }
-        if (!$PSBoundParameters.containskey('SelfService'))
+
+        if (-not $PSBoundParameters.containskey('SelfService'))
         {
             $null = $PSBoundParameters.add('SelfService', $SelfService)
         }
-        if (!$PSBoundParameters.containskey('BypassProxy'))
+
+        if (-not $PSBoundParameters.containskey('BypassProxy'))
         {
             $null = $PSBoundParameters.add('BypassProxy', $BypassProxy)
         }
@@ -160,11 +151,15 @@ function Register-ChocolateySource
         $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
         Write-Verbose "choco $($ChocoArguments -join ' ')"
 
-        &$chocoCmd $ChocoArguments | Write-Verbose
+        &$chocoCmd $ChocoArguments | ForEach-Object -Process {
+            Write-Verbose -Message $_
+        }
 
         if ($Disabled)
         {
-            &$chocoCmd @('source', 'disable', "-n=`"$Name`"") | Write-Verbose
+            &$chocoCmd @('source', 'disable', "-n=`"$Name`"", '--limit-output') | ForEach-Object -Process {
+                Write-Verbose -Message $_
+            }
         }
     }
 }

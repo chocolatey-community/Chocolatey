@@ -15,6 +15,10 @@
 .PARAMETER Unset
     Unset the setting, returning to the Chocolatey defaults.
 
+.PARAMETER RunNonElevated
+    Throws if the process is not running elevated. use -RunNonElevated if you really want to run
+    even if the current shell is not elevated.
+
 .EXAMPLE
     Set-ChocolateySetting -Name 'cacheLocation' -value 'C:\Temp\Choco'
 
@@ -23,6 +27,7 @@
 #>
 function Set-ChocolateySetting
 {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
     [CmdletBinding(
         SupportsShouldProcess
         , ConfirmImpact = 'Low'
@@ -51,7 +56,11 @@ function Set-ChocolateySetting
             , ParameterSetName = 'Unset'
         )]
         [switch]
-        $Unset
+        $Unset,
+
+        [Parameter(DontShow)]
+        [switch]
+        $RunNonElevated = $(Assert-ChocolateyIsElevated)
     )
 
     process

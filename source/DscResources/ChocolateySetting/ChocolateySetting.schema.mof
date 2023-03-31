@@ -6,4 +6,3 @@ class ChocolateySetting : OMI_BaseResource
     [Key, Description("Name (or setting) of the Chocolatey setting to modify")] String Name;
     [Write, Description("Value to be given on the setting. This is ignored when the ensure -eq 'Absent'.")] string value;
 };
-

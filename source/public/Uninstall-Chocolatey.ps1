@@ -15,19 +15,28 @@
     Installation Directory to remove Chocolatey from. Default looks up in $Env:ChocolateyInstall
     Or, if specified with an empty/$null value, tries to find from the choco.exe path.
 
+.PARAMETER RunNonElevated
+    Throws if the process is not running elevated. use -RunNonElevated if you really want to run
+    even if the current shell is not elevated.
+
 .EXAMPLE
     Uninstall-Chocolatey -InstallDir ''
     Will uninstall Chocolatey from the location of Choco.exe if found from $Env:PATH
 #>
 function Uninstall-Chocolatey
 {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
     [CmdletBinding(SupportsShouldProcess = $true)]
     param
     (
         [Parameter()]
         [AllowNull()]
         [System.String]
-        $InstallDir = $Env:ChocolateyInstall
+        $InstallDir = $Env:ChocolateyInstall,
+
+        [Parameter(DontShow)]
+        [switch]
+        $RunNonElevated = $(Assert-ChocolateyIsElevated)
     )
 
     process
