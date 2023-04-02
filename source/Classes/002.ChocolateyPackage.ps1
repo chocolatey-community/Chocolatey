@@ -220,7 +220,7 @@ class ChocolateyPackage
             'BelowExpectedVersion$'
             {
                 Write-Debug -Message ('Upgrading package ''{0}'' to version ''{1}''.' -f $this.Name, $this.Version)
-                $chocoCommand = Get-Command -Name 'Update-ChocolateyPackage' -Module 'Chocolatey'
+                $chocoCommand =  Get-Command -Name 'Update-ChocolateyPackage' -Module 'Chocolatey'
             }
 
             'ShouldBeInstalled$'

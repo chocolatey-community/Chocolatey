@@ -45,11 +45,11 @@ function Uninstall-Chocolatey
         if (-not $InstallDir)
         {
             Write-Debug -Message "Attempting to find the choco.exe command."
-            $chocoCmd = Get-Command -Name 'choco.exe' -CommandType 'Application' -ErrorAction 'SilentlyContinue'
+            $chocoCmd = @(Get-Command 'choco.exe' -CommandType 'Application' -ErrorAction 'SilentlyContinue')[0]
             #Install dir is where choco.exe is found minus \bin subfolder
             if (-not ($chocoCmd -and ($chocoBin = Split-Path -Parent $chocoCmd.Path -ErrorAction SilentlyContinue)))
             {
-                Write-Warning "Could not find Chocolatey Software Install Folder."
+                Write-Warning -Message "Could not find Chocolatey Software Install Folder."
                 return
             }
             else
