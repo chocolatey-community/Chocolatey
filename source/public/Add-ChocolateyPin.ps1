@@ -48,7 +48,7 @@ function Add-ChocolateyPin
 
     process
     {
-        if (-not ($chocoCmd = Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
+        if (-not ($chocoCmd = @(Get-Command 'choco.exe' -CommandType 'Application' -ErrorAction 'SilentlyContinue')[0]))
         {
             throw "Chocolatey Software not found."
         }

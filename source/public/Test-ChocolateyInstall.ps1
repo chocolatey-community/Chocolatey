@@ -37,7 +37,7 @@ function Test-ChocolateyInstall
         $InstallDir = (Resolve-Path $InstallDir -ErrorAction Stop).Path
     }
 
-    if ($chocoCmd = get-command choco.exe -CommandType Application -ErrorAction SilentlyContinue)
+    if (-not ($chocoCmd = @(Get-Command 'choco.exe' -CommandType 'Application' -ErrorAction 'SilentlyContinue')[0]))
     {
         if (
             !$InstallDir -or

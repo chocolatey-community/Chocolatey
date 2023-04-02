@@ -72,7 +72,7 @@ class ChocolateySoftware
     [ChocolateySoftware] Get()
     {
         $currentState = [ChocolateySoftware]::new()
-        $chocoExe = Get-Command -Name 'choco.exe' -ErrorAction 'Ignore'
+        $chocoExe = @(Get-Command -Name 'choco.exe' -ErrorAction 'Ignore')[0]
 
         if ($null -eq $chocoExe)
         {
