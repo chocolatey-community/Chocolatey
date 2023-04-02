@@ -23,3 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 - Removed SideBySide option as per [#61](https://github.com/chocolatey-community/Chocolatey/issues/61).
+
+### Fixed 
+
+- Fixed [#68](https://github.com/chocolatey-community/Chocolatey/issues/68) by making sure it's set to the
+  correct Path. 
