@@ -8,7 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Modified project with new Sampler template.
-- Invoking choco commands now always add `--no-progress` & `--limit-output`
+- Invoking choco commands now always add `--no-progress` & `--limit-output`.
+- Limiting Get-Command choco to the first result as per [#69](https://github.com/chocolatey-community/Chocolatey/issues/69).
 - Changed `ChocolateySoftware` to be class-based DSC Resource.
 - Changed `ChocolateyPackage` to be class-based DSC Resource.
 - Changed `ChocolateySource` to be a class-based DSC Resource.
