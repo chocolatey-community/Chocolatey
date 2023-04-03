@@ -32,7 +32,7 @@ function Uninstall-Chocolatey
         [Parameter()]
         [AllowNull()]
         [System.String]
-        $InstallDir = $(Get-ChocolateyInstallPath -ErrorAction 'Stop'),
+        $InstallDir = $(Get-ChocolateyInstallPath -ErrorAction 'Ignore'),
 
         [Parameter(DontShow)]
         [switch]
@@ -41,7 +41,7 @@ function Uninstall-Chocolatey
 
     process
     {
-        #If InstallDir is empty or null, select from whee choco.exe is available
+        #If InstallDir is empty or null, select from the choco.exe if available
         if (-not $InstallDir)
         {
             Write-Debug -Message "Attempting to find the choco.exe command."
@@ -59,7 +59,7 @@ function Uninstall-Chocolatey
             }
         }
 
-        Write-Verbose "Chocolatey Installation Folder is $InstallDir"
+        Write-Verbose -Message "Chocolatey Installation Folder is $InstallDir"
         $chocoFiles = @('choco.exe', 'chocolatey.exe', 'cinst.exe', 'cuninst.exe', 'clist.exe', 'cpack.exe', 'cpush.exe',
             'cver.exe', 'cup.exe').Foreach{ $_; "$_.old" } #ensure the .old are also removed
 

@@ -161,7 +161,13 @@ function Get-ChocolateyPackage
             (($Name -and $Exact) -or ([string]::IsNullOrEmpty($Name)))
         )
         {
-            $chocoInstallPath = Get-ChocolateyInstallPath -ErrorAction 'Stop'
+            $chocoInstallPath = Get-ChocolateyInstallPath -ErrorAction 'Ignore'
+            if ([string]::IsNullOrEmpty($chocoInstallPath))
+            {
+                Write-Verbose -Message 'Chocolatey Software is not installed on this system.'
+                return
+            }
+
             $cachePath = [io.path]::Combine($chocoInstallPath, 'cache', 'GetChocolateyPackageCache.xml')
             try
             {
