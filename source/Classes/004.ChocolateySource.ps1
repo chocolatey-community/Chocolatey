@@ -96,7 +96,7 @@ class ChocolateySource
         $currentState = [ChocolateySource]::New()
         $currentState.Name = $this.Name
 
-        $localSource = Get-ChocolateySource -Name $this.Name -ErrorAction 'Ignore'
+        $localSource = Get-ChocolateySource -Name $this.Name -ErrorAction 'SilentlyContinue'
         if ($localSource.Name -eq $this.Name)
         {
             $currentState.Ensure = 'Present'

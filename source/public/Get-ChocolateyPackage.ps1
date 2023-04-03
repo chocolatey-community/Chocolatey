@@ -161,7 +161,7 @@ function Get-ChocolateyPackage
             (($Name -and $Exact) -or ([string]::IsNullOrEmpty($Name)))
         )
         {
-            $chocoInstallPath = Get-ChocolateyInstallPath -ErrorAction 'Ignore'
+            $chocoInstallPath = Get-ChocolateyInstallPath -ErrorAction 'SilentlyContinue'
             if ([string]::IsNullOrEmpty($chocoInstallPath))
             {
                 Write-Verbose -Message 'Chocolatey Software is not installed on this system.'

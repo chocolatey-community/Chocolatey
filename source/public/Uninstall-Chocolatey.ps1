@@ -32,7 +32,7 @@ function Uninstall-Chocolatey
         [Parameter()]
         [AllowNull()]
         [System.String]
-        $InstallDir = $(Get-ChocolateyInstallPath -ErrorAction 'Ignore'),
+        $InstallDir = $(Get-ChocolateyInstallPath -ErrorAction 'SilentlyContinue'),
 
         [Parameter(DontShow)]
         [switch]
