@@ -1,3 +1,18 @@
+
+<#
+.SYNOPSIS
+Gets environment variable ChocolateyInstall from Machine scope.
+
+.DESCRIPTION
+This command gets the machine-scoped environment variable 'ChocolateyInstall',
+and make sure it's set if the folder is present but variable is not.
+If the variable is not set and the choclatey folder can't be found,
+the command will write to the error stream.
+
+.EXAMPLE
+Get-ChocolateyInstallPath -ErrorAction 'Stop'
+
+#>
 function Get-ChocolateyInstallPath
 {
     [CmdletBinding()]
@@ -19,7 +34,7 @@ function Get-ChocolateyInstallPath
     }
     else
     {
-        throw 'The chocolatey install Machine environment variable couldn''t be found.'
+        Write-Error -Message 'The chocolatey install Machine environment variable couldn''t be found.'
     }
 
     return $chocoInstallPath

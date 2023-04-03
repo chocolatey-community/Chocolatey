@@ -287,6 +287,7 @@ function Uninstall-ChocolateyPackage
             $null = Remove-Item -Path $cachePath -ErrorAction 'SilentlyContinue' -Confirm:$false
         }
     }
+
     process
     {
         foreach ($PackageName in $Name)

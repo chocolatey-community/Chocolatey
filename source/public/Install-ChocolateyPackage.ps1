@@ -302,12 +302,12 @@ function Install-ChocolateyPackage
             throw "Chocolatey Software not found."
         }
 
-        $chocoInstallPath = Get-ChocolateyInstallPath
-        $CachePath = [io.path]::Combine($chocoInstallPath, 'cache', 'GetChocolateyPackageCache.xml')
-        if ((Test-Path -Path $CachePath))
+        $chocoInstallPath = Get-ChocolateyInstallPath -ErrorAction 'Stop'
+        $cachePath = [io.path]::Combine($chocoInstallPath, 'cache', 'GetChocolateyPackageCache.xml')
+        if ((Test-Path -Path $cachePath))
         {
             Write-Debug -Message 'Removing cache begin of Install-ChocolateyPackage'
-            $null = Remove-Item -Path $CachePath -ErrorAction SilentlyContinue -Force -Confirm:$false
+            $null = Remove-Item -Path $cachePath -ErrorAction SilentlyContinue -Force -Confirm:$false
             Write-Debug -Message 'Removed'
         }
     }
