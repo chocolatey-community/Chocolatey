@@ -32,7 +32,7 @@ function Uninstall-Chocolatey
         [Parameter()]
         [AllowNull()]
         [System.String]
-        $InstallDir = $Env:ChocolateyInstall,
+        $InstallDir = $(Get-ChocolateyInstallPath -ErrorAction 'Stop'),
 
         [Parameter(DontShow)]
         [switch]
@@ -96,7 +96,7 @@ function Uninstall-Chocolatey
 
         Write-Verbose -Message "Removing $InstallDir from the Path and the ChocolateyInstall Environment variable."
         [Environment]::SetEnvironmentVariable('ChocolateyInstall', $null, 'Machine')
-        $Env:ChocolateyInstall = $null
+        [Environment]::SetEnvironmentVariable('ChocolateyInstall', $null, 'Process')
         $AllPaths = [Environment]::GetEnvironmentVariable('Path', 'machine').split(';').where{
             ![string]::IsNullOrEmpty($_) -and
             $_ -notmatch "^$([regex]::Escape($InstallDir))\\bin$"

@@ -161,8 +161,8 @@ function Get-ChocolateyPackage
             (($Name -and $Exact) -or ([string]::IsNullOrEmpty($Name)))
         )
         {
-            $CacheFolder = Join-Path -Path $Env:ChocolateyInstall -ChildPath 'cache'
-            $CachePath = Join-Path -Path $CacheFolder -ChildPath 'GetChocolateyPackageCache.xml'
+            $chocoInstallPath = Get-ChocolateyInstallPath -ErrorAction 'Stop'
+            $cachePath = [io.path]::Combine($chocoInstallPath, 'cache', 'GetChocolateyPackageCache.xml')
             try
             {
                 if (-not (Test-Path -Path $CacheFolder))
