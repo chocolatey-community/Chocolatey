@@ -75,19 +75,14 @@
 function Install-ChocolateySoftware
 {
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
-    [CmdletBinding(
-        DefaultParameterSetName = 'FromFeedUrl'
-    )]
-    param (
-        [Parameter(
-            ParameterSetName = 'FromPackageUrl'
-        )]
+    [CmdletBinding(DefaultParameterSetName = 'FromFeedUrl')]
+    param
+    (
+        [Parameter(ParameterSetName = 'FromPackageUrl')]
         [uri]
         $ChocolateyPackageUrl,
 
-        [Parameter(
-            ParameterSetName = 'FromFeedUrl'
-        )]
+        [Parameter(ParameterSetName = 'FromFeedUrl')]
         [uri]
         $PackageFeedUrl = 'https://chocolatey.org/api/v2',
 
@@ -139,21 +134,21 @@ function Install-ChocolateySoftware
     }
     catch
     {
-        Write-Warning 'Unable to set PowerShell to use TLS 1.2 and TLS 1.1 due to old .NET Framework installed. If you see underlying connection closed or trust errors, you may need to do one or more of the following: (1) upgrade to .NET Framework 4.5+ and PowerShell v3, (2) specify internal Chocolatey package location (set $env:chocolateyDownloadUrl prior to install or host the package internally), (3) use the Download + PowerShell method of install. See https://chocolatey.org/install for all install options.'
+        Write-Warning -Message 'Unable to set PowerShell to use TLS 1.2 and TLS 1.1 due to old .NET Framework installed. If you see underlying connection closed or trust errors, you may need to do one or more of the following: (1) upgrade to .NET Framework 4.5+ and PowerShell v3, (2) specify internal Chocolatey package location (set $env:chocolateyDownloadUrl prior to install or host the package internally), (3) use the Download + PowerShell method of install. See https://chocolatey.org/install for all install options.'
     }
 
     switch ($PSCmdlet.ParameterSetName)
     {
         'FromFeedUrl'
         {
-            if ($PackageFeedUrl -and ![string]::IsNullOrEmpty($Version))
+            if ($PackageFeedUrl -and -not [string]::IsNullOrEmpty($Version))
             {
-                Write-Verbose "Downloading specific version of Chocolatey: $Version"
+                Write-Verbose -Message "Downloading specific version of Chocolatey: $Version"
                 $url = "$PackageFeedUrl/package/chocolatey/$Version"
             }
             else
             {
-                if (![string]::IsNullOrEmpty($PackageFeedUrl))
+                if (-not [string]::IsNullOrEmpty($PackageFeedUrl))
                 {
                     $url = $PackageFeedUrl
                 }
@@ -203,13 +198,14 @@ function Install-ChocolateySoftware
         $null = New-Item -path $tempDir -ItemType Directory
     }
 
-    $file = Join-Path $tempDir "chocolatey.zip"
+    $file = Join-Path -Path $tempDir -ChildPath "chocolatey.zip"
     # Download the Chocolatey package
     Write-Verbose -Message "Getting Chocolatey from $url."
     $GetRemoteFileParams = @{
         url  = $url
         file = $file
     }
+
     $GetRemoteFileParamsName = (get-command Get-RemoteFile).parameters.keys
     $KeysForRemoteFile = $PSBoundParameters.keys | Where-Object { $_ -in $GetRemoteFileParamsName }
     foreach ($key in $KeysForRemoteFile )
@@ -217,6 +213,7 @@ function Install-ChocolateySoftware
         Write-Debug "`tWith $key :: $($PSBoundParameters[$key])"
         $null = $GetRemoteFileParams.Add($key , $PSBoundParameters[$key])
     }
+
     $null = Get-RemoteFile @GetRemoteFileParams
 
     # unzip the package
@@ -242,42 +239,53 @@ function Install-ChocolateySoftware
     }
 
     # Call chocolatey install
-    Write-Verbose "Installing chocolatey on this machine."
+    Write-Verbose -Message "Installing chocolatey on this machine."
     $TempTools = [io.path]::combine($tempDir, 'tools')
     #   To be able to mock
-    $chocInstallPS1 = Join-Path $TempTools 'chocolateyInstall.ps1'
+    $chocInstallPS1 = Join-Path -Path $TempTools -ChildPath 'chocolateyInstall.ps1'
 
     if ($InstallationDirectory)
     {
         [Environment]::SetEnvironmentVariable('ChocolateyInstall', $InstallationDirectory, 'Machine')
-        [Environment]::SetEnvironmentVariable('ChocolateyInstall', $InstallationDirectory, 'Process')
     }
+
     & $chocInstallPS1 | Write-Debug
+    Write-Verbose -Message 'Ensuring chocolatey commands are on the path.'
+    [string] $chocoPath = ''
 
-    Write-Verbose 'Ensuring chocolatey commands are on the path.'
-    $chocoPath = [Environment]::GetEnvironmentVariable('ChocolateyInstall')
-    if ([string]::IsNullOrEmpty($chocoPath))
+    if ($chocoPath = [Environment]::GetEnvironmentVariable('ChocolateyInstall','Machine'))
     {
-        $chocoPath = "$env:ALLUSERSPROFILE\Chocolatey"
+        Write-Debug -Message ('The Machine Environment variable is already set to: ''{0}''.' -f $chocoPath)
     }
-
-    if (-not (Test-Path -Path $chocoPath))
+    else
     {
-        $chocoPath = "$env:SYSTEMDRIVE\ProgramData\Chocolatey"
+        # Checking if it was installed in AllUserProfile/Chocolatey (was default many years ago)
+        $chocoPath = Join-Path -Path $env:ALLUSERSPROFILE -ChildPath 'Chocolatey'
+        if (-not (Test-Path -Path $chocoPath))
+        {
+            # The AllUserProfile/Chocolatey folder does not exit, let's install in correct default location
+            $chocoPath = Join-Path -Path $env:ProgramData -ChildPath 'Chocolatey'
+        }
+
+        # Set the Machine-scoped 'ChocolateyInstall' environement variable
+        Write-Debug -Message ('Setting the Machine & Process Environment variable to: ''{0}''.' -f $chocoPath)
+        [Environment]::SetEnvironmentVariable('ChocolateyInstall', $chocoPath, 'Machine')
+        [Environment]::SetEnvironmentVariable('ChocolateyInstall', $chocoPath, 'Process')
     }
 
     $chocoExePath = Join-Path -Path $chocoPath -ChildPath 'bin'
 
-    if ($($env:Path).ToLower().Contains($($chocoExePath).ToLower()) -eq $false)
+    if (@($env:Path.ToLower() -split [io.path]::PathSeparator) -notcontains $chocoExePath.ToLower())
     {
-        $env:Path = [Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::Machine)
+        # we can't see the choco bin folder in $env:Path, trying to load from Machine.
+        $env:Path = [Environment]::GetEnvironmentVariable('Path', 'Machine')
     }
 
-    Write-Verbose 'Ensuring chocolatey.nupkg is in the lib folder'
+    Write-Verbose -Message 'Ensuring chocolatey.nupkg is in the lib folder'
     $chocoPkgDir = Join-Path -Path $chocoPath -ChildPath 'lib\chocolatey'
     $nupkg = Join-Path -Path $chocoPkgDir -ChildPath 'chocolatey.nupkg'
     $null = [System.IO.Directory]::CreateDirectory($chocoPkgDir)
-    Copy-Item -Path "$file" -Destination "$nupkg" -Force -ErrorAction SilentlyContinue
+    Copy-Item -Path $file -Destination $nupkg -Force -ErrorAction 'SilentlyContinue'
 
     if ($ChocoVersion = & "$chocoPath\choco.exe" @('-v'))
     {

@@ -76,6 +76,7 @@ class ChocolateySoftware
 
         if ($null -eq $chocoExe)
         {
+            Write-Verbose -Message ('Path: {0}' -f $ENV:Path)
             $currentState.Ensure = 'Absent'
         }
         else

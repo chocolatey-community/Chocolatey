@@ -20,9 +20,9 @@ Describe 'Test ChocolateyIsInstalled Package' {
     }
 
     it 'Gets the ChocolateyIsInstalled Package Compliance Status (non-compliant)' {
-
+        Uninstall-Chocolatey -ErrorAction 'Ignore'
         $result = $null
-        $result = Get-GuestConfigurationPackageComplianceStatus -Path $packageZip
+        $result = Get-GuestConfigurationPackageComplianceStatus -Path $packageZip -Verbose
         $result.Resources.Reasons | Should -not -BeNullOrEmpty
         $result.complianceStatus | Should -be $false
     }

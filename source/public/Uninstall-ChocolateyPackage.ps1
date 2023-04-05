@@ -279,12 +279,15 @@ function Uninstall-ChocolateyPackage
         {
             throw "Chocolatey Software not found."
         }
-        $CachePath = [io.path]::Combine($Env:ChocolateyInstall, 'cache', 'GetChocolateyPackageCache.xml')
-        if ( (Test-Path $CachePath))
+
+        $chocoInstallPath = Get-ChocolateyInstallPath -ErrorAction 'Stop'
+        $cachePath = [io.path]::Combine($chocoInstallPath, 'cache', 'GetChocolateyPackageCache.xml')
+        if ( (Test-Path $cachePath))
         {
-            $null = Remove-Item -Path $CachePath -ErrorAction 'SilentlyContinue' -Confirm:$false
+            $null = Remove-Item -Path $cachePath -ErrorAction 'SilentlyContinue' -Confirm:$false
         }
     }
+
     process
     {
         foreach ($PackageName in $Name)

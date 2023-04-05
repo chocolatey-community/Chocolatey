@@ -32,7 +32,7 @@ function Uninstall-Chocolatey
         [Parameter()]
         [AllowNull()]
         [System.String]
-        $InstallDir = $Env:ChocolateyInstall,
+        $InstallDir = $(Get-ChocolateyInstallPath -ErrorAction 'SilentlyContinue'),
 
         [Parameter(DontShow)]
         [switch]
@@ -41,7 +41,7 @@ function Uninstall-Chocolatey
 
     process
     {
-        #If InstallDir is empty or null, select from whee choco.exe is available
+        #If InstallDir is empty or null, select from the choco.exe if available
         if (-not $InstallDir)
         {
             Write-Debug -Message "Attempting to find the choco.exe command."
@@ -59,7 +59,7 @@ function Uninstall-Chocolatey
             }
         }
 
-        Write-Verbose "Chocolatey Installation Folder is $InstallDir"
+        Write-Verbose -Message "Chocolatey Installation Folder is $InstallDir"
         $chocoFiles = @('choco.exe', 'chocolatey.exe', 'cinst.exe', 'cuninst.exe', 'clist.exe', 'cpack.exe', 'cpush.exe',
             'cver.exe', 'cup.exe').Foreach{ $_; "$_.old" } #ensure the .old are also removed
 
@@ -96,7 +96,7 @@ function Uninstall-Chocolatey
 
         Write-Verbose -Message "Removing $InstallDir from the Path and the ChocolateyInstall Environment variable."
         [Environment]::SetEnvironmentVariable('ChocolateyInstall', $null, 'Machine')
-        $Env:ChocolateyInstall = $null
+        [Environment]::SetEnvironmentVariable('ChocolateyInstall', $null, 'Process')
         $AllPaths = [Environment]::GetEnvironmentVariable('Path', 'machine').split(';').where{
             ![string]::IsNullOrEmpty($_) -and
             $_ -notmatch "^$([regex]::Escape($InstallDir))\\bin$"
