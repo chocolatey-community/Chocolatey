@@ -107,7 +107,7 @@ function Test-ChocolateySource
     {
         if (-not (Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
         {
-            throw "Chocolatey Software not found."
+            throw "Chocolatey Software not found. 17"
         }
 
         if (-not ($Source = (Get-ChocolateySource -Name $Name)) )

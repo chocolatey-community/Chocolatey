@@ -40,7 +40,7 @@ function Test-ChocolateyInstall
     if (-not ($chocoCmd = @(Get-Command 'choco.exe' -CommandType 'Application' -ErrorAction 'SilentlyContinue')[0]))
     {
         if (
-            !$InstallDir -or
+            -not $InstallDir -or
             $chocoCmd.Path -match [regex]::Escape($InstallDir)
         )
         {
@@ -57,7 +57,7 @@ function Test-ChocolateyInstall
     }
     else
     {
-        Write-Verbose "Chocolatey Software not found."
+        Write-Verbose -Message 'Chocolatey Software not found.'
         return $false
     }
 }

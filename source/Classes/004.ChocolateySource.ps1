@@ -96,7 +96,20 @@ class ChocolateySource
         $currentState = [ChocolateySource]::New()
         $currentState.Name = $this.Name
 
-        $localSource = Get-ChocolateySource -Name $this.Name -ErrorAction 'SilentlyContinue'
+        try
+        {
+            $localSource = Get-ChocolateySource -Name $this.Name
+        }
+        catch
+        {
+            Write-Verbose -Message ('Exception Caught:' -f $_)
+            $localSource = $null
+            $currentState.Reasons += @{
+                code = 'ChocolateySource:ChocolateySource:ChocolateyError'
+                phrase = ('Error: {0}.' -f $_)
+            }
+        }
+
         if ($localSource.Name -eq $this.Name)
         {
             $currentState.Ensure = 'Present'

@@ -134,7 +134,7 @@ function Install-ChocolateySoftware
     }
     catch
     {
-        Write-Warning 'Unable to set PowerShell to use TLS 1.2 and TLS 1.1 due to old .NET Framework installed. If you see underlying connection closed or trust errors, you may need to do one or more of the following: (1) upgrade to .NET Framework 4.5+ and PowerShell v3, (2) specify internal Chocolatey package location (set $env:chocolateyDownloadUrl prior to install or host the package internally), (3) use the Download + PowerShell method of install. See https://chocolatey.org/install for all install options.'
+        Write-Warning -Message 'Unable to set PowerShell to use TLS 1.2 and TLS 1.1 due to old .NET Framework installed. If you see underlying connection closed or trust errors, you may need to do one or more of the following: (1) upgrade to .NET Framework 4.5+ and PowerShell v3, (2) specify internal Chocolatey package location (set $env:chocolateyDownloadUrl prior to install or host the package internally), (3) use the Download + PowerShell method of install. See https://chocolatey.org/install for all install options.'
     }
 
     switch ($PSCmdlet.ParameterSetName)
@@ -143,7 +143,7 @@ function Install-ChocolateySoftware
         {
             if ($PackageFeedUrl -and -not [string]::IsNullOrEmpty($Version))
             {
-                Write-Verbose "Downloading specific version of Chocolatey: $Version"
+                Write-Verbose -Message "Downloading specific version of Chocolatey: $Version"
                 $url = "$PackageFeedUrl/package/chocolatey/$Version"
             }
             else
@@ -205,6 +205,7 @@ function Install-ChocolateySoftware
         url  = $url
         file = $file
     }
+
     $GetRemoteFileParamsName = (get-command Get-RemoteFile).parameters.keys
     $KeysForRemoteFile = $PSBoundParameters.keys | Where-Object { $_ -in $GetRemoteFileParamsName }
     foreach ($key in $KeysForRemoteFile )
@@ -212,6 +213,7 @@ function Install-ChocolateySoftware
         Write-Debug "`tWith $key :: $($PSBoundParameters[$key])"
         $null = $GetRemoteFileParams.Add($key , $PSBoundParameters[$key])
     }
+
     $null = Get-RemoteFile @GetRemoteFileParams
 
     # unzip the package
@@ -237,7 +239,7 @@ function Install-ChocolateySoftware
     }
 
     # Call chocolatey install
-    Write-Verbose "Installing chocolatey on this machine."
+    Write-Verbose -Message "Installing chocolatey on this machine."
     $TempTools = [io.path]::combine($tempDir, 'tools')
     #   To be able to mock
     $chocInstallPS1 = Join-Path -Path $TempTools -ChildPath 'chocolateyInstall.ps1'
@@ -245,7 +247,6 @@ function Install-ChocolateySoftware
     if ($InstallationDirectory)
     {
         [Environment]::SetEnvironmentVariable('ChocolateyInstall', $InstallationDirectory, 'Machine')
-        [Environment]::SetEnvironmentVariable('ChocolateyInstall', $InstallationDirectory, 'Process')
     }
 
     & $chocInstallPS1 | Write-Debug

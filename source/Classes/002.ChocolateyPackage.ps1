@@ -73,7 +73,19 @@ class ChocolateyPackage
             return $currentState
         }
 
-        $localPackage = Get-ChocolateyPackage -LocalOnly -Name $this.Name -Exact
+        try
+        {
+            $localPackage = Get-ChocolateyPackage -LocalOnly -Name $this.Name -Exact
+        }
+        catch
+        {
+            Write-Verbose -Message ('Exception Caught:' -f $_)
+            $localPackage = $null
+            $currentState.Reasons += @{
+                code = 'ChocolateyPackage:ChocolateyPackage:ChocolateyError'
+                phrase = ('Error: {0}.' -f $_)
+            }
+        }
 
         if ($null -eq $localPackage)
         {
@@ -195,7 +207,7 @@ class ChocolateyPackage
     {
         $currentState = $this.Get()
 
-        if ($currentState.Reasons.Code.Where({$_ -in @('BelowExpectedVersion','ShouldBeInstalled','ShouldNotBeInstalled','')}))
+        if ($currentState.Reasons.Code.Where({$_ -in @('BelowExpectedVersion','ShouldBeInstalled','ShouldNotBeInstalled')}))
         {
             return $false
         }
@@ -208,7 +220,7 @@ class ChocolateyPackage
     [void] Set()
     {
         [ChocolateyPackage] $currentState = $this.Get()
-        $chocoCommand = Get-Command 'Install-ChocolateyPackage'
+        $chocoCommand = Get-Command -Name 'Install-ChocolateyPackage'
         [hashtable] $chocoCommandParams = @{
             Name        = $this.Name
             Confirm     = $false
