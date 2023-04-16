@@ -26,7 +26,8 @@ function Get-Downloader
 {
     [CmdletBinding()]
     [OutputType([System.Net.WebClient])]
-    param (
+    param
+    (
         [Parameter(Mandatory = $true)]
         [System.String]
         $url,
@@ -48,12 +49,12 @@ function Get-Downloader
     $downloader = [System.Net.WebClient]::new()
     $defaultCreds = [System.Net.CredentialCache]::DefaultCredentials
 
-    if ($defaultCreds -ne $null)
+    if ($null -ne $defaultCreds)
     {
         $downloader.Credentials = $defaultCreds
     }
 
-    if ($ignoreProxy -ne $null -and $ignoreProxy -eq 'true')
+    if ($null -ne $ignoreProxy -and $ignoreProxy -eq 'true')
     {
         Write-Debug "Explicitly bypassing proxy"
         $downloader.Proxy = [System.Net.GlobalProxySelection]::GetEmptyWebProxy()
@@ -72,11 +73,11 @@ function Get-Downloader
             Write-Debug "Using explicit proxy server '$ProxyLocation'."
             $downloader.Proxy = $proxy
         }
-        elseif (!$downloader.Proxy.IsBypassed($url))
+        elseif (-not $downloader.Proxy.IsBypassed($url))
         {
             # system proxy (pass through)
             $creds = $defaultCreds
-            if ($creds -eq $null)
+            if ($null -eq $creds)
             {
                 Write-Debug "Default credentials were null. Attempting backup method"
                 throw "Could not download required file from $url"

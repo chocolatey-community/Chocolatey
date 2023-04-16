@@ -58,41 +58,30 @@ function Test-ChocolateySource
     param
     (
         [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
-        [System.String]
+        [string]
         $Name,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
+        [string]
         $Source,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
-        [Switch]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
+        [switch]
         $Disabled,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
-        [Switch]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
+        [switch]
         $BypassProxy,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
-        [Switch]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
+        [switch]
         $SelfService,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [int]
         $Priority = 0,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [PSCredential]
         $Credential,
 
@@ -177,6 +166,7 @@ function Test-ChocolateySource
                 }
             }
         }
+
         Compare-Object -ReferenceObject $ReferenceSource -DifferenceObject $Source -Property $ReferenceSource.PSObject.Properties.Name
     }
 }

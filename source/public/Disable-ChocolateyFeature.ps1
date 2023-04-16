@@ -9,8 +9,9 @@
 .PARAMETER Name
     Name of the Chocolatey Feature to disable. Some are only available in the Chocolatey for business version.
 
-.PARAMETER NoProgress
-    This allows to reduce the output created by the Chocolatey Command.
+.PARAMETER RunNonElevated
+    Throws if the process is not running elevated. use -RunNonElevated if you really want to run
+    even if the current shell is not elevated.
 
 .EXAMPLE
     Disable-ChocolateyFeature -Name 'Bob'
@@ -20,21 +21,19 @@
 #>
 function Disable-ChocolateyFeature
 {
-    [CmdletBinding()]
-    param (
-        [Parameter(
-            Mandatory = $true
-            , ValueFromPipelineByPropertyName
-        )]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
+    [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Low')]
+    [OutputType([void])]
+    param
+    (
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Feature')]
         [System.String]
         $Name,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
-        [Switch]
-        $NoProgress
+        [Parameter(DontShow)]
+        [switch]
+        $RunNonElevated = $(Assert-ChocolateyIsElevated)
     )
 
     process
@@ -44,15 +43,20 @@ function Disable-ChocolateyFeature
             throw "Chocolatey Software not found."
         }
 
-        if (!(Get-ChocolateyFeature -Name $Name))
+        if (-not (Get-ChocolateyFeature -Name $Name))
         {
             throw "Chocolatey Feature $Name cannot be found."
         }
 
         $ChocoArguments = @('feature', 'disable')
         $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
-        Write-Verbose "choco $($ChocoArguments -join ' ')"
+        Write-Verbose -Message ('choco {0}' -f ($ChocoArguments -join ' '))
 
-        &$chocoCmd $ChocoArguments | Write-Verbose
+        if ($PSCmdlet.ShouldProcess($Env:COMPUTERNAME, "$chocoCmd $($ChocoArguments -join ' ')"))
+        {
+            &$chocoCmd $ChocoArguments | ForEach-Object -Process {
+                Write-Verbose -Message ('{0}' -f $_)
+            }
+        }
     }
 }

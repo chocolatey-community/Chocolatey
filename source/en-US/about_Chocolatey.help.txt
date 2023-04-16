@@ -2,12 +2,13 @@ TOPIC
     about_Chocolatey
 
 SHORT DESCRIPTION
-    DSC resources for deployment and configuration of Chocolatey
+    PowerShell wrapper of choco.exe and DSC resources for deployment and configuration of Chocolatey.
 
 LONG DESCRIPTION
     This module contains DSC resources for deployment and configuration of Chocolatey
 
 EXAMPLES
+    PS C:\> Get-Command -Module Chocolatey
     PS C:\> Get-DscResource -Module Chocolatey
 
 NOTE:
@@ -15,7 +16,7 @@ NOTE:
 
 TROUBLESHOOTING NOTE:
     Go to the Github repository for read about issues, submit a new issue, and read
-    about new releases. https://github.com/chocolatey-community/Chocolatey/
+    about new releases. https://github.com/chocolatey-community/Chocolatey/releases
 
 SEE ALSO
   - https://github.com/chocolatey-community/Chocolatey/

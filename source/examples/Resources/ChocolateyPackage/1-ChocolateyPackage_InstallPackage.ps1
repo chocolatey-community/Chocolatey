@@ -51,7 +51,9 @@ configuration Example
             Ensure            = 'Present'
             Name              = 'Putty'
             Version           = 'Latest'
-            ChocolateyOptions = @(@{ source = 'https://chocolatey.org/api/v2/' })
+            ChocolateyOptions = @{
+                source = 'https://chocolatey.org/api/v2/'
+            }
         }
     }
 }

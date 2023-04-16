@@ -50,7 +50,9 @@ configuration Example
         ChocolateyPackage Putty {
             Ensure            = 'Present'
             Name              = 'Putty'
-            ChocolateyOptions = @(@{ source = 'https://chocolatey.org/api/v2/' })
+            ChocolateyOptions = @{
+                source = 'https://chocolatey.org/api/v2/'
+            }
         }
     }
 }

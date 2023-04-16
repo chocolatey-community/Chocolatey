@@ -21,7 +21,8 @@
 function Get-ChocolateyPin
 {
     [CmdletBinding()]
-    param (
+    param
+    (
         [Parameter(ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
         [System.String]
         $Name = '*'
@@ -34,7 +35,7 @@ function Get-ChocolateyPin
             throw "Chocolatey Software not found."
         }
 
-        if (!(Get-ChocolateyPackage -Name $Name))
+        if ($Name -ne '*' -and -not (Get-ChocolateyPackage -Name $Name))
         {
             throw "Chocolatey Package $Name cannot be found."
         }
@@ -42,7 +43,7 @@ function Get-ChocolateyPin
         # Prepare the arguments for `choco pin list -r`
         $ChocoArguments = @('pin', 'list', '-r')
 
-        # Write-Debug -Message "choco $($ChocoArguments -join ' ')"
+        Write-Verbose -Message "choco $($ChocoArguments -join ' ')"
 
         # Stop here if the list is empty
         if (-Not ($ChocoPinListOutput = &$chocoCmd $ChocoArguments))
@@ -58,12 +59,12 @@ function Get-ChocolateyPin
 
         if ($Name -ne '*')
         {
-            Write-Verbose 'Filtering pinned Packages'
+            Write-Verbose -Message 'Filtering pinned Packages'
             $ChocoPinListOutput = $ChocoPinListOutput | Where-Object { $_.Name -in $Name }
         }
         else
         {
-            Write-Verbose 'Returning all pinned Packages'
+            Write-Verbose -Message 'Returning all pinned Packages'
         }
 
         foreach ($Pin in $ChocoPinListOutput)

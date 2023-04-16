@@ -43,11 +43,20 @@ class ChocolateyFeature
         try
         {
             $feature = Get-ChocolateyFeature -Name $this.Name
+            $currentState.Ensure = if ($feature.enabled -eq 'true')
+            {
+                'Present'
+            }
+            else
+            {
+                'Absent'
+            }
         }
         catch
         {
             Write-Verbose -Message ('Exception Caught:' -f $_)
             $feature = $null
+            $currentState.Ensure = 'Absent'
             $currentState.Reasons += @{
                 code = 'ChocolateySource:ChocolateySource:ChocolateyError'
                 phrase = ('Error: {0}.' -f $_)
@@ -56,42 +65,37 @@ class ChocolateyFeature
 
         if ($null -eq $feature)
         {
-            $currentState.Ensure = 'Absent'
             $currentState.Reasons += @{
                 code = 'ChocolateyFeature:ChocolateyFeature:FeatureNotFound'
                 phrase = ('The feature ''{0}'' was not found.' -f $this.Name)
             }
         }
-        elseif ($feature.enabled -and $this.Ensure -eq 'Present')
+        elseif ($currentState.Ensure -eq 'Present' -and $this.Ensure -eq 'Present')
         {
-            $currentState.Ensure = 'Present'
             $currentState.Reasons += @{
                 code = 'ChocolateyFeature:ChocolateyFeature:FeaturePresentCompliant'
                 phrase = ('The feature ''{0}'' is enabled as expected. Set Explicitly is {1}.' -f $this.Name, $feature.setExplicitly)
             }
         }
-        elseif ($feature.enabled -and $this.Ensure -eq 'Absent')
+        elseif ($currentState.Ensure -eq 'Present'  -and $this.Ensure -eq 'Absent')
         {
-            $currentState.Ensure = 'Present'
             $currentState.Reasons += @{
                 code = 'ChocolateyFeature:ChocolateyFeature:FeatureShouldBeDisabled'
-                phrase = ('The feature ''{0}'' is enabled while it''s expected to be Absent. Set Explicitly is {1}.' -f $this.Name, $feature.setExplicitly)
+                phrase = ('The feature ''{0}'' is enabled while it''s expected to be disabled. Set Explicitly is {1}.' -f $this.Name, $feature.setExplicitly)
             }
         }
-        elseif ($false -eq $feature.enabled -and $this.Ensure -eq 'Absent')
+        elseif ($currentState.Ensure -eq 'Absent' -and $this.Ensure -eq 'Absent')
         {
-            $currentState.Ensure = 'Absent'
             $currentState.Reasons += @{
                 code = 'ChocolateyFeature:ChocolateyFeature:FeatureAbsentCompliant'
                 phrase = ('The feature ''{0}'' is disabled as expected. Set Explicitly is {1}.' -f $this.Name, $feature.setExplicitly)
             }
         }
-        elseif ($false -eq $feature.enabled -and $this.Ensure -eq 'Present')
+        elseif ($currentState.Ensure -eq 'Absent' -and $this.Ensure -eq 'Present')
         {
-            $currentState.Ensure = 'Absent'
             $currentState.Reasons += @{
                 code = 'ChocolateyFeature:ChocolateyFeature:FeatureShouldBeEnabled'
-                phrase = ('The feature ''{0}'' is disabled as expected. Set Explicitly is {1}.' -f $this.Name, $feature.setExplicitly)
+                phrase = ('The feature ''{0}'' is disabled but we expected it enabled. Set Explicitly is {1}.' -f $this.Name, $feature.setExplicitly)
             }
         }
 
@@ -119,18 +123,18 @@ class ChocolateyFeature
     {
         $currentState = $this.Get()
 
-        switch ($currentState.Reasons.code)
+        switch -Regex ($currentState.Reasons.code)
         {
-            'FeatureShouldBeDisabled'
+            'FeatureShouldBeDisabled$'
             {
                 # Disable the feature
-                Disable-ChocolateyFeature -Name $this.Name
+                Disable-ChocolateyFeature -Name $this.Name -Confirm:$false
             }
 
-            'FeatureShouldBeEnabled'
+            'FeatureShouldBeEnabled$'
             {
                 # Enable the feature
-                Enable-ChocolateyFeature -Name $this.Name
+                Enable-ChocolateyFeature -Name $this.Name -Confirm:$false
             }
         }
     }

@@ -20,43 +20,41 @@
 #>
 function Test-ChocolateyPin
 {
-    [CmdletBinding(
-        DefaultParameterSetName = 'Set'
-    )]
+    [CmdletBinding()]
     [OutputType([Bool])]
-    param (
-        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName)]
-        [System.String]
+    param
+    (
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
+        [string]
         $Name,
 
-        [Parameter()]
-        [System.String]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
+        [string]
         $Version
     )
 
     process
     {
-        if (-not (Get-Command 'choco.exe' -CommandType Application -ErrorAction SilentlyContinue))
+        if (-not (Get-Command 'choco.exe' -CommandType 'Application' -ErrorAction 'SilentlyContinue'))
         {
-            throw "Chocolatey Software not found."
+            throw 'Chocolatey Software not found.'
         }
 
-        if (!($Setting = Get-ChocolateyPin -Name $Name))
+        if (-not ($pin = Get-ChocolateyPin -Name $Name))
         {
-            Write-Verbose -Message "The Pin for the Chocolatey Package '$Name' cannot be found."
+            Write-Verbose -Message ('The Pin for the Chocolatey Package ''{0}'' cannot be found.' -f $Name)
             return $false
         }
 
-        $Version = $ExecutionContext.InvokeCommand.ExpandString($Version).TrimEnd(@('/', '\'))
-        if ([string]$Setting.Version -eq $Version)
+        if ([string]$pin.Version -eq $Version)
         {
-            Write-Verbose ("The Pin for the Chocolatey Package '{0}' is set to '{1}' as expected." -f $Name, $Version)
+            Write-Verbose -Message ('The Pin for the Chocolatey Package ''{0}'' is set to ''{1}'' as expected.' -f $Name, $pin.Version)
             return $true
         }
         else
         {
-            Write-Verbose ("The Pin for the Chocolatey Package '{0}' is NOT set to '{1}' as expected." -f $Name, $Setting.Version)
-            return $False
+            Write-Verbose ('The Pin for the Chocolatey Package ''{0}'' is NOT set to ''{1}'' but to ''{2}''.' -f $Name, $Version, $pin.Version)
+            return $false
         }
     }
 }

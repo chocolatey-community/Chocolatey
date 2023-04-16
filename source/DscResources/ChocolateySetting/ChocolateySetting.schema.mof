@@ -1,8 +1,0 @@
-
-[ClassVersion("1.0.0.0"), FriendlyName("ChocolateySetting")]
-class ChocolateySetting : OMI_BaseResource
-{
-    [Required, Description("Specifies whether the Chocolatey Setting should be set or unset."), ValueMap{"Present","Absent"}, Values{"Present","Absent"}] String Ensure;
-    [Key, Description("Name (or setting) of the Chocolatey setting to modify")] String Name;
-    [Write, Description("Value to be given on the setting. This is ignored when the ensure -eq 'Absent'.")] string value;
-};

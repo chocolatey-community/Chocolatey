@@ -20,16 +20,15 @@
 function Get-ChocolateySetting
 {
     [CmdletBinding()]
-    param (
-        [Parameter(
-            ValueFromPipeline
-            , ValueFromPipelineByPropertyName
-        )]
+    param
+    (
+        [Parameter(ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Name')]
         [ValidateNotNullOrEmpty()]
         [string[]]
         $Setting = '*'
     )
+
     begin
     {
         if (-not ($chocoCmd = @(Get-Command 'choco.exe' -CommandType 'Application' -ErrorAction 'SilentlyContinue')[0]))
@@ -37,14 +36,14 @@ function Get-ChocolateySetting
             throw "Chocolatey Software not found."
         }
 
-        $ChocoConfigPath = join-path $chocoCmd.Path ..\..\config\chocolatey.config -Resolve
-        $ChocoXml = [xml]::new()
-        $ChocoXml.Load($ChocoConfigPath)
+        $ChocoConfigPath = Join-Path -Path $chocoCmd.Path -ChildPath '..\..\config\chocolatey.config' -Resolve
+        $chocoXml = [xml]::new()
+        $chocoXml.Load($ChocoConfigPath)
     }
 
     process
     {
-        if (!$ChocoXml)
+        if (-not $chocoXml)
         {
             throw "Error with Chocolatey config."
         }
@@ -54,29 +53,26 @@ function Get-ChocolateySetting
             if ($Name -ne '*')
             {
                 Write-Verbose ("Searching for Setting named {0}" -f [Security.SecurityElement]::Escape($Name))
-                $SettingNodes = $ChocoXml.SelectNodes("//add[translate(@key,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='$([Security.SecurityElement]::Escape($Name.ToLower()))']")
+                $SettingNodes = $chocoXml.SelectNodes("//add[translate(@key,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz')='$([Security.SecurityElement]::Escape($Name.ToLower()))']")
             }
             else
             {
                 Write-Verbose 'Returning all Sources configured.'
-                $SettingNodes = $ChocoXml.chocolatey.config.childNodes
+                $SettingNodes = $chocoXml.chocolatey.config.childNodes
             }
 
             foreach ($SettingNode in $SettingNodes)
             {
-                $SettingObject = [PSCustomObject]@{
+                $SettingObject = [ordered]@{
                     PSTypeName = 'Chocolatey.Setting'
                 }
+
                 foreach ($property in $SettingNode.Attributes.name)
                 {
-                    $SettingPropertyParam = @{
-                        MemberType = 'NoteProperty'
-                        Name       = $property
-                        Value      = $SettingNode.($property).ToString()
-                    }
-                    $SettingObject | Add-Member @SettingPropertyParam
+                    $settingObject[$property] = '{0}' -f $SettingNode.($property)
                 }
-                Write-Output $SettingObject
+
+                [PSCustomObject]$SettingObject
             }
         }
     }

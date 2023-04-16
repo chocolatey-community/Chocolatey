@@ -24,33 +24,22 @@
 #>
 function Test-ChocolateySetting
 {
-    [CmdletBinding(
-        DefaultParameterSetName = 'Set'
-    )]
+    [CmdletBinding(DefaultParameterSetName = 'Set')]
     [OutputType([Bool])]
-    param (
-        [Parameter(
-            Mandatory = $true
-            , ValueFromPipelineByPropertyName
-        )]
+    param
+    (
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Setting')]
         [System.String]
         $Name,
 
-        [Parameter(
-            Mandatory = $true
-            , ValueFromPipelineByPropertyName
-            , ParameterSetName = 'Set'
-        )]
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'Set')]
         [AllowEmptyString()]
         [AllowNull()]
         [System.String]
         $Value,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-            , ParameterSetName = 'Unset'
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true, ParameterSetName = 'Unset')]
         [switch]
         $Unset
     )
@@ -62,27 +51,32 @@ function Test-ChocolateySetting
             throw "Chocolatey Software not found."
         }
 
-        if (!($Setting = Get-ChocolateySetting -Name $Name))
+        if (-not ($setting = Get-ChocolateySetting -Name $Name))
         {
             Write-Warning "Chocolatey Setting $Name cannot be found."
             return $false
         }
-        $Setting | Write-Verbose
+
+        Write-Verbose -Message ('Setting ''{0}'' set to ''{1}''.' -f $setting.Name, $setting.Value)
+
         if ($Unset)
         {
-            $Value = ''
+            $value = ''
+        }
+        else
+        {
+            $value = $ExecutionContext.InvokeCommand.ExpandString($value).TrimEnd(@('/', '\'))
         }
 
-        $Value = $ExecutionContext.InvokeCommand.ExpandString($Value).TrimEnd(@('/', '\'))
         if ([string]$Setting.value -eq $Value)
         {
-            Write-Verbose ("The Chocolatey Setting {0} is set to '{1}' as expected." -f $Name, $Value)
+            Write-Verbose -Message ("The Chocolatey Setting {0} is set to '{1}' as expected." -f $Name, $value)
             return $true
         }
         else
         {
-            Write-Verbose ("The Chocolatey Setting {0} is NOT set to '{1}' as expected:{2}" -f $Name, $Setting.value, $Value)
-            return $False
+            Write-Verbose -Message ("The Chocolatey Setting {0} is NOT set to '{1}' as expected:{2}" -f $Name, $Setting.value, $value)
+            return $false
         }
     }
 }

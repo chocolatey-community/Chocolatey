@@ -28,33 +28,21 @@
 function Set-ChocolateySetting
 {
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
-    [CmdletBinding(
-        SupportsShouldProcess
-        , ConfirmImpact = 'Low'
-    )]
+    [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'Low')]
     [OutputType([Void])]
-    param (
-        [Parameter(
-            Mandatory = $true
-            , ValueFromPipelineByPropertyName
-        )]
+    param
+    (
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Setting')]
         [System.String]
         $Name,
 
-        [Parameter(
-            Mandatory = $true
-            , ValueFromPipelineByPropertyName
-            , ParameterSetName = 'Set'
-        )]
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true, ParameterSetName = 'Set')]
         [AllowEmptyString()]
         [System.String]
         $Value,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-            , ParameterSetName = 'Unset'
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true, ParameterSetName = 'Unset')]
         [switch]
         $Unset,
 
@@ -86,6 +74,7 @@ function Set-ChocolateySetting
             {
                 $null = $PSBoundParameters.Remove('Value')
             }
+
             $null = $PSBoundParameters.remove('unset')
             $ChocoArguments += 'unset'
         }
@@ -94,17 +83,15 @@ function Set-ChocolateySetting
             $PSBoundParameters['Value'] = $ExecutionContext.InvokeCommand.ExpandString($Value).TrimEnd(@('/', '\'))
             $ChocoArguments += 'set'
         }
+
         $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
-        Write-Verbose "choco $($ChocoArguments -join ' ')"
+        Write-Verbose -Message ('choco {0}' -f ($ChocoArguments -join ' '))
 
         if ($PSCmdlet.ShouldProcess($Env:COMPUTERNAME, "$chocoCmd $($ChocoArguments -join ' ')"))
         {
-            $cmdOut = &$chocoCmd $ChocoArguments
-        }
-
-        if ($cmdOut)
-        {
-            Write-Verbose "$($cmdOut | Out-String)"
+            &$chocoCmd $ChocoArguments | ForEach-Object -Process {
+                Write-Verbose -Message ('{0}' -f $_)
+            }
         }
     }
 }
