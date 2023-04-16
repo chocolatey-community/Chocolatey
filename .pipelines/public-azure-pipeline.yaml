@@ -73,7 +73,7 @@ stages:
             inputs:
               filePath: './build.ps1'
               arguments: '-tasks hqrmtest'
-              pwsh: true
+              pwsh: false
 
           - task: PublishTestResults@2
             displayName: 'Publish Test Results'
