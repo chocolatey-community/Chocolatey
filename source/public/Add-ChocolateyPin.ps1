@@ -14,6 +14,10 @@
     This allows to pin a specific Version of a Chocolatey Package.
     The Package with the Version to pin must be installed beforehand.
 
+.PARAMETER RunNonElevated
+    Throws if the process is not running elevated. use -RunNonElevated if you really want to run
+    even if the current shell is not elevated.
+
 .EXAMPLE
     Add-ChocolateyPin -Name 'PackageName'
 
@@ -25,46 +29,46 @@
 #>
 function Add-ChocolateyPin
 {
-    [CmdletBinding(
-        SupportsShouldProcess = $true,
-        ConfirmImpact = 'High'
-    )]
-    param (
-        [Parameter(
-            Mandatory = $true
-            , ValueFromPipelineByPropertyName
-        )]
+    [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'High')]
+    [OutputType([void])]
+    param
+    (
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Package')]
         [System.String]
         $Name,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(ValueFromPipelineByPropertyName = $true)]
         [System.String]
-        $Version
+        $Version,
 
+        [Parameter(DontShow)]
+        [switch]
+        $RunNonElevated = $(Assert-ChocolateyIsElevated)
     )
 
-    process
+    begin
     {
         if (-not ($chocoCmd = @(Get-Command 'choco.exe' -CommandType 'Application' -ErrorAction 'SilentlyContinue')[0]))
         {
             throw "Chocolatey Software not found."
         }
+    }
 
-        if (!(Get-ChocolateyPackage -Name $Name))
+    process
+    {
+        if (-not (Get-ChocolateyPackage -Name $Name -Exact))
         {
-            throw "Chocolatey Package $Name cannot be found."
+            throw ('Chocolatey Package ''{0}'' cannot be found.' -f $Name)
         }
 
-        $ChocoArguments = @('pin', 'add', '-r')
+        $ChocoArguments = @('pin', 'add')
         $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
-        # Write-Debug "choco $($ChocoArguments -join ' ')"
+        Write-Verbose -Message ('choco {0}' -f ($ChocoArguments -join ' '))
 
         if ($PSCmdlet.ShouldProcess("$Name $Version", "Add Pin"))
         {
-            $Output = &$chocoCmd $ChocoArguments
+            $output = &$chocoCmd $ChocoArguments
 
             # LASTEXITCODE is always 0 unless point an existing version (0 when remove but already removed)
             if ($LASTEXITCODE -ne 0)
@@ -73,7 +77,9 @@ function Add-ChocolateyPin
             }
             else
             {
-                $output | Write-Verbose
+                $output | ForEach-Object -Process {
+                    Write-Verbose -Message ('{0}' -f $_)
+                }
             }
         }
     }

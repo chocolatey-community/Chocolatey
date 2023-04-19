@@ -9,6 +9,10 @@
 .PARAMETER Name
     Name of the Chocolatey Package to remove the pin.
 
+.PARAMETER RunNonElevated
+    Throws if the process is not running elevated. use -RunNonElevated if you really want to run
+    even if the current shell is not elevated.
+
 .EXAMPLE
     Remove-ChocolateyPin -Name 'PackageName'
 
@@ -17,18 +21,18 @@
 #>
 function Remove-ChocolateyPin
 {
-    [CmdletBinding(
-        SupportsShouldProcess = $true,
-        ConfirmImpact = 'High'
-    )]
-    param (
-        [Parameter(
-            Mandatory = $true
-            , ValueFromPipelineByPropertyName
-        )]
+    [CmdletBinding(SupportsShouldProcess = $true, ConfirmImpact = 'High')]
+    [OutputType([void])]
+    param
+    (
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [Alias('Package')]
         [System.String]
-        $Name
+        $Name,
+
+        [Parameter(DontShow)]
+        [switch]
+        $RunNonElevated = $(Assert-ChocolateyIsElevated)
     )
 
     process
@@ -38,18 +42,18 @@ function Remove-ChocolateyPin
             throw "Chocolatey Software not found."
         }
 
-        if (!(Get-ChocolateyPackage -Name $Name))
+        if (-not (Get-ChocolateyPackage -Name $Name))
         {
             throw "The Pin for Chocolatey Package $Name cannot be found."
         }
 
-        $ChocoArguments = @('pin', 'remove', '-r')
-        $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
-        # Write-Debug "choco $($ChocoArguments -join ' ')"
+        $chocoArguments = @('pin', 'remove', '-r')
+        $chocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
+        Write-Verbose -Message "choco $($chocoArguments -join ' ')"
 
         if ($PSCmdlet.ShouldProcess("$Name", "Remove Pin"))
         {
-            $Output = &$chocoCmd $ChocoArguments
+            $output = &$chocoCmd $chocoArguments
 
             # LASTEXITCODE is always 0 unless point an existing version (0 when remove but already removed)
             if ($LASTEXITCODE -ne 0)
@@ -58,7 +62,9 @@ function Remove-ChocolateyPin
             }
             else
             {
-                $output | Write-Verbose
+                $output | ForEach-Object -Process {
+                    Write-Verbose -Message ('{0}' -f $_)
+                }
             }
         }
     }

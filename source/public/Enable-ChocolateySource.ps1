@@ -10,8 +10,9 @@
 .PARAMETER Name
     Name of the Chocolatey source to Disable
 
-.PARAMETER NoProgress
-    This allows to reduce the output created by the Chocolatey Command.
+.PARAMETER RunNonElevated
+    Throws if the process is not running elevated. use -RunNonElevated if you really want to run
+    even if the current shell is not elevated.
 
 .EXAMPLE
     Enable-ChocolateySource -Name 'chocolatey'
@@ -21,21 +22,18 @@
 #>
 function Enable-ChocolateySource
 {
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', '')]
     [CmdletBinding()]
-    param (
-        [Parameter(
-            Mandatory = $true
-            , ValueFromPipelineByPropertyName
-        )]
+    [OutputType([void])]
+    param
+    (
+        [Parameter(Mandatory = $true, ValueFromPipelineByPropertyName = $true)]
         [System.String]
         $Name,
 
-        [Parameter(
-            ValueFromPipelineByPropertyName
-        )]
+        [Parameter(DontShow)]
         [switch]
-        $NoProgress
-
+        $RunNonElevated = $(Assert-ChocolateyIsElevated)
     )
 
     process
@@ -45,7 +43,7 @@ function Enable-ChocolateySource
             throw "Chocolatey Software not found."
         }
 
-        if (!(Get-ChocolateySource -id $Name))
+        if (-not (Get-ChocolateySource -id $Name))
         {
             throw "Chocolatey Source $Name cannot be found. You can Register it using Register-ChocolateySource."
         }
@@ -54,6 +52,8 @@ function Enable-ChocolateySource
         $ChocoArguments += Get-ChocolateyDefaultArgument @PSBoundParameters
         Write-Verbose "choco $($ChocoArguments -join ' ')"
 
-        &$chocoCmd $ChocoArguments | Write-Verbose
+        &$chocoCmd $ChocoArguments | ForEach-Object -Process {
+            Write-Verbose -Message ('{0}' -f $_)
+        }
     }
 }

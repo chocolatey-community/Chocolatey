@@ -72,8 +72,8 @@ stages:
             displayName: 'Run Tests'
             inputs:
               filePath: './build.ps1'
-              arguments: '-tasks hqrmtest'
-              pwsh: true
+              arguments: '-tasks ipmopsdsc1,hqrmtest'
+              pwsh: false
 
           - task: PublishTestResults@2
             displayName: 'Publish Test Results'
